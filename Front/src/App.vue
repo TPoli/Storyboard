@@ -1,17 +1,21 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <Container msg="Welcome to Your Vue.js App" />
+  <div>
+      <img alt="Vue logo" src="./assets/logo.png" />
+    <Container msg="Welcome to Your Vue.js App" />
+  </div>
 </template>
 
-<script>
-import Container from "./components/Container.vue";
+<script lang="ts">
+import { Options, Vue } from 'vue-class-component';
+import Container from './components/Container.vue';
 
-export default {
-  name: "App",
+@Options({
   components: {
     Container,
   },
-};
+})
+
+export default class App extends Vue {}
 </script>
 
 <style>
