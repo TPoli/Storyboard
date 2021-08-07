@@ -11,7 +11,7 @@ module.exports = {
 	// **optional** default: `[{ root: './' }]`
 	// support monorepos
 	projects: [
-	  '.', // Shorthand for specifying only the project root location
+	  './Front', // Shorthand for specifying only the project root location
 	  {
 		// **required**
 		// Where is your project?
@@ -25,7 +25,7 @@ module.exports = {
 		// **optional**
 		// Where is TypeScript config file in the project?
 		// It is relative to root property.
-		tsconfig: './tsconfig.json',
+		tsconfig: './Front/tsconfig.json',
 		// **optional** default: `'./.vscode/vetur/snippets'`
 		// Where is vetur custom snippets folders?
 		snippetFolder: './.vscode/vetur/snippets',
