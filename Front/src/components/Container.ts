@@ -1,5 +1,6 @@
 import { Entity } from '../../../Core/types/Entity';
-import { Network } from '../utils/Network'
+import { Endpoints } from '../../../Core/Api/Api';
+import { Network } from '../utils/Network';
 
 export default {
 name: "Container",
@@ -10,7 +11,7 @@ name: "Container",
 		test() {
 			const entity = new Entity('Location');
 			entity.move(7);
-			Network.Post('test', {});
+			Network.Post(Endpoints.TEST, {});
 			return 'test';
 		}
 	}

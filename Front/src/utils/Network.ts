@@ -3,10 +3,8 @@ import { Api, Endpoints } from '../../../Core/Api/Api'
 const axios = require('axios');
 
 export namespace Network {
-
-	
 	export const Get = (endpoint: Endpoints, params: object) => {
-		axios.get(`http://localhost:3000/${endpoint}`)
+		axios.get(`http://localhost:${Api.ServerPort}/${endpoint}`)
 			.then((response: any) => {
 				console.log(response.data.url);
 				console.log(response.data.explanation);
@@ -19,12 +17,12 @@ export namespace Network {
 	export const Post = (endpoint: Endpoints, params: object) => {
 		axios({
 			method: 'post',
-			url: `http://localhost:3000/${endpoint}`,
+			url: `http://localhost:${Api.ServerPort}/${endpoint}`,
 			data: params
 		})
 			.then((response: any) => {
-				console.log(response.data.url);
-				console.log(response.data.explanation);
+				// console.log(response.data.url);
+				// console.log(response.data.explanation);
 			})
 			.catch((error: any) => {
 				console.log(error);

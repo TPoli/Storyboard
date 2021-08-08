@@ -1,4 +1,7 @@
-export type Endpoints = 'test';
+export type RequestMethods = 'POST' | 'GET';
+export enum Endpoints {
+	TEST = 'test',
+};
 
 type Parameter = {
 	name: String;
@@ -10,20 +13,27 @@ type Endpoint = {
 	route: Endpoints;
 	params: Parameter[];
 	response: Parameter[];
+	methods: RequestMethods[]
+};
+
+type EndpointCollection = {
+	[key in Endpoints]: Endpoint;
 };
 
 namespace Api {
 
+	export const ServerPort = 3000;
+
 	const testRoute = {
-		route: 'test',
+		route: Endpoints.TEST,
 		params: [],
 		response: [],
+		methods: [ 'GET', 'POST' ]
 	} as Endpoint;
 
-	export const AllEndpoints = [
-		testRoute
-	];
-
+	export const AllEndpoints = {
+		test: testRoute
+	} as EndpointCollection;
 }
 
 export { Api };
