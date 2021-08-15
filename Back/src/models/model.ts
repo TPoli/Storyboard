@@ -1,12 +1,16 @@
+import { table } from "console";
+
 type Collumn = {
 	name: string;
-	type: 'bool' | 'string' | 'int';
+	type: 'bool' | 'string' | 'int' | 'json';
 	taintable: boolean;
 	primary: boolean;
+	nullable: boolean;
+	autoIncrement: boolean;
 };
 
 abstract class Model {
-	public abstract table: string;
+	public static table: string;
 	public abstract version: number;
 	public abstract collumns: Collumn[]
 	protected isNew = true;
@@ -22,6 +26,10 @@ abstract class Model {
 	// use after save() if you need to access any auto generated data such as ID
 	refresh(): void {
 
+	};
+
+	public getTable = () => {
+		return table;
 	};
 }
 
