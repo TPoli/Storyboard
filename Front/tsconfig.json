@@ -33,7 +33,6 @@
     "tests/**/*.ts",
     "tests/**/*.tsx"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules", "types"],
+  "typeRoots": [ "./types", "./node_modules/@types"]
 }
