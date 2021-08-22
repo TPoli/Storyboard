@@ -1,10 +1,12 @@
 const mysql = require('mysql2');
 
-import { findSourceMap } from 'module';
 import { Model, Collumn } from './models/model';
 import Versions from './models/versions';
 import Mutations from './models/mutations';
+import Account from './models/account';
+import Session from './models/session';
 
+type Schema = typeof Versions | typeof Mutations | typeof Account | typeof Session;
 
 export namespace Db {
 
@@ -12,9 +14,11 @@ export namespace Db {
 
 	export type DbCallback = (error: any, results: any[], fields: any) => void;
 	export const schemas = [
-		Versions,
-		Mutations
-	] as typeof Model[];
+		// Versions,
+		// Mutations,
+		Account,
+		Session
+	] as Schema[];
 
 	let defaultConnection: any = null;
 
@@ -28,13 +32,16 @@ export namespace Db {
 				return 'JSON';
 			case 'bool':
 				return 'BOOLEAN';
+			case 'datetime':
+				return 'DATETIME';
 			default:
 				throw new Error(`unhandled column type: ${collumn.type}`);
 		};
 	};
 
-	const createTable = (connection: any, tableName: string, model: Model, callback: () => void) => {
-		let createQuery = `CREATE TABLE \`${databaseName}\`.\`${tableName}\` (`;
+	const createTable = (connection: any, schema: Schema, callback: () => void) => {
+		const model = new schema();
+		let createQuery = `CREATE TABLE \`${databaseName}\`.\`${model.table}\` (`;
 		let primaryKey = '';
 		model.collumns.forEach((collumn: Collumn) => {
 			createQuery += collumn.name + ' ' + collumnToDbType(collumn);
@@ -88,18 +95,31 @@ export namespace Db {
 		// const t = Versions.find<Versions>();
 
 		const checkTheRestOfTheTables = () => {
-			schemas.forEach((schema: typeof Model) => {
-				// schema.name
-				// check table exists, is same version and if version changed if there are any migrations to update to the correct version
-			});
+			let completed = 0;
+			const completedCallback = () => {
+				++completed;
+				if(completed === schemas.length) {
+					// database is finally ready, launch the server using next();
+					next(); // needs to be called after all of the callbacks in forEach resolve
+				}
+			};
 
-			// database is finally ready, launch the server using next();
-			next(); // needs to be called after all of the callbacks in forEach resolve
+			schemas.forEach((schema: Schema) => {
+				const model = new schema();
+				tableExists(connection, model.table, (exists: boolean) => {
+					if (exists) {
+						completedCallback();
+					} else {
+						createTable(connection, schema, completedCallback);
+					}
+					// both of the above should check version + run migrations instead of just running completeCallback
+				});
+			});
 		};
 
 		const mutationsReadyCallback = (exists: boolean) => {
 			if (!exists) {
-				createTable(connection, Mutations.table, new Mutations(), () => {
+				createTable(connection, Mutations, () => {
 					checkTheRestOfTheTables();
 				});
 			}
@@ -111,7 +131,7 @@ export namespace Db {
 
 		const versionsReadyCallback = (exists: boolean) => {
 			if (!exists) {
-				createTable(connection, Versions.table, new Versions(), () => {
+				createTable(connection, Versions, () => {
 					tableExists(connection, Mutations.table, mutationsReadyCallback);
 				});
 			}
@@ -205,6 +225,6 @@ export namespace Db {
 			
 		// 	callback(error, modifiedResults, fields);
 		// };
-		defaultConnection.query(statement, callback);
+		defaultConnection.query(statement, params, callback);
 	};
 };
