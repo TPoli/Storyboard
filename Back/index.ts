@@ -24,7 +24,7 @@ const authenticationMiddleware = (req: any, res: any, next: any) => {
     if (req.user) {
         return next()
     }
-    res.redirect('/login')
+    res.send({status: 'failure', reason: 'not logged in'});
 };
 
 const setupExpress = () => {
@@ -32,7 +32,8 @@ const setupExpress = () => {
 
     const corsOptions: cors.CorsOptions = {
         origin: allowedOrigins,
-        optionsSuccessStatus: 200 // legacy support
+        optionsSuccessStatus: 200, // legacy support
+        credentials: true
     };
 
     app.use(cors(corsOptions));

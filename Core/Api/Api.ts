@@ -1,6 +1,7 @@
 export type RequestMethods = 'POST' | 'GET';
 export enum Endpoints {
 	TEST = 'test',
+	LOGIN = 'login'
 };
 
 type Parameter = {

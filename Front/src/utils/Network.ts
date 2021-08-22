@@ -2,6 +2,7 @@ import { Api, Endpoints } from '../../../Core/Api/Api'
 
 const axios = require('axios');
 
+axios.defaults.withCredentials = true;
 export namespace Network {
 	export const Get = (endpoint: Endpoints, params: object) => {
 		axios.get(`http://localhost:${Api.ServerPort}/${endpoint}`)

@@ -13,6 +13,9 @@ name: "Container",
 			entity.move(7);
 			Network.Post(Endpoints.TEST, {});
 			return 'test';
+		},
+		login() {
+			Network.Post(Endpoints.LOGIN, {un: 'bob', pw: 'bob'});
 		}
 	}
 };
