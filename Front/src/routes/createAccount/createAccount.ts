@@ -5,7 +5,7 @@ import { Response } from '../../../../Core/types/Response';
 import Page from '../../components/Page/Page.vue';
 
 export default {
-	name: "login",
+	name: "createAccount",
 	components: {
 		Page: Page
 	},
@@ -16,17 +16,14 @@ export default {
 		};
 	},
 	methods: {
-		createAccount() {
-			(this as any).$router.push({path: '/createaccount'});
-		},
-		dashboard() {
-			(this as any).$router.push({path: '/dashboard'});
-		},
 		login() {
-			const loginCallback = (response: Response): void => {
+			(this as any).$router.push({path: '/login'});
+		},
+		createAccount() {
+			const accountCreatedCallback = (response: Response): void => {
 
 			};
-			Network.Post(Endpoints.LOGIN, { un: (this as any).username, pw: (this as any).password}, loginCallback);
+			Network.Post(Endpoints.CREATE_ACCOUNT, { un: (this as any).username, pw: (this as any).password}, accountCreatedCallback);
 		}
 	}
 };

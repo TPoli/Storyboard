@@ -3,12 +3,12 @@ import cors from 'cors';
 import { Passport } from 'passport';
 import { Strategy } from 'passport-local';
 
-import { Api } from '../Core/Api/Api'
+import { Api, Endpoints } from '../Core/Api/Api'
 import { Db } from './src/db';
 
 import Account from './src/models/account';
 import { Session } from 'inspector';
-import { connect } from 'http2';
+import { IAccountFailResponse } from '../Core/types/Response';
 
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
@@ -84,12 +84,12 @@ const setupRoutes = () => {
             return res.send({ success : true, message : 'authentication succeeded' });
         };
 
-        passport.authenticate('local', {session: true}, (err, user, info) => {
+        passport.authenticate('login', {session: true}, (err, user, info) => {
             if (err) {
                 return next(err); // will generate a 500 error
             }
             if (! user) {
-                return res.send({ success : false, message : 'authentication failed' });
+                return res.send({ success : false, message : 'authentication failed' }); // use IResponse, AuthFailResponse
             }
             console.log('authenticated');
             req.login(user, login); // not called automatically due to custom callback
@@ -98,15 +98,61 @@ const setupRoutes = () => {
         // res.send('Well done!');
     });
 
-    // app.post('/login',
-    //     passport.authenticate('local', {
-    //         successRedirect: '/',
-    //         failureRedirect: '/login'//,
-    //         // failureFlash: true 
-    //     })
-    // );
+    app.post('/' + Endpoints.CREATE_ACCOUNT, (req: any, res: any, next: any) => {
+        console.log('POST: createAccount');
+
+        const login = (user: any, loginErr: any) => {
+            if (loginErr) {
+                console.log('error');
+                return next(loginErr);
+            }
+            return res.send({ success : true, message : 'account created' });
+        };
+
+        passport.authenticate('createAccount', {session: true}, (err, user, info) => {
+            if (err) {
+                return next(err); // will generate a 500 error
+            }
+            if (! user) {
+                return res.send({ success : false, message : 'account creation failed' } as IAccountFailResponse);
+            }
+            req.login(user, login); // not called automatically due to custom callback
+        })(req, res, next);
+    });
 };
 
+
+const createAccount = (username:any, password:any, done:any) => {
+    console.log('verifing: createAccount');
+
+    const account = new Account();
+    account.permissions = {};
+    account.username = username;
+
+    const refreshed = () => {
+        return done(null, account);
+    };
+    const saved = (success: boolean) => {
+        if (success) {
+            account.refresh(refreshed);
+        } else {
+            return done(null, false, { message: 'login failed.' });
+        }
+    };
+
+    const saltRounds = 10;
+    bcrypt.hash(password, saltRounds, function(err: Error, hash: string) {
+        if (err) {
+            return done(null, false, { message: 'login failed.' });
+        }
+        account.password = hash;
+        account.save(saved, [
+            'username',
+            'password',
+            'permissions',
+        ]);
+    });
+};
 
 const verifyUser = (username:any, password:any, done:any) => {
     console.log('verifing');
@@ -139,11 +185,17 @@ const verifyUser = (username:any, password:any, done:any) => {
     // });
 };
 
-passport.use(new Strategy({
+passport.use('login', new Strategy({
     usernameField: 'un',
     passwordField: 'pw',
     session: true
 }, verifyUser));
+
+passport.use('createAccount', new Strategy({
+    usernameField: 'un',
+    passwordField: 'pw',
+    session: true
+}, createAccount));
 
 passport.serializeUser(function(user, done) {
     const session = new Session()

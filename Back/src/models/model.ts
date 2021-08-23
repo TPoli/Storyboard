@@ -2,7 +2,7 @@ import { Db } from '../db';
 
 type Collumn = {
 	name: string;
-	type: 'bool' | 'string' | 'int' | 'json' | 'datetime';
+	type: 'bool' | 'string' | 'int' | 'json' | 'datetime' | 'tinytext';
 	taintable: boolean;
 	primary: boolean;
 	nullable: boolean;
@@ -11,7 +11,10 @@ type Collumn = {
 
 export interface IIndexable {
 	[key: string]: any;
-}
+};
+
+export type SaveCallback = (success: boolean) => void;
+type RefreshCallback = () => void;
 
 abstract class Model implements IIndexable {
 	public table: string = '';
@@ -63,13 +66,65 @@ abstract class Model implements IIndexable {
 		});
 	}
 
-	save(): boolean {
-		return false;
+	save(callback: SaveCallback, collumns: string[] = []) {
+		if (this.isNew) {
+			if (collumns.length > 0) {
+				const values: any[] = [];
+				const paramKeys: string[] = [];
+				collumns.forEach((collumn: string) => {
+					paramKeys.push('?');
+					const colData = this.collumns.find((col) => {
+						return col.name === collumn;
+					});
+					if(!colData) {
+						callback(false);
+						return;
+					}
+
+					switch (colData.type) {
+						case 'json':
+						case 'datetime':
+							values.push(JSON.stringify((this as IIndexable)[collumn]));
+							break;
+						case 'bool':
+						case 'int':
+						case 'string':
+						case 'tinytext':
+							values.push((this as IIndexable)[collumn]);
+							console.log((this as IIndexable)[collumn])
+							break;
+						default:
+							callback(false);
+							return;
+					};
+				});
+				
+				let sql = 'INSERT INTO ' + this.table + '(' + collumns.join(',') + ') VALUES (' + paramKeys.join(',') + ')';
+
+				console.log(sql);
+
+				Db.execute(sql, values, (error: any, results: any[], fields: any) => {
+					console.log(error);
+					if (error || !results) {
+						callback(false);
+						return;
+					}
+					this.isNew = false;
+					callback(true);
+				});
+			} else {
+				console.log('INCOMPLETE');
+				callback(false);
+			}
+		} else {
+			console.log('INCOMPLETE');
+			callback(false);
+		}
 	};
 
 	// use after save() if you need to access any auto generated data such as ID
-	refresh(): void {
-
+	refresh(callback: RefreshCallback): void {
+		callback();
 	};
 }
 

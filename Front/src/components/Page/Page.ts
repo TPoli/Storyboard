@@ -1,11 +1,14 @@
-import { Entity } from '../../../Core/types/Entity';
-import { Endpoints } from '../../../Core/Api/Api';
-import { Network } from '../utils/Network';
-import { IResponse } from '../../../Core/types/Response';
+import { Entity } from '../../../../Core/types/Entity';
+import { Endpoints } from '../../../../Core/Api/Api';
+import { Network } from '../../utils/Network';
+import { IResponse } from '../../../../Core/types/Response';
 
 
 export default {
-name: "Container",
+name: "Page",
+	components: {
+		
+	},
 	props: {
 		msg: String,
 	},

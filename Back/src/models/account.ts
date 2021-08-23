@@ -21,7 +21,7 @@ export default class Account extends Model {
 			name: 'password',
 			primary: false,
 			taintable: true,
-			type: 'string'
+			type: 'tinytext'
 		}, {
 			name: 'permissions',
 			primary: false,

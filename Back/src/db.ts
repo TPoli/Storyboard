@@ -28,6 +28,8 @@ export namespace Db {
 				return 'INT';
 			case 'string':
 				return 'VARCHAR(45)';
+			case 'tinytext':
+				return 'TINYTEXT';
 			case 'json':
 				return 'JSON';
 			case 'bool':
