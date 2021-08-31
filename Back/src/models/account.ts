@@ -47,7 +47,6 @@ export default class Account extends Model {
 	public pepper: string = '';
 	public permissions: Object = {};
 
-
 	private static peppers: {[key: string]: string} = {
 		'$2b$10$B/fz1WPunDV.SK03Liajtu': '$2b$10$5Lx3yjrCtqFffqXf2V0TPe',
 		'$2b$10$UtRaMflPyQ68dO26MhGP9e': '$2b$10$.NioQsQCR4JxEGSEZbstkO',

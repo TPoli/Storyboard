@@ -6,11 +6,12 @@ import { Db } from './src/db';
 
 import Account from './src/models/account';
 import { Session } from 'inspector';
-import { IAccountFailResponse } from '../Core/types/Response';
 
 import login from './src/routes/login';
+import createAccount from './src/routes/createAccount';
 import Storyboard from './src/storyboard';
 import setupAuth from './src/security/authentication';
+import { MinutesToMilliseconds } from '../Core/Utils/Utils';
 
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
@@ -40,8 +41,12 @@ const setupExpress = () => {
     app.use(session({
         secret: 'temp secret',
         resave: false,
-        saveUninitialized: false
-    }))
+        saveUninitialized: false,
+        cookie: {
+            maxAge: MinutesToMilliseconds(60),
+            secure: false // THIS NEEDS TO BE TRUE! only set to false for local testing
+        }
+    }));
 
     app.use(cookieParser());
     app.use(bodyParser.urlencoded({
@@ -67,46 +72,28 @@ const setupRoutes = () => {
         });
     });
 
-    app.post('/login', login);
+    app.post('/' + Endpoints.LOGIN, login);
 
-    app.post('/' + Endpoints.CREATE_ACCOUNT, (req: any, res: any, next: any) => {
-        const loginCallback = (user: any, loginErr: any) => {
-            if (loginErr) {
-                console.log('error');
-                return next(loginErr);
-            }
-            return res.send({ success : true, message : 'account created' });
-        };
-
-        Storyboard.Instance().passport.authenticate('createAccount', {session: true}, (err: Error, user: Account, info: any) => {
-            if (err) {
-                return next(err); // will generate a 500 error
-            }
-            if (! user) {
-                return res.send({ success : false, message : 'account creation failed' } as IAccountFailResponse);
-            }
-            req.login(user, loginCallback); // not called automatically due to custom callback
-        })(req, res, next);
-    });
+    app.post('/' + Endpoints.CREATE_ACCOUNT, createAccount);
 };
 
 setupAuth();
 
 Storyboard.Instance().passport.serializeUser(function(user: Account, done: any) {
     const session = new Session()
-    done(null, 1);
+    done(null, user.id);
 });
   
 Storyboard.Instance().passport.deserializeUser(function(id: number, done: any) {
-
-    const account = new Account();
-    account.id = 1;
-    account.permissions = {};
-    account.username = 'bob';
-    done(null, account);
-    // User.findById(id, function(err, user) {
-    //     done(err, user);
-    // });
+    (new Account).findOne({id: id}, (error: Error, account: Account|null) => {
+        if (error) {
+            return done(null, false, { message: 'login failed.' });
+        }
+        if (!account) {
+            return done(null, false, { message: 'login failed.' });
+        }
+        return done(null, account);
+    });
 });
 
 // app.get('/logout', function(req: any, res){
