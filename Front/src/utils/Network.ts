@@ -3,6 +3,7 @@ import { Response, IAuthFailResponse } from '../../../Core/types/Response';
 import { IDataResposne } from '../../../Core/types/Response';
 
 import router from '../router';
+import { store } from '../store';
 
 const axios = require('axios');
 
@@ -30,8 +31,10 @@ export namespace Network {
 	export const Post = (endpoint: Endpoints, params: object, callback: networkCallback) => {
 
 		const networkCallback = (response: IDataResposne) => {
-			if (!response.data.success && (response.data as IAuthFailResponse).message === 'authentication failed') {
-				// router.push({path: '/login'});
+			if (!response.data.success) {
+				if ((response.data as IAuthFailResponse).message === 'authentication failed') {
+					store.commit('logOut');
+				}
 				return;
 			}
 			callback(response.data);

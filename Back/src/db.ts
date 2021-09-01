@@ -94,8 +94,6 @@ export namespace Db {
 	};
 
 	const ensureTablesSetup = (connection: any, next: () => void) => {
-		// const t = Versions.find<Versions>();
-
 		const checkTheRestOfTheTables = () => {
 			let completed = 0;
 			const completedCallback = () => {

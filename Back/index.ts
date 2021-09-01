@@ -12,6 +12,7 @@ import createAccount from './src/routes/createAccount';
 import Storyboard from './src/storyboard';
 import setupAuth from './src/security/authentication';
 import { MinutesToMilliseconds } from '../Core/Utils/Utils';
+import { IAuthFailResponse } from '../Core/types/Response';
 
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
@@ -23,7 +24,11 @@ const authenticationMiddleware = (req: any, res: any, next: any) => {
     if (req.user) {
         return next()
     }
-    res.send({status: 'failure', reason: 'not logged in'});
+    const payload: IAuthFailResponse = {
+        success: false,
+        message: 'authentication failed'
+    };
+    res.send(payload);
 };
 
 const setupExpress = () => {

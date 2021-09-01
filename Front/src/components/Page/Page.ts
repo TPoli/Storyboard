@@ -12,7 +12,7 @@ name: "Page",
 	},
 	data: function () {
 		return {
-			showLoginModal: true
+			
 		};
 	},
 	props: {
@@ -33,8 +33,13 @@ name: "Page",
 			};
 			Network.Post(Endpoints.LOGIN, {un: 'bob', pw: 'bob'}, loginCallback);
 		},
-		closeModal() {
-			(this as any).showLoginModal = false;
+		shouldDisplayLogin() {
+			if ((this as any).$store.state.loggedIn) {
+				return false;
+			}
+			const route = (this as any).$route.fullPath;
+
+			return route !== '/login' && route !== '/createaccount';
 		}
 	}
 };

@@ -26,7 +26,7 @@ export default {
 		},
 		login() {
 			const loginCallback = (response: Response): void => {
-
+				(this as any).$store.commit('login', 'usernameHere')
 			};
 			Network.Post(Endpoints.LOGIN, { un: (this as any).username, pw: (this as any).password}, loginCallback);
 		}

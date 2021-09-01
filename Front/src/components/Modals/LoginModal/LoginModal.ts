@@ -17,9 +17,6 @@ name: "LoginModal",
         		// pass error to modal or close the modal
 			};
 			Network.Post(Endpoints.LOGIN, {un: 'bob', pw: 'bob'}, loginCallback);
-		},
-		closeModal() {
-			// this.$emit('closeModal');
 		}
 	}
 };

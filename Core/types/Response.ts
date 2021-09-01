@@ -20,7 +20,12 @@ export interface IAccountFailResponse extends IFailResponse {
 	message: 'account creation failed';
 };
 
-export type Response = ISuccessResponse | IAuthFailResponse | IAccountFailResponse;
+export interface ILoginResponse extends ISuccessResponse {
+	username: string;
+};
+
+
+export type Response = ISuccessResponse | IAuthFailResponse | IAccountFailResponse | ILoginResponse;
 
 export interface IDataResposne {
 	data: Response;

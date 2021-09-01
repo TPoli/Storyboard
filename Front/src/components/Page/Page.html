@@ -12,10 +12,6 @@
 	<button v-on:click="test">Test</button>
 
 	{{showLoginModal}}
-	<login-modal v-if="showLoginModal" @close="closeModal">
-		<!-- update loginmodal to load modal and inject approperiate content -->
-	<!-- <LoginModal @closeModal="closeModal"> -->
-	<!-- <LoginModal v-if="showLoginModal" @closeModal="closeModal"> -->
-
+	<login-modal v-if="shouldDisplayLogin()">
 	</login-modal>
 </div>
