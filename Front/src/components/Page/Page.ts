@@ -2,15 +2,21 @@ import { Entity } from '../../../../Core/types/Entity';
 import { Endpoints } from '../../../../Core/Api/Api';
 import { Network } from '../../utils/Network';
 import { IResponse } from '../../../../Core/types/Response';
+import Modal from '../Modals/Modal/Modal.vue';
 
 
 export default {
 name: "Page",
 	components: {
-		
+		'Modal': Modal
+	},
+	data: function () {
+		return {
+			showLoginModal: true
+		};
 	},
 	props: {
-		msg: String,
+		
 	},
 	methods: {
 		test() {
@@ -26,6 +32,9 @@ name: "Page",
 
 			};
 			Network.Post(Endpoints.LOGIN, {un: 'bob', pw: 'bob'}, loginCallback);
+		},
+		closeModal() {
+			(this as any).showLoginModal = false;
 		}
 	}
 };

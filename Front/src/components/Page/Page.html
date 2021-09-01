@@ -1,5 +1,6 @@
 <div>
-	<slot name="header"></slot>
+	<slot name="header">
+	</slot>
 	<br>
 	<slot name="sidebar"></slot>
 	<br>
@@ -9,4 +10,12 @@
 
 	<button v-on:click="login">Login</button>
 	<button v-on:click="test">Test</button>
+
+	{{showLoginModal}}
+	<Modal v-if="showLoginModal" @close="closeModal">
+		<!-- update loginmodal to load modal and inject approperiate content -->
+	<!-- <LoginModal @closeModal="closeModal"> -->
+	<!-- <LoginModal v-if="showLoginModal" @closeModal="closeModal"> -->
+
+	</Modal>
 </div>
