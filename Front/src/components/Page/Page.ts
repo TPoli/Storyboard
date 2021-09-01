@@ -2,13 +2,13 @@ import { Entity } from '../../../../Core/types/Entity';
 import { Endpoints } from '../../../../Core/Api/Api';
 import { Network } from '../../utils/Network';
 import { IResponse } from '../../../../Core/types/Response';
-import Modal from '../Modals/Modal/Modal.vue';
+import LoginModal from '../Modals/LoginModal/LoginModal.vue';
 
 
 export default {
 name: "Page",
 	components: {
-		'Modal': Modal
+		'login-modal': LoginModal
 	},
 	data: function () {
 		return {

@@ -12,10 +12,10 @@
 	<button v-on:click="test">Test</button>
 
 	{{showLoginModal}}
-	<Modal v-if="showLoginModal" @close="closeModal">
+	<login-modal v-if="showLoginModal" @close="closeModal">
 		<!-- update loginmodal to load modal and inject approperiate content -->
 	<!-- <LoginModal @closeModal="closeModal"> -->
 	<!-- <LoginModal v-if="showLoginModal" @closeModal="closeModal"> -->
 
-	</Modal>
+	</login-modal>
 </div>

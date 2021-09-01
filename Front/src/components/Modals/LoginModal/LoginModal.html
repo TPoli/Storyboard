@@ -1,7 +1,10 @@
 
 <div>
     <modal @close="closeModal">
-        CONTENT IN LOGIN MODAL
-        <!-- <h3 slot="header">custom header</h3> -->
+        <template v-slot:header>Login</template>
+        <template v-slot:body>
+            <login-content></login-content>
+        </template>
+        <template v-slot:footer>Login</template>
     </modal>
 </div>

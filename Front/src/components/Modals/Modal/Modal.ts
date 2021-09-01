@@ -2,8 +2,8 @@
 export default {
     name: 'Modal',
     methods: {
-      close() {
-        (this as any).$emit('close');
-      },
+        close() {
+            (this as any).$emit('close');
+        },
     },
-  };
+};
