@@ -25,8 +25,6 @@ type EndpointCollection = {
 
 namespace Api {
 
-	export const ServerPort = 3000;
-
 	const testRoute = {
 		route: Endpoints.TEST,
 		params: [],

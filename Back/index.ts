@@ -13,6 +13,7 @@ import Storyboard from './src/storyboard';
 import setupAuth from './src/security/authentication';
 import { MinutesToMilliseconds } from '../Core/Utils/Utils';
 import { IAuthFailResponse } from '../Core/types/Response';
+import { Config } from './src/Config';
 
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
@@ -32,7 +33,13 @@ const authenticationMiddleware = (req: any, res: any, next: any) => {
 };
 
 const setupExpress = () => {
-    const allowedOrigins = ['http://localhost:8080'];
+    let origin = `${Config.connectionProtocal}://${Config.siteUrl}`;
+    if (Config.sitePort) {
+        origin += `:${Config.sitePort}`;
+    }
+    const allowedOrigins = [
+        origin
+    ];
 
     const corsOptions: cors.CorsOptions = {
         origin: allowedOrigins,
@@ -107,8 +114,8 @@ Storyboard.Instance().passport.deserializeUser(function(id: number, done: any) {
 });
 
 const launchServer = () => {
-    app.listen(Api.ServerPort, () => {
-        console.log(`The application is listening on port ${Api.ServerPort}!`);
+    app.listen(Config.serverPort, () => {
+        console.log(`The application is listening on port ${Config.serverPort}!`);
     });
 };
 

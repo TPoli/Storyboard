@@ -1,6 +1,7 @@
-import { Api, Endpoints } from '../../../Core/Api/Api';
+import { Endpoints } from '../../../Core/Api/Api';
 import { Response, IAuthFailResponse } from '../../../Core/types/Response';
 import { IDataResposne } from '../../../Core/types/Response';
+import {Config} from '../../../Core/Config/config';
 
 import router from '../router';
 import { store } from '../store';
@@ -12,8 +13,24 @@ axios.defaults.withCredentials = true;
 export namespace Network {
 	type networkCallback = (response: Response) => void;
 
+	const createUrl = (endpoint: string, params: object = {}) => {
+		let url = `${Config.connectionProtocal}://${Config.serverUrl}:${Config.serverPort}/${endpoint}`;
+		if (params) {
+			let first = true;
+			Object.entries(params).forEach(([key, value]) => {
+				if (first) {
+					url += '?';
+				} else {
+					url += '&';
+				}
+				url += `${encodeURIComponent(key)}=${encodeURIComponent(value)}`;
+			});
+		}
+		return url;
+	};
+
 	export const Get = (endpoint: Endpoints, params: object, callback: networkCallback) => {
-		axios.get(`http://localhost:${Api.ServerPort}/${endpoint}`)
+		axios.get(createUrl(endpoint, params))
 			.then((response: IDataResposne) => {
 				console.log((response.data as any).url);
 				console.log((response.data as any).explanation);
@@ -42,7 +59,7 @@ export namespace Network {
 
 		axios({
 			method: 'post',
-			url: `http://localhost:${Api.ServerPort}/${endpoint}`,
+			url: createUrl(endpoint),
 			data: params
 		})
 			.then(networkCallback)
