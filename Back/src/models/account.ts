@@ -14,7 +14,7 @@ export default class Account extends Model {
 			nullable: false
 		}, {
 			name: 'username',
-			primary: false,
+			primary: true,
 			taintable: true,
 			type: 'string'
 		}, {

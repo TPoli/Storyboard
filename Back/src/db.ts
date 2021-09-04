@@ -44,11 +44,11 @@ export namespace Db {
 	const createTable = (connection: any, schema: Schema, callback: () => void) => {
 		const model = new schema();
 		let createQuery = `CREATE TABLE \`${databaseName}\`.\`${model.table}\` (`;
-		let primaryKey = '';
+		let primaryKeys: string[] = [];
 		model.collumns.forEach((collumn: Collumn) => {
 			createQuery += collumn.name + ' ' + collumnToDbType(collumn);
 			if (collumn.primary == true) {
-				primaryKey = collumn.name;
+				primaryKeys.push(collumn.name);
 			}
 			if (!collumn.nullable) {
 				createQuery += ` NOT`;
@@ -59,11 +59,14 @@ export namespace Db {
 				createQuery += ' AUTO_INCREMENT';
 			}
 
-			createQuery += ', ';
+			createQuery += ',\n';
 		});
-
-		createQuery = createQuery + `PRIMARY KEY (${primaryKey}), `;
-		createQuery = createQuery + `UNIQUE INDEX ${primaryKey + '_UNIQUE'} (${primaryKey} ASC) VISIBLE);`;
+		
+		createQuery += `PRIMARY KEY (${primaryKeys.join(',')})`;
+		primaryKeys.forEach((key: string) => {
+			createQuery += `,\nUNIQUE INDEX ${key + '_UNIQUE'} (${key} ASC) VISIBLE`;
+		});
+		createQuery += ')';
 
 		const createCallback = (error: any, results: any[], fields: any) => {
 			if (error) {

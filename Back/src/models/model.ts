@@ -51,7 +51,7 @@ abstract class Model implements IIndexable {
 		}
 
 		Db.execute(sql, usedParameters, (error: any, results: any[], fields: any) => {
-			if (error || !results) {
+			if (error || !results || !results[0]) {
 				callback(error, null);
 				return;
 			}
