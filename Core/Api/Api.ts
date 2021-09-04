@@ -2,6 +2,7 @@ export type RequestMethods = 'POST' | 'GET';
 export enum Endpoints {
 	TEST = 'test',
 	LOGIN = 'login',
+	LOGOUT = 'logout',
 	CREATE_ACCOUNT = 'createAccount'
 };
 

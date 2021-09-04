@@ -15,7 +15,7 @@ export default (req: any, res: any, next: any) => {
 		if (err) {
 			return next(err); // will generate a 500 error
 		}
-		if (! user) {
+		if (!user) {
 			return res.send({ success : false, message : 'account creation failed' } as IAccountFailResponse);
 		}
 		req.login(user, loginCallback); // not called automatically due to custom callback

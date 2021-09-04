@@ -80,6 +80,11 @@ const setupRoutes = () => {
     app.post('/' + Endpoints.LOGIN, login);
 
     app.post('/' + Endpoints.CREATE_ACCOUNT, createAccount);
+
+    app.post('/' + Endpoints.LOGOUT, function(req: any, res: any){
+        req.logout();
+        res.send({ success : true, message : 'logged out' });
+    });
 };
 
 setupAuth();
@@ -100,11 +105,6 @@ Storyboard.Instance().passport.deserializeUser(function(id: number, done: any) {
         return done(null, account);
     });
 });
-
-// app.get('/logout', function(req: any, res){
-//     req.logout();
-//     res.redirect('/');
-// });
 
 const launchServer = () => {
     app.listen(Api.ServerPort, () => {

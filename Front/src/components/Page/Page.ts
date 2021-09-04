@@ -33,6 +33,12 @@ name: "Page",
 			};
 			Network.Post(Endpoints.LOGIN, {un: 'bob', pw: 'bob'}, loginCallback);
 		},
+		logout() {
+			const logoutCallback = (response: IResponse) => {
+				(this as any).$router.push({path: '/login'});
+			};
+			Network.Post(Endpoints.LOGOUT, {}, logoutCallback);
+		},
 		shouldDisplayLogin() {
 			if ((this as any).$store.state.loggedIn) {
 				return false;
