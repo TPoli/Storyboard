@@ -13,10 +13,19 @@
 		<template v-slot:content>
 			
 			<input v-model="username" placeholder="username">
+			<br>
 			<input v-model="password" placeholder="password">
-
+			<br>
 			<button v-on:click="createAccount">Create Account</button>
-			<button v-on:click="login">Login</button>
+			<br>
+
+			Optionally please fill in the below for additional account security features.
+			<br>
+			<input v-model="email" placeholder="email">
+			<br>
+			<input v-model="mobile" placeholder="mobile">
+			<br>
+			2 Factor Authentication (Comeing Soon)
 		</template>
 		<template v-slot:footer>
 			<div>feet</div>

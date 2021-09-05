@@ -1,12 +1,22 @@
 import { Db } from '../db';
 
+export enum CollumnType {
+	'int' = 'INT',
+	'string' = 'VARCHAR(45)',
+	'tinytext' = 'TINYTEXT',
+	'json' = 'JSON',
+	'bool' = 'BOOLEAN',
+	'datetime' = 'DATETIME'
+};
+
 type Collumn = {
 	name: string;
-	type: 'bool' | 'string' | 'int' | 'json' | 'datetime' | 'tinytext';
+	type: CollumnType;
 	taintable: boolean;
 	primary: boolean;
 	nullable: boolean;
 	autoIncrement: boolean;
+	default?: 'NULL';
 };
 
 export interface IIndexable {
@@ -72,7 +82,6 @@ abstract class Model implements IIndexable {
 				const values: any[] = [];
 				const paramKeys: string[] = [];
 				collumns.forEach((collumn: string) => {
-					paramKeys.push('?');
 					const colData = this.collumns.find((col) => {
 						return col.name === collumn;
 					});
@@ -81,17 +90,23 @@ abstract class Model implements IIndexable {
 						return;
 					}
 
+					const value = (this as IIndexable)[collumn];
+					if (colData.nullable && value === null) {
+						return;
+					}
+
+					paramKeys.push('?');
+
 					switch (colData.type) {
-						case 'json':
-						case 'datetime':
-							values.push(JSON.stringify((this as IIndexable)[collumn]));
+						case CollumnType.json:
+						case CollumnType.datetime:
+							values.push(JSON.stringify(value));
 							break;
-						case 'bool':
-						case 'int':
-						case 'string':
-						case 'tinytext':
-							values.push((this as IIndexable)[collumn]);
-							console.log((this as IIndexable)[collumn])
+						case CollumnType.bool:
+						case CollumnType.int:
+						case CollumnType.string:
+						case CollumnType.tinytext:
+							values.push(value);
 							break;
 						default:
 							callback(false);

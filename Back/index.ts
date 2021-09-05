@@ -7,30 +7,17 @@ import { Db } from './src/db';
 import Account from './src/models/account';
 import { Session } from 'inspector';
 
-import login from './src/routes/login';
-import createAccount from './src/routes/createAccount';
 import Storyboard from './src/storyboard';
 import setupAuth from './src/security/authentication';
 import { MinutesToMilliseconds } from '../Core/Utils/Utils';
-import { IAuthFailResponse } from '../Core/types/Response';
 import { Config } from './src/Config';
+import { Routes } from './src/routes/router';
 
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const session = require("express-session");
 
 const app = express();
-
-const authenticationMiddleware = (req: any, res: any, next: any) => {
-    if (req.user) {
-        return next()
-    }
-    const payload: IAuthFailResponse = {
-        success: false,
-        message: 'authentication failed'
-    };
-    res.send(payload);
-};
 
 const setupExpress = () => {
     let origin = `${Config.connectionProtocal}://${Config.siteUrl}`;
@@ -73,24 +60,19 @@ const setupRoutes = () => {
     Object.entries(Api.AllEndpoints).forEach(([, endpoint]) => {
         endpoint.methods.forEach((method) => {
             if (method === 'GET') {
-                app.get('/' + endpoint.route, authenticationMiddleware, (req: any, res: any) => {
-                    res.send('Well done!');
-                });
+                if (endpoint.middleware) {
+                    app.get('/' + endpoint.route, endpoint.middleware, Routes[endpoint.route]);
+                } else {
+                    app.get('/' + endpoint.route, Routes[endpoint.route]);
+                }
             } else if (method === 'POST') {
-                app.post('/' + endpoint.route, authenticationMiddleware, (req: any, res: any) => {
-                    res.send('Well done!');
-                });
+                if (endpoint.middleware) {
+                    app.post('/' + endpoint.route, endpoint.middleware, Routes[endpoint.route]);
+                } else {
+                    app.post('/' + endpoint.route,Routes[endpoint.route]);
+                }
             }
         });
-    });
-
-    app.post('/' + Endpoints.LOGIN, login);
-
-    app.post('/' + Endpoints.CREATE_ACCOUNT, createAccount);
-
-    app.post('/' + Endpoints.LOGOUT, function(req: any, res: any){
-        req.logout();
-        res.send({ success : true, message : 'logged out' });
     });
 };
 

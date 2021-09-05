@@ -1,9 +1,8 @@
-import { Endpoints } from '../../../Core/Api/Api';
+import { EndpointRoutes } from '../../../Core/Api/Api';
 import { Response, IAuthFailResponse } from '../../../Core/types/Response';
 import { IDataResposne } from '../../../Core/types/Response';
 import {Config} from '../../../Core/Config/config';
 
-import router from '../router';
 import { store } from '../store';
 
 const axios = require('axios');
@@ -29,7 +28,7 @@ export namespace Network {
 		return url;
 	};
 
-	export const Get = (endpoint: Endpoints, params: object, callback: networkCallback) => {
+	export const Get = (endpoint: EndpointRoutes, params: object, callback: networkCallback) => {
 		axios.get(createUrl(endpoint, params))
 			.then((response: IDataResposne) => {
 				console.log((response.data as any).url);
@@ -45,7 +44,7 @@ export namespace Network {
 			}); // add check to see if endpoint allows get
 	};
 
-	export const Post = (endpoint: Endpoints, params: object, callback: networkCallback) => {
+	export const Post = (endpoint: EndpointRoutes, params: object, callback: networkCallback) => {
 
 		const networkCallback = (response: IDataResposne) => {
 			if (!response.data.success) {

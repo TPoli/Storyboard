@@ -1,4 +1,4 @@
-import { Model, Collumn } from './model';
+import { Model, Collumn, CollumnType } from './model';
 
 export default class Mutations extends Model {
 	
@@ -9,24 +9,24 @@ export default class Mutations extends Model {
 			name: 'id',
 			primary: true,
 			taintable: false,
-			type: 'int',
+			type: CollumnType.int,
 			autoIncrement: true,
 			nullable: false
 		}, {
 			name: 'table_name',
 			primary: false,
 			taintable: false,
-			type: 'string'
+			type: CollumnType.string
 		}, {
 			name: 'original_value',
 			primary: false,
 			taintable: true,
-			type: 'json'
+			type: CollumnType.json
 		}, {
 			name: 'modified_value',
 			primary: false,
 			taintable: true,
-			type: 'json'
+			type: CollumnType.json
 		}, 
 	] as Collumn[];
 

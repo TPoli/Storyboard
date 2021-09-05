@@ -12,18 +12,23 @@ export default {
 	data: function () {
 		return {
 			username: '',
-			password: ''
+			password: '',
+			email: null,
+			mobile: null
 		};
 	},
 	methods: {
-		login() {
-			(this as any).$router.push({path: '/login'});
-		},
 		createAccount() {
 			const accountCreatedCallback = (response: Response): void => {
-
+				(this as any).$router.push({path: '/dashboard'});
 			};
-			Network.Post(Endpoints.CREATE_ACCOUNT, { un: (this as any).username, pw: (this as any).password}, accountCreatedCallback);
+			const params = {
+				un: (this as any).username,
+				pw: (this as any).password,
+				email: (this as any).email,
+				mobile: (this as any).mobile,
+			};
+			Network.Post(Endpoints.CREATE_ACCOUNT, params, accountCreatedCallback);
 		}
 	}
 };

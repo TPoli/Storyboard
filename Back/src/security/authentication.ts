@@ -5,10 +5,12 @@ import random from 'random';
 import Storyboard from '../storyboard';
 import Account from '../models/account';
 
-const createAccount = (username:any, password:any, done:any) => {
+const createAccount = (req:any, username:any, password:any, done:any) => {
     const account = new Account();
     account.permissions = {};
     account.username = username;
+    account.email = req?.body?.email ?? null;
+    account.mobile = req?.body?.mobile ?? null;
 
     const refreshed = () => {
         return done(null, account);
@@ -26,13 +28,20 @@ const createAccount = (username:any, password:any, done:any) => {
             return done(null, false, { message: 'login failed.' });
         }
         account.password = hash;
-        account.save(saved, [
+        const collumnsToSave = [
             'username',
             'password',
             'permissions',
             'salt',
             'pepper'
-        ]);
+        ];
+        if (account.email) {
+            collumnsToSave.push('email');
+        }
+        if (account.mobile) {
+            collumnsToSave.push('mobile');
+        }
+        account.save(saved, collumnsToSave);
     };
 
     const saltRounds = 10;
@@ -94,6 +103,7 @@ export default () => {
 	Storyboard.Instance().passport.use('createAccount', new Strategy({
 		usernameField: 'un',
 		passwordField: 'pw',
+        passReqToCallback: true,
 		session: true
 	}, createAccount));
 };

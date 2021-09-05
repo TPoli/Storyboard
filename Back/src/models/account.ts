@@ -1,50 +1,78 @@
-import { Model, Collumn } from './model';
+import { Model, Collumn, CollumnType } from './model';
 
 export default class Account extends Model {
 	
 	public version = 1;
 	public table = 'account';
-	public collumns = [
+	public collumns: Collumn[] = [
 		{
 			name: 'id',
 			primary: true,
 			taintable: false,
-			type: 'int',
+			type: CollumnType.int,
 			autoIncrement: true,
 			nullable: false
 		}, {
 			name: 'username',
 			primary: true,
 			taintable: true,
-			type: 'string'
+			type: CollumnType.string,
+			autoIncrement: false,
+			nullable: false
 		}, {
 			name: 'password',
 			primary: false,
 			taintable: true,
-			type: 'tinytext'
+			type: CollumnType.tinytext,
+			autoIncrement: false,
+			nullable: false
 		}, {
 			name: 'salt',
 			primary: false,
 			taintable: false,
-			type: 'string'
+			type: CollumnType.string,
+			autoIncrement: false,
+			nullable: false
 		}, {
 			name: 'pepper',
 			primary: false,
 			taintable: false,
-			type: 'string'
-		},{
+			type: CollumnType.string,
+			autoIncrement: false,
+			nullable: false
+		}, {
 			name: 'permissions',
 			primary: false,
 			taintable: false,
-			type: 'json'
+			type: CollumnType.json,
+			autoIncrement: false,
+			nullable: false
+		}, {
+			name: 'email',
+			primary: false,
+			taintable: true,
+			type: CollumnType.string,
+			autoIncrement: false,
+			nullable: true,
+			default: 'NULL'
+		}, {
+			name: 'mobile',
+			primary: false,
+			taintable: true,
+			type: CollumnType.string,
+			autoIncrement: false,
+			nullable: true,
+			default: 'NULL'
 		}
-	] as Collumn[];
+	];
 
 	public id: number = -1;
 	public username: string = '';
 	public password: string = '';
 	public salt: string = '';
 	public pepper: string = '';
+	public mobile: string|null = null;
+	public email: string|null = null;
 	public permissions: Object = {};
 
 	private static peppers: {[key: string]: string} = {

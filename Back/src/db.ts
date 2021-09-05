@@ -20,31 +20,12 @@ export namespace Db {
 
 	let defaultConnection: any = null;
 
-	const collumnToDbType = (collumn: Collumn): string => {
-		switch (collumn.type) {
-			case 'int':
-				return 'INT';
-			case 'string':
-				return 'VARCHAR(45)';
-			case 'tinytext':
-				return 'TINYTEXT';
-			case 'json':
-				return 'JSON';
-			case 'bool':
-				return 'BOOLEAN';
-			case 'datetime':
-				return 'DATETIME';
-			default:
-				throw new Error(`unhandled column type: ${collumn.type}`);
-		};
-	};
-
 	const createTable = (connection: any, schema: Schema, callback: () => void) => {
 		const model = new schema();
 		let createQuery = `CREATE TABLE \`${databaseName}\`.\`${model.table}\` (`;
 		let primaryKeys: string[] = [];
 		model.collumns.forEach((collumn: Collumn) => {
-			createQuery += collumn.name + ' ' + collumnToDbType(collumn);
+			createQuery += collumn.name + ' ' + collumn.type;
 			if (collumn.primary == true) {
 				primaryKeys.push(collumn.name);
 			}

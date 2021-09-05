@@ -1,4 +1,4 @@
-import { Model, Collumn } from './model';
+import { Model, Collumn, CollumnType } from './model';
 
 export default class Versions extends Model {
 	
@@ -9,19 +9,19 @@ export default class Versions extends Model {
 			name: 'id',
 			primary: true,
 			taintable: false,
-			type: 'int',
+			type: CollumnType.int,
 			autoIncrement: true,
 			nullable: false
 		}, {
 			name: 'table_name',
 			primary: false,
 			taintable: false,
-			type: 'string'
+			type: CollumnType.string
 		}, {
 			name: 'version',
 			primary: false,
 			taintable: false,
-			type: 'int'
+			type: CollumnType.int
 		}
 	] as Collumn[];
 
