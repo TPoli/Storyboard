@@ -1,10 +1,21 @@
 <div>
-	<button v-on:click="logout">Logout</button>
-	<slot name="header">
+	<div id='header'>
+		<div v-if='loggedIn()'>
+			<button v-on:click="logout">Logout</button>
+		</div>
+		<div v-else>
+			<button v-on:click="navigateToLogin">Login</button>
+		</div>
+		<slot name="header">
 		
-	</slot>
+		</slot>
+	</div>
+	
 	<br>
-	<slot name="sidebar"></slot>
+	<div id=sidebar>
+		<button v-on:click="navigateToDashboard">Dashboard</button>
+		<slot name="sidebar"></slot>
+	</div>
 	<br>
 	<slot name="content"></slot>
 	<br>

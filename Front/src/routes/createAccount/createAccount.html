@@ -1,17 +1,16 @@
 <div>
 	<div>Create Account</div>
-  	<button v-on:click="login">Login</button>
-  	<button v-on:click="dashboard">Dashboard</button>
+  	
+  	
 
 	<Page msg="this container is in the create account screen">
 		<template v-slot:header>
-			<div>Login Page</div>
+			<div>Create Account</div>
 		</template>
 		<template v-slot:sidebar>
 			<div>sidy</div>
 		</template>
 		<template v-slot:content>
-			
 			<input v-model="username" placeholder="username">
 			<br>
 			<input v-model="password" placeholder="password">

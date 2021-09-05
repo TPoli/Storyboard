@@ -19,6 +19,12 @@ name: "Page",
 		
 	},
 	methods: {
+		navigateToDashboard() {
+			(this as any).$router.push({path: '/dashboard'});
+		},
+		navigateToLogin() {
+			(this as any).$router.push({path: '/login'});
+		},
 		test() {
 			const entity = new Entity('Location');
 			entity.move(7);
@@ -35,12 +41,16 @@ name: "Page",
 		},
 		logout() {
 			const logoutCallback = (response: IResponse) => {
+				(this as any).$store.commit('logOut');
 				(this as any).$router.push({path: '/login'});
 			};
 			Network.Post(Endpoints.LOGOUT, {}, logoutCallback);
 		},
+		loggedIn() {
+			return (this as any).$store.state.loggedIn;
+		},
 		shouldDisplayLogin() {
-			if ((this as any).$store.state.loggedIn) {
+			if ((this as any).loggedIn()) {
 				return false;
 			}
 			const route = (this as any).$route.fullPath;
