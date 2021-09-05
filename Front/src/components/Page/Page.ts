@@ -45,7 +45,7 @@ name: "Page",
 			}
 			const route = (this as any).$route.fullPath;
 
-			return route !== '/login' && route !== '/createaccount';
+			return route !== '/login' && route !== '/createaccount' && route !== '/';
 		}
 	}
 };
