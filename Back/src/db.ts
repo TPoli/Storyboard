@@ -4,9 +4,8 @@ import { Model, Collumn } from './models/model';
 import Versions from './models/versions';
 import Mutations from './models/mutations';
 import Account from './models/account';
-import Session from './models/session';
 
-type Schema = typeof Versions | typeof Mutations | typeof Account | typeof Session;
+type Schema = typeof Versions | typeof Mutations | typeof Account;
 
 export namespace Db {
 
@@ -17,7 +16,6 @@ export namespace Db {
 		// Versions,
 		// Mutations,
 		Account,
-		Session
 	] as Schema[];
 
 	let defaultConnection: any = null;
