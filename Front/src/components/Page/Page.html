@@ -1,5 +1,5 @@
 <div>
-	<div id='header'>
+	<div id='header' class="header">
 		<div v-if='loggedIn()'>
 			<button v-on:click="logout">Logout</button>
 		</div>
@@ -10,21 +10,20 @@
 		
 		</slot>
 	</div>
-	
-	<br>
-	<div id=sidebar>
-		<button v-on:click="navigateToDashboard">Dashboard</button>
+	<div id=sidebar class="sidebar">
 		<slot name="sidebar"></slot>
+
+		<a v-bind:class="{active : isActiveRoute('/dashboard')}" href="/dashboard">Dashboard</a>
+		<a href="/unused">Unused</a>
 	</div>
-	<br>
-	<slot name="content"></slot>
-	<br>
-	<slot name="footer"></slot>
-
-	<button v-on:click="login">Login</button>
-	<button v-on:click="test">Test</button>
-
-	{{showLoginModal}}
+	<div id='content'>
+		<slot name="content"></slot>
+	</div>
+	<div id="footer" class="footer">
+		<slot name="footer">
+			footer content
+		</slot>
+	</div>
 	<login-modal v-if="shouldDisplayLogin()">
 	</login-modal>
 </div>

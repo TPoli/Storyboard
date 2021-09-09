@@ -1,6 +1,6 @@
 <template src='./Page.html' />
 
-<style scoped src='./Page.css' > </style>
+<style lang="scss" scoped src='./Page.scss'> </style>
 
 <script lang='TS'>
 

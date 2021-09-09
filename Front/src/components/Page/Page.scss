@@ -1,0 +1,50 @@
+@import "../../branding/colours.scss";
+
+.sidebar {
+  margin: 0;
+  padding: 0;
+  width: 200px;
+  background-color: $menuBackground;
+  position: fixed;
+  height: 100%;
+  overflow: auto;
+}
+
+/* Sidebar links */
+.sidebar a {
+  display: block;
+  color: black;
+  padding: 16px;
+  text-decoration: none;
+}
+
+/* Active/current link */
+.sidebar a.active {
+  background-color: $menuSelectedBackground;
+  color: $menuSelectedText;
+}
+
+/* Links on mouse-over */
+.sidebar a:hover:not(.active) {
+  background-color: $menuHoverBackground;
+  color: $menuHoverText;
+}
+
+.footer {
+  display: flex;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: red;
+  color: white;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+}
+
+.header {
+  overflow: hidden;
+  background-color: #f1f1f1;
+  padding: 20px 10px;
+}

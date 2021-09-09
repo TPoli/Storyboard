@@ -19,9 +19,6 @@ name: "Page",
 		
 	},
 	methods: {
-		navigateToDashboard() {
-			(this as any).$router.push({path: '/dashboard'});
-		},
 		navigateToLogin() {
 			(this as any).$router.push({path: '/login'});
 		},
@@ -56,6 +53,9 @@ name: "Page",
 			const route = (this as any).$route.fullPath;
 
 			return route !== '/login' && route !== '/createaccount' && route !== '/';
+		},
+		isActiveRoute(route: string): boolean {
+			return route === (this as any).$route.fullPath;
 		}
 	}
 };

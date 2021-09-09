@@ -9,11 +9,6 @@ export default {
 		'page': Page
 	},
 	methods: {
-		createAccount() {
-			(this as any).$router.push({path: '/createaccount'});
-		},
-		login() {
-			(this as any).$router.push({path: '/login'});
-		}
+		
 	}
 };
