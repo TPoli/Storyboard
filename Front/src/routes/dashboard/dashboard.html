@@ -4,6 +4,19 @@
 			<div>Dashboard</div>
 		</template>
 		<template v-slot:content>
+			<h1>Welcome {{getUsersName()}}</h1>
+			<div>
+				<h2>Most recently modified</h2>
+				box with full hirachy name + date of last modification by this user
+				<h2>Your favourite collections</h2>
+				box that has horrizontal scroll if needed with same details as above shown
+				<h2>Your collections</h2>
+				box that has horrizontal scroll if needed with same details as above shown (contains all top level collections owned by user)
+				have a create collection button in the boxes header
+				<h2>Available collections</h2>
+				box that has horrizontal scroll if needed with same details as above shown (contains all highest level collections linked to user)
+				hide if none available
+			</div>
             <Container msg="this container is in the dashboard" />
         </template>
 		<template v-slot:footer>

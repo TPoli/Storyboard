@@ -9,6 +9,8 @@ export default {
 		'page': Page
 	},
 	methods: {
-		
+		getUsersName() {
+			return (this as any).$store.state.username;
+		}
 	}
 };
