@@ -24,7 +24,6 @@ export interface ILoginResponse extends ISuccessResponse {
 	username: string;
 };
 
-
 export type Response = ISuccessResponse | IAuthFailResponse | IAccountFailResponse | ILoginResponse;
 
 export interface IDataResposne {

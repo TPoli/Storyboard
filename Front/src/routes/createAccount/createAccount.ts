@@ -1,6 +1,6 @@
 import { Network } from '../../utils/Network';
 import { Endpoints } from '../../../../Core/Api/Api';
-import { Response } from '../../../../Core/types/Response';
+import { Response, ILoginResponse } from '../../../../Core/types/Response';
 
 import Page from '../../components/Page/Page.vue';
 
@@ -20,6 +20,7 @@ export default {
 	methods: {
 		createAccount() {
 			const accountCreatedCallback = (response: Response): void => {
+				(this as any).$store.commit('login', (response as ILoginResponse).username);
 				(this as any).$router.push({path: '/dashboard'});
 			};
 			const params = {
