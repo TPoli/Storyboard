@@ -17,6 +17,12 @@ export default {
 		login() {
 			const loginCallback = (response: Response): void => {
 				(this as any).$store.commit('login', (response as ILoginResponse).username);
+
+				if((this as any).$route.fullPath === '/login')
+				{
+					(this as any).$router.push({path: '/dashboard'});
+				}
+			
 			};
 			Network.Post(Endpoints.LOGIN, { un: (this as any).username, pw: (this as any).password}, loginCallback);
 		}
