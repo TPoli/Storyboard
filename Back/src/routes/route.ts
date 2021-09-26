@@ -1,6 +1,5 @@
 import { Parameter } from "../../../Core/Api/Api";
-
-type ExpressCallback = (req: any, res: any, next?: any) => void;
+import { ExpressCallback } from "../types/types";
 
 export type Route = {
 	callback: ExpressCallback;

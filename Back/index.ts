@@ -13,6 +13,7 @@ import { MinutesToMilliseconds } from '../Core/Utils/Utils';
 import { Config } from './src/Config';
 import { Routes } from './src/routes/router';
 import { IFailResponse } from '../Core/types/Response';
+import { ExpressCallback } from './src/types/types';
 
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
@@ -57,13 +58,11 @@ const setupExpress = () => {
     app.use(Storyboard.Instance().passport.session());
 };
 
-type MiddlewareCallback = (req: any, res: any, next?: any) => void;
-
 const setupRoutes = () => {
     Object.entries(Api.AllEndpoints).forEach(([, endpoint]) => {
 
         // build middleware that validates parameters and calls any aditional middleware
-        const middleware: MiddlewareCallback = (req: any, res: any, next: any) => {
+        const middleware: ExpressCallback = (req, res, next) => {
             endpoint.params.forEach((param: Parameter) => {
                 const value = req?.body[param.name] ?? null;
                 if (!param.required && value === null) {

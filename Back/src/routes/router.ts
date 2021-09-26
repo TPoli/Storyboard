@@ -17,14 +17,14 @@ export const Routes: RouteMap = {
 		params: Api.AllEndpoints['login'].params
 	},
 	logout: {
-		callback: (req: any, res: any) => {
+		callback: (req, res) => {
 			req.logout();
 			res.send({ success : true, message : 'logged out' });
 		},
 		params: Api.AllEndpoints['logout'].params
 	},
 	test: {
-		callback: (req: any, res: any) => {
+		callback: (req, res) => {
 			res.send('Well done!');
 		},
 		params: Api.AllEndpoints['test'].params

@@ -1,3 +1,4 @@
+import { ExpressCallback } from '../../Back/src/types/types';
 import { IAuthFailResponse } from '../types/Response';
 import { passwordValidation, usernameValidation, ValidationCallback } from './Validation';
 
@@ -30,7 +31,7 @@ type EndpointCollection = {
 	[key in EndpointRoutes]: Endpoint;
 };
 
-const authenticationMiddleware = (req: any, res: any, next: any) => {
+const authenticationMiddleware: ExpressCallback = (req, res, next) => {
     if (req.user) {
         return next()
     }
