@@ -1,7 +1,7 @@
 var express = require('express');
 import cors from 'cors';
 
-import { Api, Endpoints } from '../Core/Api/Api'
+import { Api, Parameter } from '../Core/Api/Api'
 import { Db } from './src/db';
 
 import Account from './src/models/account';
@@ -12,6 +12,7 @@ import setupAuth from './src/security/authentication';
 import { MinutesToMilliseconds } from '../Core/Utils/Utils';
 import { Config } from './src/Config';
 import { Routes } from './src/routes/router';
+import { IFailResponse } from '../Core/types/Response';
 
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
@@ -56,21 +57,43 @@ const setupExpress = () => {
     app.use(Storyboard.Instance().passport.session());
 };
 
+type MiddlewareCallback = (req: any, res: any, next?: any) => void;
+
 const setupRoutes = () => {
     Object.entries(Api.AllEndpoints).forEach(([, endpoint]) => {
+
+        // build middleware that validates parameters and calls any aditional middleware
+        const middleware: MiddlewareCallback = (req: any, res: any, next: any) => {
+            endpoint.params.forEach((param: Parameter) => {
+                const value = req?.body[param.name] ?? null;
+                if (!param.required && value === null) {
+                    return;
+                }
+                
+                const errorMessage = param.validator(value, param.name);
+                if (errorMessage) {
+                    console.log(errorMessage);
+                    const responseData: IFailResponse = {
+                        message: errorMessage,
+                        success: false
+                    };
+                    res.send(responseData);
+                    return;
+                }
+            });
+
+            if (endpoint.middleware) {
+                endpoint.middleware(req, res, next);
+            } else {
+                next();
+            }
+        };
+        
         endpoint.methods.forEach((method) => {
             if (method === 'GET') {
-                if (endpoint.middleware) {
-                    app.get('/' + endpoint.route, endpoint.middleware, Routes[endpoint.route]);
-                } else {
-                    app.get('/' + endpoint.route, Routes[endpoint.route]);
-                }
+                app.get('/' + endpoint.route, middleware, Routes[endpoint.route].callback);
             } else if (method === 'POST') {
-                if (endpoint.middleware) {
-                    app.post('/' + endpoint.route, endpoint.middleware, Routes[endpoint.route]);
-                } else {
-                    app.post('/' + endpoint.route,Routes[endpoint.route]);
-                }
+                app.post('/' + endpoint.route, middleware, Routes[endpoint.route].callback);
             }
         });
     });

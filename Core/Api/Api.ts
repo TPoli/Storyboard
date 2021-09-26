@@ -1,5 +1,5 @@
-import login from '../../Back/src/routes/login';
 import { IAuthFailResponse } from '../types/Response';
+import { passwordValidation, usernameValidation, ValidationCallback } from './Validation';
 
 export type RequestMethods = 'POST' | 'GET';
 
@@ -12,10 +12,10 @@ export const Endpoints: EndpointMap = {
 	CREATE_ACCOUNT: 'createAccount'
 };
 
-type Parameter = {
-	name: String;
-	value: any;
-	validator: (params: any) => Boolean;
+export type Parameter = {
+	name: string;
+	required?: true;
+	validator: ValidationCallback;
 };
 
 type Endpoint = {
@@ -60,14 +60,32 @@ namespace Api {
 
 	export const createAccount: Endpoint = {
 		route: Endpoints.CREATE_ACCOUNT,
-		params: [],
+		params: [
+			{
+				name: 'un',
+				validator: usernameValidation
+			},
+			{
+				name: 'pw',
+				validator: passwordValidation
+			},
+		],
 		response: [],
 		methods: [ 'POST' ],
 	};
 
 	export const login: Endpoint = {
 		route: Endpoints.LOGIN,
-		params: [],
+		params: [
+			{
+				name: 'un',
+				validator: usernameValidation
+			},
+			{
+				name: 'pw',
+				validator: passwordValidation
+			},
+		],
 		response: [],
 		methods: [ 'POST' ],
 	};

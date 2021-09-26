@@ -6,6 +6,8 @@ export interface IResponse {
 export interface IFailResponse extends IResponse {
 	success: false;
 	message: string;
+	footerError?: string;
+	headerError?: string;
 };
 
 export interface ISuccessResponse extends IResponse {
