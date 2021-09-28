@@ -1,7 +1,7 @@
 import { Parameter } from "../../../Core/Api/Api";
-import { ExpressCallback } from "../types/types";
+import { ExpressFinalCallback } from "../types/types";
 
 export type Route = {
-	callback: ExpressCallback;
+	callback: ExpressFinalCallback;
 	params: Parameter[];
 };

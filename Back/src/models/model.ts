@@ -87,7 +87,7 @@ abstract class Model implements IIndexable {
 	}
 
 	save(callback: SaveCallback, collumns: string[] = []) {
-		if (this.isNew) {
+		if (this.isNew) { // insert
 			if (collumns.length > 0) {
 				const values: any[] = [];
 				const paramKeys: string[] = [];
@@ -140,9 +140,56 @@ abstract class Model implements IIndexable {
 				console.log('INCOMPLETE');
 				callback(false);
 			}
-		} else {
-			console.log('INCOMPLETE');
-			callback(false);
+		} else { // update
+			if (collumns.length > 0) {
+				const values: any[] = [];
+				collumns.forEach((collumn: string) => {
+					const colData = this.collumns.find((col) => {
+						return col.name === collumn;
+					});
+					if(!colData) {
+						callback(false);
+						return;
+					}
+
+					const value = (this as IIndexable)[collumn];
+					if (colData.nullable && value === null) {
+						return;
+					}
+
+					switch (colData.type) {
+						case CollumnType.json:
+						case CollumnType.datetime:
+							values.push(JSON.stringify(value));
+							break;
+						case CollumnType.bool:
+						case CollumnType.int:
+						case CollumnType.string:
+						case CollumnType.tinytext:
+							values.push(value);
+							break;
+						default:
+							callback(false);
+							return;
+					};
+				});
+
+				const sql = `UPDATE ${this.table} SET ${collumns.join('= ?,')} = ? WHERE id = ${this.id}`;
+
+				Db.execute(sql, values, (error, results, fields) => {
+					if (error || !results) {
+						console.log(error);
+						callback(false);
+						return;
+					}
+					this.isNew = false;
+					this.id = (results as any).insertId;
+					callback(true);
+				});
+			} else {
+				console.log('INCOMPLETE');
+				callback(false);
+			}
 		}
 	};
 

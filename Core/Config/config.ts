@@ -1,6 +1,6 @@
 
 type StoryboardConfig = {
-	serverUrl: 'localhost',
+	serverUrl: string,
 	serverPort: 3000,
 	connectionProtocal: 'http' | 'https',
 	siteUrl: 'localhost',

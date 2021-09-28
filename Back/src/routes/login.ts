@@ -1,6 +1,6 @@
 import Account from "../models/account";
 import Storyboard from "../storyboard";
-import { ILoginResponse } from '../../../Core/types/Response'
+import { IAuthFailResponse, ILoginResponse } from '../../../Core/types/Response'
 import { IIndexable } from "../models/model";
 
 export default (req: any, res: any, next: any) => {
@@ -14,7 +14,7 @@ export default (req: any, res: any, next: any) => {
 			success: true,
 			username: user.username
 		};
-		return res.send(payload);
+		return req.transaction.sendResponse(res, payload);
 	};
 
 	Storyboard.Instance().passport.authenticate('login', {session: true}, (err: Error, user: Account, info: any) => {
@@ -22,7 +22,11 @@ export default (req: any, res: any, next: any) => {
 			return next(err); // will generate a 500 error
 		}
 		if (!user) {
-			return res.send({ success : false, message : 'authentication failed' }); // use IResponse, AuthFailResponse
+			const payload: IAuthFailResponse = {
+				success: false,
+				message: 'authentication failed'
+			};
+			req.transaction.sendResponse(res, payload);
 		}
 		req.login(user, login); // not called automatically due to custom callback
 	})(req, res, next);

@@ -1,5 +1,8 @@
+import * as express from 'express';
+
 import Account from './account';
-import { Model, Collumn, CollumnType } from './model';
+import { Model, Collumn, CollumnType, SaveCallback } from './model';
+import { IResponse } from '../../../Core/types/Response';
 
 export default class Transactions extends Model {
 	
@@ -30,6 +33,12 @@ export default class Transactions extends Model {
 			type: CollumnType.string,
 			nullable: false
 		}, {
+			name: 'ipAddress',
+			primary: false,
+			taintable: true,
+			type: CollumnType.string,
+			nullable: false
+		}, {
 			name: 'params',
 			primary: false,
 			taintable: true,
@@ -48,8 +57,17 @@ export default class Transactions extends Model {
 	public route: string = '';
 	public params: Object = {};
 	public response: Object|null = null;
+	public ipAddress: string = '';
 
 	constructor() {
 		super();
+	}
+
+	public sendResponse = (response: express.Response, payload: IResponse) => {
+		response.send(payload); // dont wait for db to resolve to respond to user
+
+		this.response = payload;
+		const callback: SaveCallback = (success) => {}; // unused but required
+		this.save(callback, ['response']);
 	}
 };

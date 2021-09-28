@@ -13,7 +13,7 @@ export default (req: any, res: any, next: any) => {
 			username: (req.user as Account).username
 		};
 		
-		return res.send(response);
+		return req.transaction.sendResponse(res, response);
 	};
 
 	Storyboard.Instance().passport.authenticate('createAccount', {session: true}, (err: Error, user: Account, info: any) => {
@@ -21,7 +21,11 @@ export default (req: any, res: any, next: any) => {
 			return next(err); // will generate a 500 error
 		}
 		if (!user) {
-			return res.send({ success : false, message : 'account creation failed' } as IAccountFailResponse);
+			const payload: IAccountFailResponse = {
+				success: false,
+				message: 'account creation failed'
+			};
+			req.transaction.sendResponse(res, payload);
 		}
 		req.login(user, loginCallback); // not called automatically due to custom callback
 	})(req, res, next);

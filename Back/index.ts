@@ -1,4 +1,4 @@
-var express = require('express');
+const express = require('express');
 import cors from 'cors';
 
 import { Api, EndpointRoutes, Parameter } from '../Core/Api/Api'
@@ -74,16 +74,19 @@ const createLogMiddlware = (endpoint: EndpointRoutes) => {
         };
 
         const transaction = new Transactions();
-        transaction.params = {};
+        transaction.params = req.body;
         transaction.response = {};
         transaction.route = endpoint;
         transaction.account = 1; // house account
+        transaction.ipAddress = req.ip;
+        
         (req as LoggedInRequest).transaction = transaction;
         transaction.save(saved, [
             'account',
             'route',
             'params',
-            'response'
+            'response',
+            'ipAddress'
         ]);
     };
     return middleware;

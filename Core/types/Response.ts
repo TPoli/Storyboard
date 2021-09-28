@@ -12,6 +12,7 @@ export interface IFailResponse extends IResponse {
 
 export interface ISuccessResponse extends IResponse {
 	success: true;
+	message?: string;
 };
 
 export interface IAuthFailResponse extends IFailResponse {

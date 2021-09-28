@@ -1,4 +1,5 @@
 import { EndpointRoutes, Api } from "../../../Core/Api/Api";
+import { ISuccessResponse } from "../../../Core/types/Response";
 import createAccount from "./createAccount";
 import login from "./login";
 import { Route } from "./route";
@@ -19,13 +20,21 @@ export const Routes: RouteMap = {
 	logout: {
 		callback: (req, res) => {
 			req.logout();
-			res.send({ success : true, message : 'logged out' });
+			const payload: ISuccessResponse = {
+				success: true,
+				message: 'logged out'
+			};
+			req.transaction.sendResponse(res, payload);
 		},
 		params: Api.AllEndpoints['logout'].params
 	},
 	test: {
 		callback: (req, res) => {
-			res.send('Well done!');
+			const payload: ISuccessResponse = {
+				success: true,
+				message: 'Well done!'
+			};
+			req.transaction.sendResponse(res, payload);
 		},
 		params: Api.AllEndpoints['test'].params
 	}
