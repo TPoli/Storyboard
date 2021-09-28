@@ -1,4 +1,4 @@
-import { Model, Collumn, CollumnType } from './model';
+import { Model, Collumn, CollumnType, SaveCallback } from './model';
 
 export default class Account extends Model {
 	
@@ -11,7 +11,8 @@ export default class Account extends Model {
 			taintable: false,
 			type: CollumnType.int,
 			autoIncrement: true,
-			nullable: false
+			nullable: false,
+			unique: true
 		}, {
 			name: 'username',
 			primary: true,
@@ -185,4 +186,33 @@ export default class Account extends Model {
 	constructor() {
 		super();
 	}
+
+	public createDefaultEntries = (callback: () => void) => {
+		// account that acts as system user
+		const houseAccount = new Account();
+		houseAccount.id=0;
+		houseAccount.username='houseaccount';
+		houseAccount.password=''; // empty string is a impossable input, cant be logged into
+		houseAccount.salt='';
+		houseAccount.pepper='';
+		houseAccount.mobile='';
+		houseAccount.email='';
+		houseAccount.permissions={};
+
+
+		const saveCallback: SaveCallback = (success: boolean) => {
+			callback();
+		};
+
+		houseAccount.save(saveCallback, [
+			'id',
+			'username',
+			'password',
+			'salt',
+			'pepper',
+			'mobile',
+			'email',
+			'permissions'
+		]);
+	};
 };

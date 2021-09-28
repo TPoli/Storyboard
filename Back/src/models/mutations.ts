@@ -11,7 +11,8 @@ export default class Mutations extends Model {
 			taintable: false,
 			type: CollumnType.int,
 			autoIncrement: true,
-			nullable: false
+			nullable: false,
+			unique: true
 		}, {
 			name: 'table_name',
 			primary: false,

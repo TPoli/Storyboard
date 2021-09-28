@@ -1,10 +1,11 @@
 var express = require('express');
 import cors from 'cors';
 
-import { Api, Parameter } from '../Core/Api/Api'
+import { Api, EndpointRoutes, Parameter } from '../Core/Api/Api'
 import { Db } from './src/db';
 
 import Account from './src/models/account';
+import Transactions from './src/models/transactions';
 import { Session } from 'inspector';
 
 import Storyboard from './src/storyboard';
@@ -13,7 +14,7 @@ import { MinutesToMilliseconds } from '../Core/Utils/Utils';
 import { Config } from './src/Config';
 import { Routes } from './src/routes/router';
 import { IFailResponse } from '../Core/types/Response';
-import { ExpressCallback } from './src/types/types';
+import { ExpressCallback, LoggedInRequest } from './src/types/types';
 
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
@@ -58,6 +59,36 @@ const setupExpress = () => {
     app.use(Storyboard.Instance().passport.session());
 };
 
+const createLogMiddlware = (endpoint: EndpointRoutes) => {
+    const middleware: ExpressCallback = (req, res, next) => {
+        const saved = (success: boolean) => {
+            if (success) {
+                next();
+            } else {
+                const response: IFailResponse = {
+                    message: 'faled to process request',
+                    success: false
+                };
+                res.send(response);
+            }
+        };
+
+        const transaction = new Transactions();
+        transaction.params = {};
+        transaction.response = {};
+        transaction.route = endpoint;
+        transaction.account = 1; // house account
+        (req as LoggedInRequest).transaction = transaction;
+        transaction.save(saved, [
+            'account',
+            'route',
+            'params',
+            'response'
+        ]);
+    };
+    return middleware;
+};
+
 const setupRoutes = () => {
     Object.entries(Api.AllEndpoints).forEach(([, endpoint]) => {
 
@@ -87,12 +118,14 @@ const setupRoutes = () => {
                 next();
             }
         };
+
+        const logMiddleware = createLogMiddlware(endpoint.route);
         
         endpoint.methods.forEach((method) => {
             if (method === 'GET') {
-                app.get('/' + endpoint.route, middleware, Routes[endpoint.route].callback);
+                app.get('/' + endpoint.route, logMiddleware, middleware, Routes[endpoint.route].callback);
             } else if (method === 'POST') {
-                app.post('/' + endpoint.route, middleware, Routes[endpoint.route].callback);
+                app.post('/' + endpoint.route, logMiddleware, middleware, Routes[endpoint.route].callback);
             }
         });
     });

@@ -4,8 +4,9 @@ import { Model, Collumn } from './models/model';
 import Versions from './models/versions';
 import Mutations from './models/mutations';
 import Account from './models/account';
+import Transactions from './models/transactions';
 
-type Schema = typeof Versions | typeof Mutations | typeof Account;
+type Schema = typeof Versions | typeof Mutations | typeof Account | typeof Transactions;
 
 export namespace Db {
 
@@ -16,6 +17,7 @@ export namespace Db {
 		// Versions,
 		// Mutations,
 		Account,
+		Transactions
 	] as Schema[];
 
 	let defaultConnection: any = null;
@@ -24,10 +26,14 @@ export namespace Db {
 		const model = new schema();
 		let createQuery = `CREATE TABLE \`${databaseName}\`.\`${model.table}\` (`;
 		let primaryKeys: string[] = [];
+		const uniqueKeys: string[] = [];
 		model.collumns.forEach((collumn: Collumn) => {
 			createQuery += collumn.name + ' ' + collumn.type;
 			if (collumn.primary == true) {
 				primaryKeys.push(collumn.name);
+			}
+			if (collumn.unique) {
+				uniqueKeys.push(collumn.name);
 			}
 			if (!collumn.nullable) {
 				createQuery += ` NOT`;
@@ -42,16 +48,36 @@ export namespace Db {
 		});
 		
 		createQuery += `PRIMARY KEY (${primaryKeys.join(',')})`;
-		primaryKeys.forEach((key: string) => {
+
+		// set indexes
+		uniqueKeys.forEach((key: string) => {
 			createQuery += `,\nUNIQUE INDEX ${key + '_UNIQUE'} (${key} ASC) VISIBLE`;
 		});
+
+		model.collumns.forEach((collumn: Collumn) => {
+			if (collumn.references) {
+				createQuery += `,\nINDEX(${collumn.name})`;
+			}
+		});
+
+		// set foreign keys
+		model.collumns.forEach((collumn: Collumn) => {
+			if (!collumn.references) {
+				return;
+			}
+
+			createQuery += `,\nFOREIGN KEY (${collumn.name})`;
+			createQuery += `\n	REFERENCES ${databaseName}.${collumn.references.model}(${collumn.references.collumn})`;
+			createQuery += `\n	ON UPDATE NO ACTION ON DELETE NO ACTION`;
+		});
+
 		createQuery += ')';
 
 		const createCallback = (error: any, results: any[], fields: any) => {
 			if (error) {
 				throw error
 			};
-			callback();
+			model.createDefaultEntries(callback);
 		};
 
 		connection.query(createQuery, createCallback);
@@ -92,6 +118,7 @@ export namespace Db {
 					if (exists) {
 						completedCallback();
 					} else {
+						// this should be awaited
 						createTable(connection, schema, completedCallback);
 					}
 					// both of the above should check version + run migrations instead of just running completeCallback

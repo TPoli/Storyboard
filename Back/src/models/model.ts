@@ -17,6 +17,11 @@ type Collumn = {
 	nullable: boolean;
 	autoIncrement: boolean;
 	default?: 'NULL';
+	unique?: true;
+	references?: {
+		model: string,
+		collumn: string
+	};
 };
 
 export interface IIndexable {
@@ -31,6 +36,8 @@ abstract class Model implements IIndexable {
 	public abstract version: number;
 	public abstract collumns: Collumn[]
 	protected isNew = true;
+
+	id: number = -1;
 
 	public static find<Type>(): Type|null {
 		return null;
@@ -114,17 +121,16 @@ abstract class Model implements IIndexable {
 					};
 				});
 				
-				let sql = 'INSERT INTO ' + this.table + '(' + collumns.join(',') + ') VALUES (' + paramKeys.join(',') + ')';
+				const sql = 'INSERT INTO ' + this.table + '(' + collumns.join(',') + ') VALUES (' + paramKeys.join(',') + ')';
 
-				console.log(sql);
-
-				Db.execute(sql, values, (error: any, results: any[], fields: any) => {
-					console.log(error);
+				Db.execute(sql, values, (error: any, results: any, fields: any) => {
 					if (error || !results) {
+						console.log(error);
 						callback(false);
 						return;
 					}
 					this.isNew = false;
+					this.id = results.insertId;
 					callback(true);
 				});
 			} else {
@@ -139,6 +145,10 @@ abstract class Model implements IIndexable {
 
 	// use after save() if you need to access any auto generated data such as ID
 	refresh(callback: RefreshCallback): void {
+		callback();
+	};
+
+	public createDefaultEntries = (callback: () => void) => {
 		callback();
 	};
 }
