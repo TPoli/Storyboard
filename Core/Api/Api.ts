@@ -1,4 +1,4 @@
-import { ExpressCallback } from '../../Back/src/types/types';
+import { ExpressCallback, LoggedInRequest } from '../../Back/src/types/types';
 import { IAuthFailResponse } from '../types/Response';
 import { passwordValidation, usernameValidation, ValidationCallback } from './Validation';
 
@@ -24,7 +24,7 @@ type Endpoint = {
 	params: Parameter[];
 	response: Parameter[];
 	methods: RequestMethods[];
-	middleware?: (req: any, res: any, next: any) => void;
+	middleware?:ExpressCallback
 };
 
 type EndpointCollection = {
@@ -32,7 +32,7 @@ type EndpointCollection = {
 };
 
 const authenticationMiddleware: ExpressCallback = (req, res, next) => {
-    if (req.user) {
+    if ((req as LoggedInRequest).user) {
         return next()
     }
     const payload: IAuthFailResponse = {
