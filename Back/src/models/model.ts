@@ -1,3 +1,4 @@
+import * as mysql from 'mysql2';
 import { Db } from '../db';
 
 export enum CollumnType {
@@ -43,7 +44,7 @@ abstract class Model implements IIndexable {
 		return null;
 	}
 
-	public findOne<Type extends Model>(params: Object, callback: (error: Error, result: Type|null) => void): void {
+	public findOne<Type extends Model>(params: Object, callback: (error: mysql.QueryError|null, result: Type|null) => void): void {
 
 		let sql = 'SELECT ';
 		const usedParameters: any[] = [];
@@ -67,7 +68,7 @@ abstract class Model implements IIndexable {
 			}
 		}
 
-		Db.execute(sql, usedParameters, (error: any, results: any[], fields: any) => {
+		const queryCallback: Db.DbCallback = (error, results, fields) => {
 			if (error || !results || !results[0]) {
 				callback(error, null);
 				return;
@@ -80,7 +81,9 @@ abstract class Model implements IIndexable {
 			this.isNew = false;
 
 			callback(error, this as unknown as Type);
-		});
+		};
+
+		Db.execute(sql, usedParameters, queryCallback);
 	}
 
 	save(callback: SaveCallback, collumns: string[] = []) {
@@ -123,14 +126,14 @@ abstract class Model implements IIndexable {
 				
 				const sql = 'INSERT INTO ' + this.table + '(' + collumns.join(',') + ') VALUES (' + paramKeys.join(',') + ')';
 
-				Db.execute(sql, values, (error: any, results: any, fields: any) => {
+				Db.execute(sql, values, (error, results, fields) => {
 					if (error || !results) {
 						console.log(error);
 						callback(false);
 						return;
 					}
 					this.isNew = false;
-					this.id = results.insertId;
+					this.id = (results as any).insertId;
 					callback(true);
 				});
 			} else {

@@ -1,6 +1,6 @@
-const mysql = require('mysql2');
+import * as mysql from 'mysql2';
 
-import { Model, Collumn } from './models/model';
+import { Collumn } from './models/model';
 import Versions from './models/versions';
 import Mutations from './models/mutations';
 import Account from './models/account';
@@ -12,7 +12,7 @@ export namespace Db {
 
 	const databaseName = 'storyboard';
 
-	export type DbCallback = (error: any, results: any[], fields: any) => void;
+	export type DbCallback = (error: mysql.QueryError | null, results: any[], fields:  mysql.FieldPacket[]) => void;
 	export const schemas = [
 		// Versions,
 		// Mutations,
@@ -20,9 +20,9 @@ export namespace Db {
 		Transactions
 	] as Schema[];
 
-	let defaultConnection: any = null;
+	let defaultConnection: mysql.Connection|null = null;
 
-	const createTable = (connection: any, schema: Schema, callback: () => void) => {
+	const createTable = (connection: mysql.Connection, schema: Schema, callback: () => void) => {
 		const model = new schema();
 		let createQuery = `CREATE TABLE \`${databaseName}\`.\`${model.table}\` (`;
 		let primaryKeys: string[] = [];
@@ -73,7 +73,7 @@ export namespace Db {
 
 		createQuery += ')';
 
-		const createCallback = (error: any, results: any[], fields: any) => {
+		const createCallback: DbCallback = (error, results, fields) => {
 			if (error) {
 				throw error
 			};
@@ -83,7 +83,7 @@ export namespace Db {
 		connection.query(createQuery, createCallback);
 	};
 
-	const tableExists = (connection: any, tableName: string, callback: (exists: boolean) => void): void => {
+	const tableExists = (connection: mysql.Connection, tableName: string, callback: (exists: boolean) => void): void => {
 		const existsQuery = `
 			SELECT * FROM information_schema.tables
 			WHERE table_schema = ?
@@ -91,7 +91,7 @@ export namespace Db {
 			LIMIT 1;
 		`;
 
-		const existsCallback = (error: any, results: any[], fields: any) => {
+		const existsCallback: DbCallback = (error, results, fields) => {
 			if (error) {
 				throw error
 			};
@@ -101,7 +101,7 @@ export namespace Db {
 		connection.query(existsQuery, [databaseName, tableName], existsCallback);
 	};
 
-	const ensureTablesSetup = (connection: any, next: () => void) => {
+	const ensureTablesSetup = (connection: mysql.Connection, next: () => void) => {
 		const checkTheRestOfTheTables = () => {
 			let completed = 0;
 			const completedCallback = () => {
@@ -153,7 +153,7 @@ export namespace Db {
 		tableExists(connection, Versions.table, versionsReadyCallback);
 	};
 
-	const setupConnection = (connection: any, next: () => void) => {
+	const setupConnection = (connection: mysql.Connection, next: () => void) => {
 		defaultConnection = mysql.createConnection({
 			host     : 'localhost',
 			user     : 'storyboard_admin',
@@ -163,9 +163,9 @@ export namespace Db {
 		ensureTablesSetup(connection, next);
 	};
 
-	const ensureUsersSetup = (connection: any, next: () => void) => {
+	const ensureUsersSetup = (connection: mysql.Connection, next: () => void) => {
 		const userQuery = 'SELECT EXISTS(SELECT 1 FROM mysql.user WHERE user = "storyboard_admin");';
-		const userQueryCallback: DbCallback = (error: any, results: any[], fields: any) => {
+		const userQueryCallback: DbCallback = (error, results, fields) => {
 			if (error) {
 				throw error
 			};
@@ -203,7 +203,7 @@ export namespace Db {
 			FROM INFORMATION_SCHEMA.SCHEMATA
 	   		WHERE SCHEMA_NAME = ?;
 		`;
-		const databaseQueryCallback = (error: any, results: any[], fields: any) => {
+		const databaseQueryCallback: DbCallback = (error, results, fields) => {
 			if (error) {
 				throw error
 			};
@@ -225,7 +225,7 @@ export namespace Db {
 	};
 
 	export const execute = (statement: string, params: any[], callback: DbCallback ) => {
-		// const parser: DbCallback = (error: any, results: any[], fields: any) => {
+		// const parser: DbCallback = (error, results, fields) => {
 		// 	const modifiedResults: any[] = [];
 
 		// 	results.forEach((result) => {
@@ -234,6 +234,6 @@ export namespace Db {
 			
 		// 	callback(error, modifiedResults, fields);
 		// };
-		defaultConnection.query(statement, params, callback);
+		defaultConnection?.query(statement, params, callback);
 	};
 };

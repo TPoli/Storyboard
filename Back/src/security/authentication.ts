@@ -66,7 +66,7 @@ const createAccount = (req:any, username:any, password:any, done:any) => {
 };
 
 const verifyUser = (username:any, password:any, done:any) => {
-    (new Account).findOne({username: username}, (error: Error, account: Account|null) => {
+    (new Account).findOne({username: username}, (error, account: Account|null) => {
         if (error) {
             return done(null, false, { message: 'login failed.' });
         }

@@ -139,7 +139,7 @@ Storyboard.Instance().passport.serializeUser(function(user: Account, done: any) 
 });
   
 Storyboard.Instance().passport.deserializeUser(function(id: number, done: any) {
-    (new Account).findOne({id: id}, (error: Error, account: Account|null) => {
+    (new Account).findOne({id: id}, (error, account) => {
         if (error) {
             return done(null, false, { message: 'login failed.' });
         }
