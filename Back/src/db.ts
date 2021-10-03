@@ -5,6 +5,9 @@ import Versions from './models/versions';
 import Mutations from './models/mutations';
 import Account from './models/account';
 import Transactions from './models/transactions';
+import { CamelCase } from '../../Core/Utils/Utils';
+import ContentAR from './models/ContentAR';
+import CollectionAR from './models/CollectionAR';
 
 type Schema = typeof Versions | typeof Mutations | typeof Account | typeof Transactions;
 
@@ -17,12 +20,66 @@ export namespace Db {
 		// Versions,
 		// Mutations,
 		Account,
-		Transactions
+		Transactions,
+		ContentAR,
+		CollectionAR,
 	] as Schema[];
 
 	let defaultConnection: mysql.Connection|null = null;
+	let adminConnection: mysql.Connection|null = null;
 
-	const createTable = (connection: mysql.Connection, schema: Schema, callback: () => void) => {
+	const setForeignKeys = (schema: Schema, callback: () => void) => {
+		if (!adminConnection) {
+			throw new Error('admin database connection not established');
+		}
+
+		const foreignKeyColumns: Collumn[] = [];
+
+		const model = new schema();
+
+		model.collumns.forEach((column: Collumn) => {
+			if (column.references) {
+				foreignKeyColumns.push(column);
+			}
+		});
+
+		if (foreignKeyColumns.length === 0) {
+			callback();
+			return;
+		}
+
+		const createCallback: DbCallback = (error, results, fields) => {
+			if (error) {
+				throw error
+			};
+			model.createDefaultEntries(callback);
+		};
+
+		const tableName = `${databaseName}.${model.table}`;
+
+		let sql = `ALTER TABLE ${tableName}`;
+		let first = true;
+
+		foreignKeyColumns.forEach((column: Collumn) => {
+			if (!column.references) {
+				return;
+			}
+			const fkName = CamelCase([model.table, column.references.model, column.references.collumn, 'Fk' ]);
+			sql += `${(first ? '' : ',')}\nADD CONSTRAINT ${fkName}\n`;
+			sql += `FOREIGN KEY (${column.name})\n`;
+			sql += `REFERENCES ${tableName} (${column.references.collumn})\n`;
+			sql += `ON UPDATE NO ACTION ON DELETE NO ACTION`;
+			first = false;
+		});
+
+		adminConnection.query(sql, createCallback);
+	};
+
+	const createTable = (schema: Schema, callback: () => void) => {
+		if (!adminConnection) {
+			throw new Error('admin database connection not established');
+		}
+
 		const model = new schema();
 		let createQuery = `CREATE TABLE \`${databaseName}\`.\`${model.table}\` (`;
 		let primaryKeys: string[] = [];
@@ -60,17 +117,6 @@ export namespace Db {
 			}
 		});
 
-		// set foreign keys
-		model.collumns.forEach((collumn: Collumn) => {
-			if (!collumn.references) {
-				return;
-			}
-
-			createQuery += `,\nFOREIGN KEY (${collumn.name})`;
-			createQuery += `\n	REFERENCES ${databaseName}.${collumn.references.model}(${collumn.references.collumn})`;
-			createQuery += `\n	ON UPDATE NO ACTION ON DELETE NO ACTION`;
-		});
-
 		createQuery += ')';
 
 		const createCallback: DbCallback = (error, results, fields) => {
@@ -80,10 +126,13 @@ export namespace Db {
 			model.createDefaultEntries(callback);
 		};
 
-		connection.query(createQuery, createCallback);
+		adminConnection.query(createQuery, createCallback);
 	};
 
-	const tableExists = (connection: mysql.Connection, tableName: string, callback: (exists: boolean) => void): void => {
+	const tableExists = (tableName: string, callback: (exists: boolean) => void): void => {
+		if (!adminConnection) {
+			throw new Error('admin database connection not established');
+		}
 		const existsQuery = `
 			SELECT * FROM information_schema.tables
 			WHERE table_schema = ?
@@ -98,28 +147,50 @@ export namespace Db {
 			callback(results.length > 0);
 		};
 
-		connection.query(existsQuery, [databaseName, tableName], existsCallback);
+		adminConnection.query(existsQuery, [databaseName, tableName], existsCallback);
 	};
 
-	const ensureTablesSetup = (connection: mysql.Connection, next: () => void) => {
+	const ensureForeignKeysSet = (next: () => void, newSchemas: Schema[]) => {
+		let completed = 0;
+			
+		const completedCallback = () => {
+			++completed;
+			if(completed === schemas.length) {
+				// database is finally ready, launch the server using next();
+				next(); // needs to be called after all of the callbacks in forEach resolve
+			}
+		};
+
+		newSchemas.forEach((schema: Schema) => {
+			setForeignKeys(schema, completedCallback);
+		});
+	};
+
+	const ensureTablesSetup = (next: () => void) => {
 		const checkTheRestOfTheTables = () => {
 			let completed = 0;
+			const newSchemas: Schema[] = [];
 			const completedCallback = () => {
 				++completed;
 				if(completed === schemas.length) {
-					// database is finally ready, launch the server using next();
-					next(); // needs to be called after all of the callbacks in forEach resolve
+					if (newSchemas.length === 0) {
+						// database is finally ready, launch the server using next();
+						next(); // needs to be called after all of the callbacks in forEach resolve
+					} else {
+						ensureForeignKeysSet(next, newSchemas);
+					}
 				}
 			};
 
 			schemas.forEach((schema: Schema) => {
 				const model = new schema();
-				tableExists(connection, model.table, (exists: boolean) => {
+				tableExists(model.table, (exists: boolean) => {
 					if (exists) {
 						completedCallback();
 					} else {
 						// this should be awaited
-						createTable(connection, schema, completedCallback);
+						newSchemas.push(schema);
+						createTable(schema, completedCallback);
 					}
 					// both of the above should check version + run migrations instead of just running completeCallback
 				});
@@ -128,39 +199,35 @@ export namespace Db {
 
 		const mutationsReadyCallback = (exists: boolean) => {
 			if (!exists) {
-				createTable(connection, Mutations, () => {
+				createTable(Mutations, () => {
 					checkTheRestOfTheTables();
 				});
-			}
-			else
-			{
+			} else {
 				checkTheRestOfTheTables();
 			}
 		};
 
 		const versionsReadyCallback = (exists: boolean) => {
 			if (!exists) {
-				createTable(connection, Versions, () => {
-					tableExists(connection, Mutations.table, mutationsReadyCallback);
+				createTable(Versions, () => {
+					tableExists(Mutations.table, mutationsReadyCallback);
 				});
-			}
-			else
-			{
-				tableExists(connection, Mutations.table, mutationsReadyCallback);
+			} else {
+				tableExists(Mutations.table, mutationsReadyCallback);
 			}
 		};
 
-		tableExists(connection, Versions.table, versionsReadyCallback);
+		tableExists(Versions.table, versionsReadyCallback);
 	};
 
 	const setupConnection = (connection: mysql.Connection, next: () => void) => {
-		defaultConnection = mysql.createConnection({
+		adminConnection = mysql.createConnection({
 			host     : 'localhost',
 			user     : 'storyboard_admin',
 			password : 'storyboard_admin',
 			database : 'storyboard'
 		});
-		ensureTablesSetup(connection, next);
+		ensureTablesSetup(next);
 	};
 
 	const ensureUsersSetup = (connection: mysql.Connection, next: () => void) => {
@@ -219,7 +286,7 @@ export namespace Db {
 		connection.query(databaseQuery, [databaseName], databaseQueryCallback);
 	};
 
-	// this function needs to be made syncronous
+	// this function needs to be made synchronous
 	export const InitDb = (next: () => void) => {
 		ensureDbIsSetup(next);
 	};

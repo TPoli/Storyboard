@@ -97,6 +97,7 @@ const setupRoutes = () => {
 
         // build middleware that validates parameters and calls any aditional middleware
         const middleware: ExpressCallback = (req, res, next) => {
+            const validatedBody: any = {};
             endpoint.params.forEach((param: Parameter) => {
                 const value = req?.body[param.name] ?? null;
                 if (!param.required && value === null) {
@@ -113,7 +114,11 @@ const setupRoutes = () => {
                     res.send(responseData);
                     return;
                 }
+                validatedBody[param.name] = value;
             });
+
+            // after this point only validated parameters are available
+            req.body = validatedBody;
 
             if (endpoint.middleware) {
                 endpoint.middleware(req, res, next);

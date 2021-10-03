@@ -15,3 +15,18 @@ export const MillisecondsToMinutes = (milliseconds: number) => {
 export const MillisecondsToSeconds = (milliseconds: number) => {
 	return milliseconds / 1000;
 };
+
+export const CamelCase = (strings: string[]): string => {
+	let result = '';
+	
+	for (let i = 0; i < strings.length; ++i) {
+		const lower = strings[i].toLowerCase();
+		if (i > 0) {
+			result += lower.charAt(0).toUpperCase() + lower.substring(1); 
+		} else {
+			result += lower;
+		}
+	}
+	
+	return result;
+};
