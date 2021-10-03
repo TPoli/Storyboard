@@ -220,13 +220,14 @@ export namespace Db {
 		tableExists(VersionsAR.table, versionsReadyCallback);
 	};
 
-	const setupConnection = (connection: mysql.Connection, next: () => void) => {
+	const setupConnection = (next: () => void) => {
 		adminConnection = mysql.createConnection({
 			host     : 'localhost',
 			user     : 'storyboard_admin',
 			password : 'storyboard_admin',
 			database : 'storyboard'
 		});
+		defaultConnection = adminConnection; // this needs to change
 		ensureTablesSetup(next);
 	};
 
@@ -248,7 +249,7 @@ export namespace Db {
 				// create user storyboard_admin
 				// will also need to setup non-admin user for least privlaged access
 			}
-			setupConnection(connection, next);
+			setupConnection(next);
 		};
 
 		connection.query(userQuery, userQueryCallback);
@@ -292,15 +293,9 @@ export namespace Db {
 	};
 
 	export const execute = (statement: string, params: any[], callback: DbCallback ) => {
-		// const parser: DbCallback = (error, results, fields) => {
-		// 	const modifiedResults: any[] = [];
-
-		// 	results.forEach((result) => {
-		// 		console.log(result.id);
-		// 	});
-			
-		// 	callback(error, modifiedResults, fields);
-		// };
-		defaultConnection?.query(statement, params, callback);
+		if (!defaultConnection) {
+			throw new Error('default database connection couldn\'t be established');
+		}
+		defaultConnection.query(statement, params, callback);
 	};
 };

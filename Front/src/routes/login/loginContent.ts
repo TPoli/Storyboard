@@ -18,7 +18,8 @@ export default {
 			const loginCallback = (response: Response): void => {
 				(this as any).$store.commit('login', (response as ILoginResponse).username);
 
-				if((this as any).$route.fullPath === '/login')
+				const fullPath = (this as any).$route.fullPath;
+				if (fullPath === '/login' || fullPath === '/')
 				{
 					(this as any).$router.push({path: '/dashboard'});
 				}
