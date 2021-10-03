@@ -28,7 +28,7 @@ const createAccount = (req:any, username:any, password:any, done:any) => {
             return done(null, false, { message: 'login failed.' });
         }
         account.password = hash;
-        const collumnsToSave = [
+        const columnsToSave = [
             'username',
             'password',
             'permissions',
@@ -36,12 +36,12 @@ const createAccount = (req:any, username:any, password:any, done:any) => {
             'pepper'
         ];
         if (account.email) {
-            collumnsToSave.push('email');
+            columnsToSave.push('email');
         }
         if (account.mobile) {
-            collumnsToSave.push('mobile');
+            columnsToSave.push('mobile');
         }
-        account.save(saved, collumnsToSave);
+        account.save(saved, columnsToSave);
     };
 
     const saltRounds = 10;

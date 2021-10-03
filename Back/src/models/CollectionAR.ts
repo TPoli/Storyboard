@@ -1,7 +1,7 @@
 import * as express from 'express';
 
 import Account from './account';
-import { Model, Collumn, CollumnType } from './model';
+import { Model, Column, ColumnType } from './model';
 import { Content } from '../../../Core/types/Content';
 import { Collection } from '../../../Core/types/Collection';
 
@@ -17,12 +17,12 @@ export default class CollectionAR extends Model implements Collection {
 	public version = 1;
 	public table = 'collections';
 	public account: Account|null = null;
-	public collumns = [
+	public columns = [
 		{
 			name: 'id',
 			primary: true,
 			taintable: false,
-			type: CollumnType.int,
+			type: ColumnType.int,
 			autoIncrement: true,
 			nullable: false,
 			unique: true
@@ -30,35 +30,35 @@ export default class CollectionAR extends Model implements Collection {
 			name: 'account',
 			primary: true,
 			taintable: false,
-			type: CollumnType.int,
+			type: ColumnType.int,
 			references: {
 				model: new Account().table,
-				collumn: 'id'
+				column: 'id'
 			}
 		}, {
 			name: 'name',
 			primary: false,
 			taintable: true,
-			type: CollumnType.string,
+			type: ColumnType.string,
 			nullable: false,
 		}, {
 			name: 'siblingOrder',
 			primary: false,
 			taintable: true,
-			type: CollumnType.int,
+			type: ColumnType.int,
 			nullable: false
 		}, {
 			name: 'parent',
 			primary: false,
 			taintable: true,
-			type: CollumnType.int,
+			type: ColumnType.int,
 			nullable: true,
 			references: {
 				model: this.table,
-				collumn: 'id'
+				column: 'id'
 			},
 		}
-	] as Collumn[];
+	] as Column[];
 
 	constructor() {
 		super();

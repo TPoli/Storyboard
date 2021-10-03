@@ -1,15 +1,15 @@
-import { Model, Collumn, CollumnType } from './model';
+import { Model, Column, ColumnType } from './model';
 
 export default class Mutations extends Model {
 	
 	public version = 1;
 	public static table = 'mutations';
-	public collumns = [
+	public columns = [
 		{
 			name: 'id',
 			primary: true,
 			taintable: false,
-			type: CollumnType.int,
+			type: ColumnType.int,
 			autoIncrement: true,
 			nullable: false,
 			unique: true
@@ -17,19 +17,19 @@ export default class Mutations extends Model {
 			name: 'table_name',
 			primary: false,
 			taintable: false,
-			type: CollumnType.string
+			type: ColumnType.string
 		}, {
 			name: 'original_value',
 			primary: false,
 			taintable: true,
-			type: CollumnType.json
+			type: ColumnType.json
 		}, {
 			name: 'modified_value',
 			primary: false,
 			taintable: true,
-			type: CollumnType.json
+			type: ColumnType.json
 		}, 
-	] as Collumn[];
+	] as Column[];
 
 	constructor() {
 		super();

@@ -1,15 +1,15 @@
-import { Model, Collumn, CollumnType, SaveCallback } from './model';
+import { Model, Column, ColumnType, SaveCallback } from './model';
 
 export default class Account extends Model {
 	
 	public version = 1;
 	public table = 'account';
-	public collumns: Collumn[] = [
+	public columns: Column[] = [
 		{
 			name: 'id',
 			primary: true,
 			taintable: false,
-			type: CollumnType.int,
+			type: ColumnType.int,
 			autoIncrement: true,
 			nullable: false,
 			unique: true
@@ -17,42 +17,42 @@ export default class Account extends Model {
 			name: 'username',
 			primary: true,
 			taintable: true,
-			type: CollumnType.string,
+			type: ColumnType.string,
 			autoIncrement: false,
 			nullable: false
 		}, {
 			name: 'password',
 			primary: false,
 			taintable: true,
-			type: CollumnType.tinytext,
+			type: ColumnType.tinytext,
 			autoIncrement: false,
 			nullable: false
 		}, {
 			name: 'salt',
 			primary: false,
 			taintable: false,
-			type: CollumnType.string,
+			type: ColumnType.string,
 			autoIncrement: false,
 			nullable: false
 		}, {
 			name: 'pepper',
 			primary: false,
 			taintable: false,
-			type: CollumnType.string,
+			type: ColumnType.string,
 			autoIncrement: false,
 			nullable: false
 		}, {
 			name: 'permissions',
 			primary: false,
 			taintable: false,
-			type: CollumnType.json,
+			type: ColumnType.json,
 			autoIncrement: false,
 			nullable: false
 		}, {
 			name: 'email',
 			primary: false,
 			taintable: true,
-			type: CollumnType.string,
+			type: ColumnType.string,
 			autoIncrement: false,
 			nullable: true,
 			default: 'NULL'
@@ -60,7 +60,7 @@ export default class Account extends Model {
 			name: 'mobile',
 			primary: false,
 			taintable: true,
-			type: CollumnType.string,
+			type: ColumnType.string,
 			autoIncrement: false,
 			nullable: true,
 			default: 'NULL'

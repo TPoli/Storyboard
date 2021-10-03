@@ -1,7 +1,7 @@
 import * as mysql from 'mysql2';
 import { Db } from '../db';
 
-export enum CollumnType {
+export enum ColumnType {
 	'int' = 'INT',
 	'string' = 'VARCHAR(45)',
 	'tinytext' = 'TINYTEXT',
@@ -10,9 +10,9 @@ export enum CollumnType {
 	'datetime' = 'DATETIME'
 };
 
-type Collumn = {
+type Column = {
 	name: string;
-	type: CollumnType;
+	type: ColumnType;
 	taintable: boolean;
 	primary: boolean;
 	nullable: boolean;
@@ -21,7 +21,7 @@ type Collumn = {
 	unique?: true;
 	references?: {
 		model: string,
-		collumn: string
+		column: string
 	};
 };
 
@@ -35,7 +35,7 @@ type RefreshCallback = () => void;
 abstract class Model implements IIndexable {
 	public table: string = '';
 	public abstract version: number;
-	public abstract collumns: Collumn[]
+	public abstract columns: Column[]
 	protected isNew = true;
 
 	id: number = -1;
@@ -49,19 +49,19 @@ abstract class Model implements IIndexable {
 		let sql = 'SELECT ';
 		const usedParameters: any[] = [];
 		
-		const allowedCollumns = this.collumns.map((collumn) => {
-			return collumn.name;
+		const allowedColumns = this.columns.map((column) => {
+			return column.name;
 		});
 
-		sql += allowedCollumns.join(',') + ' FROM ' + this.table + ' WHERE ';
+		sql += allowedColumns.join(',') + ' FROM ' + this.table + ' WHERE ';
 
-		let firstValidCollumn = true;
+		let firstValidColumn = true;
 		for (let [key, value] of Object.entries(params)) {
-			if (allowedCollumns.includes(key)) {
-				if (!firstValidCollumn) {
+			if (allowedColumns.includes(key)) {
+				if (!firstValidColumn) {
 					sql += ' AND';
 				}
-				firstValidCollumn = false;
+				firstValidColumn = false;
 				sql += key + ' = ? ';
 
 				usedParameters.push(value);
@@ -86,21 +86,21 @@ abstract class Model implements IIndexable {
 		Db.execute(sql, usedParameters, queryCallback);
 	}
 
-	save(callback: SaveCallback, collumns: string[] = []) {
+	save(callback: SaveCallback, columns: string[] = []) {
 		if (this.isNew) { // insert
-			if (collumns.length > 0) {
+			if (columns.length > 0) {
 				const values: any[] = [];
 				const paramKeys: string[] = [];
-				collumns.forEach((collumn: string) => {
-					const colData = this.collumns.find((col) => {
-						return col.name === collumn;
+				columns.forEach((column: string) => {
+					const colData = this.columns.find((col) => {
+						return col.name === column;
 					});
 					if(!colData) {
 						callback(false);
 						return;
 					}
 
-					const value = (this as IIndexable)[collumn];
+					const value = (this as IIndexable)[column];
 					if (colData.nullable && value === null) {
 						return;
 					}
@@ -108,14 +108,14 @@ abstract class Model implements IIndexable {
 					paramKeys.push('?');
 
 					switch (colData.type) {
-						case CollumnType.json:
-						case CollumnType.datetime:
+						case ColumnType.json:
+						case ColumnType.datetime:
 							values.push(JSON.stringify(value));
 							break;
-						case CollumnType.bool:
-						case CollumnType.int:
-						case CollumnType.string:
-						case CollumnType.tinytext:
+						case ColumnType.bool:
+						case ColumnType.int:
+						case ColumnType.string:
+						case ColumnType.tinytext:
 							values.push(value);
 							break;
 						default:
@@ -124,7 +124,7 @@ abstract class Model implements IIndexable {
 					};
 				});
 				
-				const sql = 'INSERT INTO ' + this.table + '(' + collumns.join(',') + ') VALUES (' + paramKeys.join(',') + ')';
+				const sql = 'INSERT INTO ' + this.table + '(' + columns.join(',') + ') VALUES (' + paramKeys.join(',') + ')';
 
 				Db.execute(sql, values, (error, results, fields) => {
 					if (error || !results) {
@@ -141,31 +141,31 @@ abstract class Model implements IIndexable {
 				callback(false);
 			}
 		} else { // update
-			if (collumns.length > 0) {
+			if (columns.length > 0) {
 				const values: any[] = [];
-				collumns.forEach((collumn: string) => {
-					const colData = this.collumns.find((col) => {
-						return col.name === collumn;
+				columns.forEach((column: string) => {
+					const colData = this.columns.find((col) => {
+						return col.name === column;
 					});
 					if(!colData) {
 						callback(false);
 						return;
 					}
 
-					const value = (this as IIndexable)[collumn];
+					const value = (this as IIndexable)[column];
 					if (colData.nullable && value === null) {
 						return;
 					}
 
 					switch (colData.type) {
-						case CollumnType.json:
-						case CollumnType.datetime:
+						case ColumnType.json:
+						case ColumnType.datetime:
 							values.push(JSON.stringify(value));
 							break;
-						case CollumnType.bool:
-						case CollumnType.int:
-						case CollumnType.string:
-						case CollumnType.tinytext:
+						case ColumnType.bool:
+						case ColumnType.int:
+						case ColumnType.string:
+						case ColumnType.tinytext:
 							values.push(value);
 							break;
 						default:
@@ -174,7 +174,7 @@ abstract class Model implements IIndexable {
 					};
 				});
 
-				const sql = `UPDATE ${this.table} SET ${collumns.join('= ?,')} = ? WHERE id = ${this.id}`;
+				const sql = `UPDATE ${this.table} SET ${columns.join('= ?,')} = ? WHERE id = ${this.id}`;
 
 				Db.execute(sql, values, (error, results, fields) => {
 					if (error || !results) {
@@ -204,4 +204,4 @@ abstract class Model implements IIndexable {
 }
 
 export {Model};
-export {Collumn};
+export {Column};

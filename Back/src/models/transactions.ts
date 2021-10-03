@@ -1,19 +1,19 @@
 import * as express from 'express';
 
 import Account from './account';
-import { Model, Collumn, CollumnType, SaveCallback } from './model';
+import { Model, Column, ColumnType, SaveCallback } from './model';
 import { IResponse } from '../../../Core/types/Response';
 
 export default class Transactions extends Model {
 	
 	public version = 1;
 	public table = 'transactions';
-	public collumns = [
+	public columns = [
 		{
 			name: 'id',
 			primary: true,
 			taintable: false,
-			type: CollumnType.int,
+			type: ColumnType.int,
 			autoIncrement: true,
 			nullable: false,
 			unique: true
@@ -21,36 +21,36 @@ export default class Transactions extends Model {
 			name: 'account',
 			primary: true,
 			taintable: false,
-			type: CollumnType.int,
+			type: ColumnType.int,
 			references: {
 				model: new Account().table,
-				collumn: 'id'
+				column: 'id'
 			}
 		}, {
 			name: 'route',
 			primary: false,
 			taintable: false,
-			type: CollumnType.string,
+			type: ColumnType.string,
 			nullable: false
 		}, {
 			name: 'ipAddress',
 			primary: false,
 			taintable: true,
-			type: CollumnType.string,
+			type: ColumnType.string,
 			nullable: false
 		}, {
 			name: 'params',
 			primary: false,
 			taintable: true,
-			type: CollumnType.json,
+			type: ColumnType.json,
 			nullable: false
 		}, {
 			name: 'response',
 			primary: false,
 			taintable: true,
-			type: CollumnType.json
+			type: ColumnType.json
 		}
-	] as Collumn[];
+	] as Column[];
 
 	public id: number = -1;
 	public account: number = 1;

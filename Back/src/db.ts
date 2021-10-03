@@ -1,6 +1,6 @@
 import * as mysql from 'mysql2';
 
-import { Collumn } from './models/model';
+import { Column } from './models/model';
 import Versions from './models/versions';
 import Mutations from './models/mutations';
 import Account from './models/account';
@@ -33,11 +33,11 @@ export namespace Db {
 			throw new Error('admin database connection not established');
 		}
 
-		const foreignKeyColumns: Collumn[] = [];
+		const foreignKeyColumns: Column[] = [];
 
 		const model = new schema();
 
-		model.collumns.forEach((column: Collumn) => {
+		model.columns.forEach((column: Column) => {
 			if (column.references) {
 				foreignKeyColumns.push(column);
 			}
@@ -60,14 +60,14 @@ export namespace Db {
 		let sql = `ALTER TABLE ${tableName}`;
 		let first = true;
 
-		foreignKeyColumns.forEach((column: Collumn) => {
+		foreignKeyColumns.forEach((column: Column) => {
 			if (!column.references) {
 				return;
 			}
-			const fkName = CamelCase([model.table, column.references.model, column.references.collumn, 'Fk' ]);
+			const fkName = CamelCase([model.table, column.references.model, column.references.column, 'Fk' ]);
 			sql += `${(first ? '' : ',')}\nADD CONSTRAINT ${fkName}\n`;
 			sql += `FOREIGN KEY (${column.name})\n`;
-			sql += `REFERENCES ${tableName} (${column.references.collumn})\n`;
+			sql += `REFERENCES ${tableName} (${column.references.column})\n`;
 			sql += `ON UPDATE NO ACTION ON DELETE NO ACTION`;
 			first = false;
 		});
@@ -84,20 +84,20 @@ export namespace Db {
 		let createQuery = `CREATE TABLE \`${databaseName}\`.\`${model.table}\` (`;
 		let primaryKeys: string[] = [];
 		const uniqueKeys: string[] = [];
-		model.collumns.forEach((collumn: Collumn) => {
-			createQuery += collumn.name + ' ' + collumn.type;
-			if (collumn.primary == true) {
-				primaryKeys.push(collumn.name);
+		model.columns.forEach((column: Column) => {
+			createQuery += column.name + ' ' + column.type;
+			if (column.primary == true) {
+				primaryKeys.push(column.name);
 			}
-			if (collumn.unique) {
-				uniqueKeys.push(collumn.name);
+			if (column.unique) {
+				uniqueKeys.push(column.name);
 			}
-			if (!collumn.nullable) {
+			if (!column.nullable) {
 				createQuery += ` NOT`;
 			}
 			createQuery += ' NULL';
 
-			if (collumn.autoIncrement) {
+			if (column.autoIncrement) {
 				createQuery += ' AUTO_INCREMENT';
 			}
 
@@ -111,9 +111,9 @@ export namespace Db {
 			createQuery += `,\nUNIQUE INDEX ${key + '_UNIQUE'} (${key} ASC) VISIBLE`;
 		});
 
-		model.collumns.forEach((collumn: Collumn) => {
-			if (collumn.references) {
-				createQuery += `,\nINDEX(${collumn.name})`;
+		model.columns.forEach((column: Column) => {
+			if (column.references) {
+				createQuery += `,\nINDEX(${column.name})`;
 			}
 		});
 
