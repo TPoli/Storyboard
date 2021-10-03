@@ -4,8 +4,8 @@ import cors from 'cors';
 import { Api, EndpointRoutes, Parameter } from '../Core/Api/Api'
 import { Db } from './src/db';
 
-import Account from './src/models/account';
-import Transactions from './src/models/transactions';
+import AccountAR from './src/models/accountAR';
+import TransactionsAR from './src/models/transactionsAR';
 import { Session } from 'inspector';
 
 import Storyboard from './src/storyboard';
@@ -73,7 +73,7 @@ const createLogMiddlware = (endpoint: EndpointRoutes) => {
             }
         };
 
-        const transaction = new Transactions();
+        const transaction = new TransactionsAR();
         transaction.params = req.body;
         transaction.response = {};
         transaction.route = endpoint;
@@ -141,13 +141,13 @@ const setupRoutes = () => {
 
 setupAuth();
 
-Storyboard.Instance().passport.serializeUser(function(user: Account, done: any) {
+Storyboard.Instance().passport.serializeUser(function(user: AccountAR, done: any) {
     const session = new Session()
     done(null, user.id);
 });
   
 Storyboard.Instance().passport.deserializeUser(function(id: number, done: any) {
-    (new Account).findOne({id: id}, (error, account) => {
+    (new AccountAR).findOne({id: id}, (error, account) => {
         if (error) {
             return done(null, false, { message: 'login failed.' });
         }

@@ -1,9 +1,9 @@
 import { Model, Column, ColumnType } from './model';
 
-export default class Versions extends Model {
+export default class MutationsAR extends Model {
 	
 	public version = 1;
-	public static table = 'versions';
+	public static table = 'mutations';
 	public columns = [
 		{
 			name: 'id',
@@ -19,11 +19,16 @@ export default class Versions extends Model {
 			taintable: false,
 			type: ColumnType.string
 		}, {
-			name: 'version',
+			name: 'original_value',
 			primary: false,
-			taintable: false,
-			type: ColumnType.int
-		}
+			taintable: true,
+			type: ColumnType.json
+		}, {
+			name: 'modified_value',
+			primary: false,
+			taintable: true,
+			type: ColumnType.json
+		}, 
 	] as Column[];
 
 	constructor() {

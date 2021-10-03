@@ -1,6 +1,6 @@
 import { Model, Column, ColumnType, SaveCallback } from './model';
 
-export default class Account extends Model {
+export default class AccountAR extends Model {
 	
 	public version = 1;
 	public table = 'account';
@@ -180,7 +180,7 @@ export default class Account extends Model {
 	}
 
 	public static Peppers = () => {
-		return Account.peppers;
+		return AccountAR.peppers;
 	}
 
 	constructor() {
@@ -189,7 +189,7 @@ export default class Account extends Model {
 
 	public createDefaultEntries = (callback: () => void) => {
 		// account that acts as system user
-		const houseAccount = new Account();
+		const houseAccount = new AccountAR();
 		houseAccount.id=0;
 		houseAccount.username='houseaccount';
 		houseAccount.password=''; // empty string is a impossable input, cant be logged into

@@ -1,15 +1,15 @@
 import * as mysql from 'mysql2';
 
 import { Column } from './models/model';
-import Versions from './models/versions';
-import Mutations from './models/mutations';
-import Account from './models/account';
-import Transactions from './models/transactions';
+import VersionsAR from './models/versionsAR';
+import MutationsAR from './models/mutationsAR';
+import AccountAR from './models/accountAR';
+import TransactionsAR from './models/transactionsAR';
 import { CamelCase } from '../../Core/Utils/Utils';
 import ContentAR from './models/ContentAR';
 import CollectionAR from './models/CollectionAR';
 
-type Schema = typeof Versions | typeof Mutations | typeof Account | typeof Transactions;
+type Schema = typeof VersionsAR | typeof MutationsAR | typeof AccountAR | typeof TransactionsAR;
 
 export namespace Db {
 
@@ -19,8 +19,8 @@ export namespace Db {
 	export const schemas = [
 		// Versions,
 		// Mutations,
-		Account,
-		Transactions,
+		AccountAR,
+		TransactionsAR,
 		ContentAR,
 		CollectionAR,
 	] as Schema[];
@@ -199,7 +199,7 @@ export namespace Db {
 
 		const mutationsReadyCallback = (exists: boolean) => {
 			if (!exists) {
-				createTable(Mutations, () => {
+				createTable(MutationsAR, () => {
 					checkTheRestOfTheTables();
 				});
 			} else {
@@ -209,15 +209,15 @@ export namespace Db {
 
 		const versionsReadyCallback = (exists: boolean) => {
 			if (!exists) {
-				createTable(Versions, () => {
-					tableExists(Mutations.table, mutationsReadyCallback);
+				createTable(VersionsAR, () => {
+					tableExists(MutationsAR.table, mutationsReadyCallback);
 				});
 			} else {
-				tableExists(Mutations.table, mutationsReadyCallback);
+				tableExists(MutationsAR.table, mutationsReadyCallback);
 			}
 		};
 
-		tableExists(Versions.table, versionsReadyCallback);
+		tableExists(VersionsAR.table, versionsReadyCallback);
 	};
 
 	const setupConnection = (connection: mysql.Connection, next: () => void) => {

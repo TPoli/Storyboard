@@ -1,4 +1,4 @@
-import Account from "../models/account";
+import AccountAR from "../models/accountAR";
 import Storyboard from "../storyboard";
 import { IAuthFailResponse, ILoginResponse } from '../../../Core/types/Response'
 import { IIndexable } from "../models/model";
@@ -17,7 +17,7 @@ export default (req: any, res: any, next: any) => {
 		return req.transaction.sendResponse(res, payload);
 	};
 
-	Storyboard.Instance().passport.authenticate('login', {session: true}, (err: Error, user: Account, info: any) => {
+	Storyboard.Instance().passport.authenticate('login', {session: true}, (err: Error, user: AccountAR, info: any) => {
 		if (err) {
 			return next(err); // will generate a 500 error
 		}

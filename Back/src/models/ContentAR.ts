@@ -1,6 +1,6 @@
 import * as express from 'express';
 
-import Account from './account';
+import AccountAR from './accountAR';
 import { Model, Column, ColumnType } from './model';
 import { Content } from '../../../Core/types/Content';
 import { Collection } from '../../../Core/types/Collection';
@@ -16,7 +16,7 @@ export default class ContentAR extends Model implements Content {
 	
 	public version = 1;
 	public table = 'content';
-	public account: Account|null = null;
+	public account: AccountAR|null = null;
 	public columns = [
 		{
 			name: 'id',
@@ -32,7 +32,7 @@ export default class ContentAR extends Model implements Content {
 			taintable: false,
 			type: ColumnType.int,
 			references: {
-				model: new Account().table,
+				model: new AccountAR().table,
 				column: 'id'
 			}
 		}, {

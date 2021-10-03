@@ -1,10 +1,10 @@
 import * as express from 'express';
 
-import Account from './account';
+import AccountAR from './accountAR';
 import { Model, Column, ColumnType, SaveCallback } from './model';
 import { IResponse } from '../../../Core/types/Response';
 
-export default class Transactions extends Model {
+export default class TransactionsAR extends Model {
 	
 	public version = 1;
 	public table = 'transactions';
@@ -23,7 +23,7 @@ export default class Transactions extends Model {
 			taintable: false,
 			type: ColumnType.int,
 			references: {
-				model: new Account().table,
+				model: new AccountAR().table,
 				column: 'id'
 			}
 		}, {

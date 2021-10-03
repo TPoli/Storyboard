@@ -1,5 +1,5 @@
 import Storyboard from '../storyboard';
-import Account from '../models/account';
+import AccountAR from '../models/accountAR';
 import { IAccountFailResponse, ILoginResponse } from '../../../Core/types/Response';
 
 export default (req: any, res: any, next: any) => {
@@ -10,13 +10,13 @@ export default (req: any, res: any, next: any) => {
 		}
 		const response: ILoginResponse = {
 			success: true,
-			username: (req.user as Account).username
+			username: (req.user as AccountAR).username
 		};
 		
 		return req.transaction.sendResponse(res, response);
 	};
 
-	Storyboard.Instance().passport.authenticate('createAccount', {session: true}, (err: Error, user: Account, info: any) => {
+	Storyboard.Instance().passport.authenticate('createAccount', {session: true}, (err: Error, user: AccountAR, info: any) => {
 		if (err) {
 			return next(err); // will generate a 500 error
 		}

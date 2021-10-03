@@ -3,10 +3,10 @@ import { Strategy } from 'passport-local';
 import random from 'random';
 
 import Storyboard from '../storyboard';
-import Account from '../models/account';
+import AccountAR from '../models/accountAR';
 
 const createAccount = (req:any, username:any, password:any, done:any) => {
-    const account = new Account();
+    const account = new AccountAR();
     account.permissions = {};
     account.username = username;
     account.email = req?.body?.email ?? null;
@@ -52,7 +52,7 @@ const createAccount = (req:any, username:any, password:any, done:any) => {
         account.salt = salt;
         
         // assign a random pepper to the account
-        const peppers = Account.Peppers();
+        const peppers = AccountAR.Peppers();
         const pepperKeys = Object.keys(peppers);
         const pepperIndex = random.int(0, pepperKeys.length - 1);
         const pepperkey = pepperKeys[pepperIndex];
@@ -66,7 +66,7 @@ const createAccount = (req:any, username:any, password:any, done:any) => {
 };
 
 const verifyUser = (username:any, password:any, done:any) => {
-    (new Account).findOne({username: username}, (error, account: Account|null) => {
+    (new AccountAR).findOne({username: username}, (error, account: AccountAR|null) => {
         if (error) {
             return done(null, false, { message: 'login failed.' });
         }
@@ -74,7 +74,7 @@ const verifyUser = (username:any, password:any, done:any) => {
             return done(null, false, { message: 'login failed.' });
         }
 
-        const pepper = Account.Peppers()[account.pepper];
+        const pepper = AccountAR.Peppers()[account.pepper];
         if (!pepper) {
             return done(null, false, { message: 'login failed.' });
         }
