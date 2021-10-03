@@ -16,12 +16,13 @@ export namespace Network {
 		let url = `${Config.connectionProtocal}://${Config.serverUrl}:${Config.serverPort}/${endpoint}`;
 		if (params) {
 			let first = true;
-			Object.entries(params).forEach(([key, value]) => {
+			Object.entries(params).forEach(([key, value,]) => {
 				if (first) {
 					url += '?';
 				} else {
 					url += '&';
 				}
+				first = false;
 				url += `${encodeURIComponent(key)}=${encodeURIComponent(value)}`;
 			});
 		}
@@ -59,11 +60,11 @@ export namespace Network {
 		axios({
 			method: 'post',
 			url: createUrl(endpoint),
-			data: params
+			data: params,
 		})
 			.then(networkCallback)
 			.catch((error: any) => {
 				console.log(error);
 			}); // add check to see if endpoint allows post
 	};
-};
+}

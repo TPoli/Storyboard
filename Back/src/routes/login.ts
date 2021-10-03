@@ -1,7 +1,7 @@
-import AccountAR from "../models/accountAR";
-import Storyboard from "../storyboard";
+import AccountAR from '../models/accountAR';
+import Storyboard from '../storyboard';
 import { IAuthFailResponse, ILoginResponse } from '../../../Core/types/Response'
-import { IIndexable } from "../models/model";
+import { IIndexable } from '../models/model';
 
 export default (req: any, res: any, next: any) => {
 	const login = (loginErr: any) => {
@@ -12,19 +12,19 @@ export default (req: any, res: any, next: any) => {
 		const user: IIndexable = req.user;
 		const payload: ILoginResponse = {
 			success: true,
-			username: user.username
+			username: user.username,
 		};
 		return req.transaction.sendResponse(res, payload);
 	};
 
-	Storyboard.Instance().passport.authenticate('login', {session: true}, (err: Error, user: AccountAR, info: any) => {
+	Storyboard.Instance().passport.authenticate('login', {session: true,}, (err: Error, user: AccountAR, info: any) => {
 		if (err) {
 			return next(err); // will generate a 500 error
 		}
 		if (!user) {
 			const payload: IAuthFailResponse = {
 				success: false,
-				message: 'authentication failed'
+				message: 'authentication failed',
 			};
 			req.transaction.sendResponse(res, payload);
 		}

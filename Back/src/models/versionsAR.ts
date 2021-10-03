@@ -12,21 +12,21 @@ export default class VersionsAR extends Model {
 			type: ColumnType.int,
 			autoIncrement: true,
 			nullable: false,
-			unique: true
+			unique: true,
 		}, {
 			name: 'table_name',
 			primary: false,
 			taintable: false,
-			type: ColumnType.string
+			type: ColumnType.string,
 		}, {
 			name: 'version',
 			primary: false,
 			taintable: false,
-			type: ColumnType.int
-		}
+			type: ColumnType.int,
+		},
 	] as Column[];
 
 	constructor() {
 		super();
 	}
-};
+}

@@ -8,9 +8,9 @@ import CollectionAR from './CollectionAR';
 
 export default class ContentAR extends Model implements Content {
 
-	public id: number = -1;
-	public name: string = '';
-	public siblingOrder: number = 0;
+	public id = -1;
+	public name = '';
+	public siblingOrder = 0;
 	public parent: Collection|null = null;
 	public data: Object = {};
 	
@@ -25,7 +25,7 @@ export default class ContentAR extends Model implements Content {
 			type: ColumnType.int,
 			autoIncrement: true,
 			nullable: false,
-			unique: true
+			unique: true,
 		}, {
 			name: 'account',
 			primary: true,
@@ -33,14 +33,14 @@ export default class ContentAR extends Model implements Content {
 			type: ColumnType.int,
 			references: {
 				model: new AccountAR().table,
-				column: 'id'
-			}
+				column: 'id',
+			},
 		}, {
 			name: 'siblingOrder',
 			primary: false,
 			taintable: true,
 			type: ColumnType.int,
-			nullable: false
+			nullable: false,
 		}, {
 			name: 'parent',
 			primary: false,
@@ -49,18 +49,18 @@ export default class ContentAR extends Model implements Content {
 			nullable: false,
 			references: {
 				model: new CollectionAR().table,
-				column: 'id'
-			}
+				column: 'id',
+			},
 		}, {
 			name: 'data',
 			primary: false,
 			taintable: true,
 			type: ColumnType.json,
-			nullable: false
-		}
+			nullable: false,
+		},
 	] as Column[];
 
 	constructor() {
 		super();
 	}
-};
+}

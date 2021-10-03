@@ -8,7 +8,7 @@ export enum ColumnType {
 	'json' = 'JSON',
 	'bool' = 'BOOLEAN',
 	'datetime' = 'DATETIME'
-};
+}
 
 type Column = {
 	name: string;
@@ -27,18 +27,18 @@ type Column = {
 
 export interface IIndexable {
 	[key: string]: any;
-};
+}
 
 export type SaveCallback = (success: boolean) => void;
 type RefreshCallback = () => void;
 
 abstract class Model implements IIndexable {
-	public table: string = '';
+	public table = '';
 	public abstract version: number;
 	public abstract columns: Column[]
 	protected isNew = true;
 
-	id: number = -1;
+	id = -1;
 
 	public static find<Type>(): Type|null {
 		return null;
@@ -56,7 +56,7 @@ abstract class Model implements IIndexable {
 		sql += allowedColumns.join(',') + ' FROM ' + this.table + ' WHERE ';
 
 		let firstValidColumn = true;
-		for (let [key, value] of Object.entries(params)) {
+		for (const [key, value,] of Object.entries(params)) {
 			if (allowedColumns.includes(key)) {
 				if (!firstValidColumn) {
 					sql += ' AND';
@@ -75,7 +75,7 @@ abstract class Model implements IIndexable {
 			}
 			const result = results[0];
 			
-			Object.entries(result).forEach(([key, value]) => {
+			Object.entries(result).forEach(([key, value,]) => {
 				(this as IIndexable)[key] = value;
 			});
 			this.isNew = false;
@@ -121,7 +121,7 @@ abstract class Model implements IIndexable {
 						default:
 							callback(false);
 							return;
-					};
+					}
 				});
 				
 				const sql = 'INSERT INTO ' + this.table + '(' + columns.join(',') + ') VALUES (' + paramKeys.join(',') + ')';
@@ -171,7 +171,7 @@ abstract class Model implements IIndexable {
 						default:
 							callback(false);
 							return;
-					};
+					}
 				});
 
 				const sql = `UPDATE ${this.table} SET ${columns.join('= ?,')} = ? WHERE id = ${this.id}`;
@@ -191,12 +191,12 @@ abstract class Model implements IIndexable {
 				callback(false);
 			}
 		}
-	};
+	}
 
 	// use after save() if you need to access any auto generated data such as ID
 	refresh(callback: RefreshCallback): void {
 		callback();
-	};
+	}
 
 	public createDefaultEntries = (callback: () => void) => {
 		callback();

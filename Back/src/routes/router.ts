@@ -1,8 +1,8 @@
-import { EndpointRoutes, Api } from "../../../Core/Api/Api";
-import { ISuccessResponse } from "../../../Core/types/Response";
-import createAccount from "./createAccount";
-import login from "./login";
-import { Route } from "./route";
+import { EndpointRoutes, Api } from '../../../Core/Api/Api';
+import { ISuccessResponse } from '../../../Core/types/Response';
+import createAccount from './createAccount';
+import login from './login';
+import { Route } from './route';
 
 type RouteMap = {
 	[key in EndpointRoutes]: Route;
@@ -11,31 +11,31 @@ type RouteMap = {
 export const Routes: RouteMap = {
 	createAccount: {
 		callback: createAccount,
-		params: Api.AllEndpoints['createAccount'].params
+		params: Api.AllEndpoints['createAccount'].params,
 	},
 	login: {
 		callback: login,
-		params: Api.AllEndpoints['login'].params
+		params: Api.AllEndpoints['login'].params,
 	},
 	logout: {
 		callback: (req, res) => {
 			req.logout();
 			const payload: ISuccessResponse = {
 				success: true,
-				message: 'logged out'
+				message: 'logged out',
 			};
 			req.transaction.sendResponse(res, payload);
 		},
-		params: Api.AllEndpoints['logout'].params
+		params: Api.AllEndpoints['logout'].params,
 	},
 	test: {
 		callback: (req, res) => {
 			const payload: ISuccessResponse = {
 				success: true,
-				message: 'Well done!'
+				message: 'Well done!',
 			};
 			req.transaction.sendResponse(res, payload);
 		},
-		params: Api.AllEndpoints['test'].params
-	}
+		params: Api.AllEndpoints['test'].params,
+	},
 };

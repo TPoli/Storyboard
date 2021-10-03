@@ -3,14 +3,14 @@ import { Endpoints } from '../../../../Core/Api/Api';
 import { ILoginResponse, Response } from '../../../../Core/types/Response';
 
 export default {
-	name: "loginContent",
+	name: 'loginContent',
 	components: {
 		
 	},
 	data: function () {
 		return {
 			username: (this as any).$store.state.username,
-			password: ''
+			password: '',
 		};
 	},
 	methods: {
@@ -21,11 +21,11 @@ export default {
 				const fullPath = (this as any).$route.fullPath;
 				if (fullPath === '/login' || fullPath === '/')
 				{
-					(this as any).$router.push({path: '/dashboard'});
+					(this as any).$router.push({path: '/dashboard',});
 				}
 			
 			};
-			Network.Post(Endpoints.LOGIN, { un: (this as any).username, pw: (this as any).password}, loginCallback);
-		}
-	}
+			Network.Post(Endpoints.LOGIN, { un: (this as any).username, pw: (this as any).password,}, loginCallback);
+		},
+	},
 };

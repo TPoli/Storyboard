@@ -5,23 +5,23 @@ import { Response, ILoginResponse } from '../../../../Core/types/Response';
 import Page from '../../components/Page/Page.vue';
 
 export default {
-	name: "createAccount",
+	name: 'createAccount',
 	components: {
-		Page: Page
+		Page: Page,
 	},
 	data: function () {
 		return {
 			username: '',
 			password: '',
 			email: null,
-			mobile: null
+			mobile: null,
 		};
 	},
 	methods: {
 		createAccount() {
 			const accountCreatedCallback = (response: Response): void => {
 				(this as any).$store.commit('login', (response as ILoginResponse).username);
-				(this as any).$router.push({path: '/dashboard'});
+				(this as any).$router.push({path: '/dashboard',});
 			};
 			const params = {
 				un: (this as any).username,
@@ -30,6 +30,6 @@ export default {
 				mobile: (this as any).mobile,
 			};
 			Network.Post(Endpoints.CREATE_ACCOUNT, params, accountCreatedCallback);
-		}
-	}
+		},
+	},
 };

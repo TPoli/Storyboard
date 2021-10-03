@@ -12,42 +12,42 @@ export default class AccountAR extends Model {
 			type: ColumnType.int,
 			autoIncrement: true,
 			nullable: false,
-			unique: true
+			unique: true,
 		}, {
 			name: 'username',
 			primary: true,
 			taintable: true,
 			type: ColumnType.string,
 			autoIncrement: false,
-			nullable: false
+			nullable: false,
 		}, {
 			name: 'password',
 			primary: false,
 			taintable: true,
 			type: ColumnType.tinytext,
 			autoIncrement: false,
-			nullable: false
+			nullable: false,
 		}, {
 			name: 'salt',
 			primary: false,
 			taintable: false,
 			type: ColumnType.string,
 			autoIncrement: false,
-			nullable: false
+			nullable: false,
 		}, {
 			name: 'pepper',
 			primary: false,
 			taintable: false,
 			type: ColumnType.string,
 			autoIncrement: false,
-			nullable: false
+			nullable: false,
 		}, {
 			name: 'permissions',
 			primary: false,
 			taintable: false,
 			type: ColumnType.json,
 			autoIncrement: false,
-			nullable: false
+			nullable: false,
 		}, {
 			name: 'email',
 			primary: false,
@@ -55,7 +55,7 @@ export default class AccountAR extends Model {
 			type: ColumnType.string,
 			autoIncrement: false,
 			nullable: true,
-			default: 'NULL'
+			default: 'NULL',
 		}, {
 			name: 'mobile',
 			primary: false,
@@ -63,15 +63,15 @@ export default class AccountAR extends Model {
 			type: ColumnType.string,
 			autoIncrement: false,
 			nullable: true,
-			default: 'NULL'
-		}
+			default: 'NULL',
+		},
 	];
 
-	public id: number = -1;
-	public username: string = '';
-	public password: string = '';
-	public salt: string = '';
-	public pepper: string = '';
+	public id = -1;
+	public username = '';
+	public password = '';
+	public salt = '';
+	public pepper = '';
 	public mobile: string|null = null;
 	public email: string|null = null;
 	public permissions: Object = {};
@@ -176,7 +176,7 @@ export default class AccountAR extends Model {
 		'$2b$10$9kDlYGLfgpM5M1XeOZjntO': '$2b$10$RC77I6qIAzUVutlHgOIaZ.',
 		'$2b$10$IVizYIXuHi7nnyR1LuQAz.': '$2b$10$UKNPBIxOA1wED3KRPN9Yqe',
 		'$2b$10$w6LgKneLrvvfnQfld8OCF.': '$2b$10$Zq0l8gh6ugES8e2PzKskse',
-		'$2b$10$zreUfwgHtRqDgU/zqPmD3O': '$2b$10$j9BA3K3MSk8TZBUUtrCe1e'
+		'$2b$10$zreUfwgHtRqDgU/zqPmD3O': '$2b$10$j9BA3K3MSk8TZBUUtrCe1e',
 	}
 
 	public static Peppers = () => {
@@ -212,7 +212,7 @@ export default class AccountAR extends Model {
 			'pepper',
 			'mobile',
 			'email',
-			'permissions'
+			'permissions',
 		]);
 	};
-};
+}

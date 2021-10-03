@@ -5,7 +5,7 @@ import { IResponse } from '../../../Core/types/Response';
 
 
 export default {
-name: "Container",
+name: 'Container',
 	props: {
 		msg: String,
 	},
@@ -22,7 +22,7 @@ name: "Container",
 			const loginCallback = (response: IResponse) => {
 
 			};
-			Network.Post(Endpoints.LOGIN, {un: 'bob', pw: 'bob'}, loginCallback);
-		}
-	}
+			Network.Post(Endpoints.LOGIN, {un: 'bob', pw: 'bob',}, loginCallback);
+		},
+	},
 };

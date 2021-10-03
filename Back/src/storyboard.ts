@@ -15,4 +15,4 @@ export default class Storyboard {
 		}
 		return Storyboard.instance;
 	};
-};
+}

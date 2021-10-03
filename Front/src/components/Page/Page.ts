@@ -6,9 +6,9 @@ import LoginModal from '../Modals/LoginModal/LoginModal.vue';
 
 
 export default {
-name: "Page",
+name: 'Page',
 	components: {
-		'login-modal': LoginModal
+		'login-modal': LoginModal,
 	},
 	data: function () {
 		return {
@@ -20,7 +20,7 @@ name: "Page",
 	},
 	methods: {
 		navigateToLogin() {
-			(this as any).$router.push({path: '/login'});
+			(this as any).$router.push({path: '/login',});
 		},
 		test() {
 			const entity = new Entity('Location');
@@ -34,12 +34,12 @@ name: "Page",
 			const loginCallback = (response: IResponse) => {
 
 			};
-			Network.Post(Endpoints.LOGIN, {un: 'bob', pw: 'bob'}, loginCallback);
+			Network.Post(Endpoints.LOGIN, {un: 'bob', pw: 'bob',}, loginCallback);
 		},
 		logout() {
 			const logoutCallback = (response: IResponse) => {
 				(this as any).$store.commit('logOut');
-				(this as any).$router.push({path: '/login'});
+				(this as any).$router.push({path: '/login',});
 			};
 			Network.Post(Endpoints.LOGOUT, {}, logoutCallback);
 		},
@@ -56,6 +56,6 @@ name: "Page",
 		},
 		isActiveRoute(route: string): boolean {
 			return route === (this as any).$route.fullPath;
-		}
-	}
+		},
+	},
 };

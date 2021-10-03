@@ -16,7 +16,7 @@ export default class TransactionsAR extends Model {
 			type: ColumnType.int,
 			autoIncrement: true,
 			nullable: false,
-			unique: true
+			unique: true,
 		}, {
 			name: 'account',
 			primary: true,
@@ -24,40 +24,40 @@ export default class TransactionsAR extends Model {
 			type: ColumnType.int,
 			references: {
 				model: new AccountAR().table,
-				column: 'id'
-			}
+				column: 'id',
+			},
 		}, {
 			name: 'route',
 			primary: false,
 			taintable: false,
 			type: ColumnType.string,
-			nullable: false
+			nullable: false,
 		}, {
 			name: 'ipAddress',
 			primary: false,
 			taintable: true,
 			type: ColumnType.string,
-			nullable: false
+			nullable: false,
 		}, {
 			name: 'params',
 			primary: false,
 			taintable: true,
 			type: ColumnType.json,
-			nullable: false
+			nullable: false,
 		}, {
 			name: 'response',
 			primary: false,
 			taintable: true,
-			type: ColumnType.json
-		}
+			type: ColumnType.json,
+		},
 	] as Column[];
 
-	public id: number = -1;
-	public account: number = 1;
-	public route: string = '';
+	public id = -1;
+	public account = 1;
+	public route = '';
 	public params: Object = {};
 	public response: Object|null = null;
-	public ipAddress: string = '';
+	public ipAddress = '';
 
 	constructor() {
 		super();
@@ -68,6 +68,6 @@ export default class TransactionsAR extends Model {
 
 		this.response = payload;
 		const callback: SaveCallback = (success) => {}; // unused but required
-		this.save(callback, ['response']);
+		this.save(callback, ['response',]);
 	}
-};
+}

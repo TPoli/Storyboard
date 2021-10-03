@@ -1,5 +1,5 @@
 import { createStore } from 'vuex';
-import createPersistedState from "vuex-persistedstate";
+import createPersistedState from 'vuex-persistedstate';
 export interface State {
 	username: string,
 	loggedIn: boolean
@@ -8,7 +8,7 @@ export interface State {
 export const store = createStore<State>({
 	state: {
 	  username: '',
-	  loggedIn: false
+	  loggedIn: false,
 	},
 	mutations: {
 		login (state: State, username: string) {
@@ -17,9 +17,9 @@ export const store = createStore<State>({
 		},
 		logOut (state: State) {
 			state.loggedIn = false;
-		}
+		},
 	},
 	plugins: [
-		createPersistedState()
-	]
-});
+		createPersistedState(),
+	],
+})

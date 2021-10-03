@@ -7,9 +7,9 @@ import { Collection } from '../../../Core/types/Collection';
 
 export default class CollectionAR extends Model implements Collection {
 
-	public id: number = -1;
-	public name: string = '';
-	public siblingOrder: number = 0;
+	public id = -1;
+	public name = '';
+	public siblingOrder = 0;
 	public parent: Collection|null = null;
 	public children: Collection[] = [];
 	public content: Content[] = [];
@@ -25,7 +25,7 @@ export default class CollectionAR extends Model implements Collection {
 			type: ColumnType.int,
 			autoIncrement: true,
 			nullable: false,
-			unique: true
+			unique: true,
 		}, {
 			name: 'account',
 			primary: true,
@@ -33,8 +33,8 @@ export default class CollectionAR extends Model implements Collection {
 			type: ColumnType.int,
 			references: {
 				model: new AccountAR().table,
-				column: 'id'
-			}
+				column: 'id',
+			},
 		}, {
 			name: 'name',
 			primary: false,
@@ -46,7 +46,7 @@ export default class CollectionAR extends Model implements Collection {
 			primary: false,
 			taintable: true,
 			type: ColumnType.int,
-			nullable: false
+			nullable: false,
 		}, {
 			name: 'parent',
 			primary: false,
@@ -55,12 +55,12 @@ export default class CollectionAR extends Model implements Collection {
 			nullable: true,
 			references: {
 				model: this.table,
-				column: 'id'
+				column: 'id',
 			},
-		}
+		},
 	] as Column[];
 
 	constructor() {
 		super();
 	}
-};
+}

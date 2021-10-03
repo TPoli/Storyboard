@@ -7,6 +7,6 @@ export type ExpressCallback = (req: express.Request, res: express.Response, next
 export interface LoggedInRequest extends express.Request {
 	transaction: TransactionsAR,
 	user: AccountAR
-};
+}
 
 export type ExpressFinalCallback = (req: LoggedInRequest, res: express.Response, next: express.NextFunction) => void;

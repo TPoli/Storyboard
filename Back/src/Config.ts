@@ -6,7 +6,7 @@ type ServerConfig = StoryboardConfig & {
 
 const createConfig = (): ServerConfig => {
 	return {
-		...baseConfig
+		...baseConfig,
 	}
 };
 

@@ -51,7 +51,7 @@ export namespace Db {
 		const createCallback: DbCallback = (error, results, fields) => {
 			if (error) {
 				throw error
-			};
+			}
 			model.createDefaultEntries(callback);
 		};
 
@@ -64,11 +64,11 @@ export namespace Db {
 			if (!column.references) {
 				return;
 			}
-			const fkName = CamelCase([model.table, column.references.model, column.references.column, 'Fk' ]);
+			const fkName = CamelCase([model.table, column.references.model, column.references.column, 'Fk', ]);
 			sql += `${(first ? '' : ',')}\nADD CONSTRAINT ${fkName}\n`;
 			sql += `FOREIGN KEY (${column.name})\n`;
 			sql += `REFERENCES ${tableName} (${column.references.column})\n`;
-			sql += `ON UPDATE NO ACTION ON DELETE NO ACTION`;
+			sql += 'ON UPDATE NO ACTION ON DELETE NO ACTION';
 			first = false;
 		});
 
@@ -82,7 +82,7 @@ export namespace Db {
 
 		const model = new schema();
 		let createQuery = `CREATE TABLE \`${databaseName}\`.\`${model.table}\` (`;
-		let primaryKeys: string[] = [];
+		const primaryKeys: string[] = [];
 		const uniqueKeys: string[] = [];
 		model.columns.forEach((column: Column) => {
 			createQuery += column.name + ' ' + column.type;
@@ -93,7 +93,7 @@ export namespace Db {
 				uniqueKeys.push(column.name);
 			}
 			if (!column.nullable) {
-				createQuery += ` NOT`;
+				createQuery += ' NOT';
 			}
 			createQuery += ' NULL';
 
@@ -122,7 +122,7 @@ export namespace Db {
 		const createCallback: DbCallback = (error, results, fields) => {
 			if (error) {
 				throw error
-			};
+			}
 			model.createDefaultEntries(callback);
 		};
 
@@ -143,11 +143,11 @@ export namespace Db {
 		const existsCallback: DbCallback = (error, results, fields) => {
 			if (error) {
 				throw error
-			};
+			}
 			callback(results.length > 0);
 		};
 
-		adminConnection.query(existsQuery, [databaseName, tableName], existsCallback);
+		adminConnection.query(existsQuery, [databaseName, tableName,], existsCallback);
 	};
 
 	const ensureForeignKeysSet = (next: () => void, newSchemas: Schema[]) => {
@@ -225,7 +225,7 @@ export namespace Db {
 			host     : 'localhost',
 			user     : 'storyboard_admin',
 			password : 'storyboard_admin',
-			database : 'storyboard'
+			database : 'storyboard',
 		});
 		defaultConnection = adminConnection; // this needs to change
 		ensureTablesSetup(next);
@@ -236,10 +236,10 @@ export namespace Db {
 		const userQueryCallback: DbCallback = (error, results, fields) => {
 			if (error) {
 				throw error
-			};
+			}
 			let foundAdmin = false;
 			if (results.length > 0) {
-				Object.entries(results[0]).forEach(([, result]) => {
+				Object.entries(results[0]).forEach(([, result,]) => {
 					foundAdmin = 0 !== result;
 				});
 			}
@@ -274,7 +274,7 @@ export namespace Db {
 		const databaseQueryCallback: DbCallback = (error, results, fields) => {
 			if (error) {
 				throw error
-			};
+			}
 			if (results.length === 0)
 			{
 				// create database
@@ -284,7 +284,7 @@ export namespace Db {
 			ensureUsersSetup(connection, next);
 		};
 
-		connection.query(databaseQuery, [databaseName], databaseQueryCallback);
+		connection.query(databaseQuery, [databaseName,], databaseQueryCallback);
 	};
 
 	// this function needs to be made synchronous
@@ -298,4 +298,4 @@ export namespace Db {
 		}
 		defaultConnection.query(statement, params, callback);
 	};
-};
+}

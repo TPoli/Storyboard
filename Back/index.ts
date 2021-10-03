@@ -18,7 +18,7 @@ import { ExpressCallback, LoggedInRequest } from './src/types/types';
 
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-const session = require("express-session");
+const session = require('express-session');
 
 const app = express();
 
@@ -28,13 +28,13 @@ const setupExpress = () => {
         origin += `:${Config.sitePort}`;
     }
     const allowedOrigins = [
-        origin
+        origin,
     ];
 
     const corsOptions: cors.CorsOptions = {
         origin: allowedOrigins,
         optionsSuccessStatus: 200, // legacy support
-        credentials: true
+        credentials: true,
     };
 
     app.use(cors(corsOptions));
@@ -46,13 +46,13 @@ const setupExpress = () => {
         saveUninitialized: false,
         cookie: {
             maxAge: MinutesToMilliseconds(60),
-            secure: false // THIS NEEDS TO BE TRUE! only set to false for local testing
-        }
+            secure: false, // THIS NEEDS TO BE TRUE! only set to false for local testing
+        },
     }));
 
     app.use(cookieParser());
     app.use(bodyParser.urlencoded({
-        extended: true
+        extended: true,
     }));
     app.use(bodyParser.json());
     app.use(Storyboard.Instance().passport.initialize());
@@ -67,7 +67,7 @@ const createLogMiddlware = (endpoint: EndpointRoutes) => {
             } else {
                 const response: IFailResponse = {
                     message: 'faled to process request',
-                    success: false
+                    success: false,
                 };
                 res.send(response);
             }
@@ -86,16 +86,16 @@ const createLogMiddlware = (endpoint: EndpointRoutes) => {
             'route',
             'params',
             'response',
-            'ipAddress'
+            'ipAddress',
         ]);
     };
     return middleware;
 };
 
 const setupRoutes = () => {
-    Object.entries(Api.AllEndpoints).forEach(([, endpoint]) => {
+    Object.entries(Api.AllEndpoints).forEach(([, endpoint,]) => {
 
-        // build middleware that validates parameters and calls any aditional middleware
+        // build middleware that validates parameters and calls any additional middleware
         const middleware: ExpressCallback = (req, res, next) => {
             const validatedBody: any = {};
             endpoint.params.forEach((param: Parameter) => {
@@ -109,7 +109,7 @@ const setupRoutes = () => {
                     console.log(errorMessage);
                     const responseData: IFailResponse = {
                         message: errorMessage,
-                        success: false
+                        success: false,
                     };
                     res.send(responseData);
                     return;
@@ -147,12 +147,12 @@ Storyboard.Instance().passport.serializeUser(function(user: AccountAR, done: any
 });
   
 Storyboard.Instance().passport.deserializeUser(function(id: number, done: any) {
-    (new AccountAR).findOne({id: id}, (error, account) => {
+    (new AccountAR).findOne({id: id,}, (error, account) => {
         if (error) {
-            return done(null, false, { message: 'login failed.' });
+            return done(null, false, { message: 'login failed.', });
         }
         if (!account) {
-            return done(null, false, { message: 'login failed.' });
+            return done(null, false, { message: 'login failed.', });
         }
         return done(null, account);
     });

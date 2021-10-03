@@ -19,13 +19,13 @@ const createAccount = (req:any, username:any, password:any, done:any) => {
         if (success) {
             account.refresh(refreshed);
         } else {
-            return done(null, false, { message: 'login failed.' });
+            return done(null, false, { message: 'login failed.', });
         }
     };
 
     const hashCallback = (err: Error, hash: string) => {
         if (err) {
-            return done(null, false, { message: 'login failed.' });
+            return done(null, false, { message: 'login failed.', });
         }
         account.password = hash;
         const columnsToSave = [
@@ -33,7 +33,7 @@ const createAccount = (req:any, username:any, password:any, done:any) => {
             'password',
             'permissions',
             'salt',
-            'pepper'
+            'pepper',
         ];
         if (account.email) {
             columnsToSave.push('email');
@@ -47,7 +47,7 @@ const createAccount = (req:any, username:any, password:any, done:any) => {
     const saltRounds = 10;
     const saltCallback = (err: Error, salt: string) => {
         if (err) {
-            return done(null, false, { message: 'login failed.' });
+            return done(null, false, { message: 'login failed.', });
         }
         account.salt = salt;
         
@@ -66,28 +66,28 @@ const createAccount = (req:any, username:any, password:any, done:any) => {
 };
 
 const verifyUser = (username:any, password:any, done:any) => {
-    (new AccountAR).findOne({username: username}, (error, account: AccountAR|null) => {
+    (new AccountAR).findOne({username: username,}, (error, account: AccountAR|null) => {
         if (error) {
-            return done(null, false, { message: 'login failed.' });
+            return done(null, false, { message: 'login failed.', });
         }
         if (!account) {
-            return done(null, false, { message: 'login failed.' });
+            return done(null, false, { message: 'login failed.', });
         }
 
         const pepper = AccountAR.Peppers()[account.pepper];
         if (!pepper) {
-            return done(null, false, { message: 'login failed.' });
+            return done(null, false, { message: 'login failed.', });
         }
 
         bcrypt.hash(password + pepper, account.salt, function(err: Error, hash: string) {
             if (err) {
-                return done(null, false, { message: 'login failed.' });
+                return done(null, false, { message: 'login failed.', });
             }
             
             if (account.password === hash) {
                 return done(null, account);
             } else {
-                return done(null, false, { message: 'login failed.' });
+                return done(null, false, { message: 'login failed.', });
             }
         });
     });
@@ -97,13 +97,13 @@ export default () => {
 	Storyboard.Instance().passport.use('login', new Strategy({
 		usernameField: 'un',
 		passwordField: 'pw',
-		session: true
+		session: true,
 	}, verifyUser));
 	
 	Storyboard.Instance().passport.use('createAccount', new Strategy({
 		usernameField: 'un',
 		passwordField: 'pw',
         passReqToCallback: true,
-		session: true
+		session: true,
 	}, createAccount));
 };

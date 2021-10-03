@@ -10,20 +10,20 @@ export default (req: any, res: any, next: any) => {
 		}
 		const response: ILoginResponse = {
 			success: true,
-			username: (req.user as AccountAR).username
+			username: (req.user as AccountAR).username,
 		};
 		
 		return req.transaction.sendResponse(res, response);
 	};
 
-	Storyboard.Instance().passport.authenticate('createAccount', {session: true}, (err: Error, user: AccountAR, info: any) => {
+	Storyboard.Instance().passport.authenticate('createAccount', {session: true,}, (err: Error, user: AccountAR, info: any) => {
 		if (err) {
 			return next(err); // will generate a 500 error
 		}
 		if (!user) {
 			const payload: IAccountFailResponse = {
 				success: false,
-				message: 'account creation failed'
+				message: 'account creation failed',
 			};
 			req.transaction.sendResponse(res, payload);
 		}
