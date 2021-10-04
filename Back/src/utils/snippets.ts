@@ -1,9 +1,9 @@
-const bcrypt = require('bcrypt');
+import * as bcrypt from 'bcrypt';
 
-export const generateNewPeppers = () => {
+export const generateNewPeppers = (): void => {
     for (let i = 0; i < 100; ++i) {
-        bcrypt.genSalt(10, (error: Error, salt: string) => {
-            bcrypt.genSalt(10, (error: Error, key: string) => {
+        bcrypt.genSalt(10, (error, salt) => {
+            bcrypt.genSalt(10, (error, key) => {
                 console.log(`${key}: ${salt}`);
             });
         });
