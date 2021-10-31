@@ -6,20 +6,63 @@
 		<template v-slot:content>
 			<h1>Welcome {{getUsersName()}}</h1>
 			<div>
-				<h2>Most recently modified</h2>
-				box with full hirachy name + date of last modification by this user
-				<h2>Your favourite collections</h2>
-				box that has horrizontal scroll if needed with same details as above shown
-				<h2>Your collections</h2>
-				button to create collection
-				<Collection msg="this collection is in the dashboard" />
-				box that has horrizontal scroll if needed with same details as above shown (contains all top level collections owned by user)
-				have a create collection button in the boxes header
-				<h2>Available collections</h2>
-				box that has horrizontal scroll if needed with same details as above shown (contains all highest level collections linked to user)
-				hide if none available
+				<panel
+					title="Most recently modified"
+				>
+					<template v-slot:cards>
+						<card
+							v-for="(recent, index) in recentlyModified"
+							v-bind:title="recent.title"
+							v-bind:content="recent.content"
+							v-bind:key="recent.id"
+						></card>
+					</template>
+				</panel>
+
+				<panel
+					title="Favorites"
+				>
+					<template v-slot:cards>
+						<card
+							v-for="(favourite, index) in favourites"
+							v-bind:title="favourite.title"
+							v-bind:content="favourite.content"
+							v-bind:key="favourite.id"
+						></card>
+					</template>
+				</panel>
+				
+				<panel
+					title="My Collections"
+					subHeading="created by you"
+					buttonContent="Create new collection"
+					v-bind:buttonCallback="createNewCollection"
+				>
+					<!-- have a create collection button in the boxes header -->
+					<template v-slot:cards>
+						<card
+							v-for="(favourite, index) in myCollections"
+							v-bind:title="favourite.title"
+							v-bind:content="favourite.content"
+							v-bind:key="favourite.id"
+						></card>
+					</template>
+				</panel>
+				<panel
+					v-if="availableCollections.length > 0"
+					title="Available Collections"
+					subHeading="access granted to you"
+				>
+					<template v-slot:cards>
+						<card
+							v-for="(favourite, index) in availableCollections"
+							v-bind:title="favourite.title"
+							v-bind:content="favourite.content"
+							v-bind:key="favourite.id"
+						></card>
+					</template>
+				</panel>
 			</div>
-            <Container msg="this container is in the dashboard" />
         </template>
 		<template v-slot:footer>
 			<div>feet</div>

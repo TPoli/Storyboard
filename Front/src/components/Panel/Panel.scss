@@ -1,0 +1,21 @@
+
+
+.panel {
+  height: auto;
+  border-radius: 5px;
+  border-style: double;
+  margin-top: 2.5%;
+  margin-left: 10%;
+  margin-right: 10%;
+  overflow: hidden;
+};
+
+.cc {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  overflow-x: auto;
+  display: inline-block;
+  white-space: nowrap;
+}
