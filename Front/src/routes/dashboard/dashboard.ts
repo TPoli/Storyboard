@@ -5,64 +5,68 @@ import Panel from '../../components/Panel/Panel.vue';
 
 import Page from '../../components/Page/Page.vue';
 
-export default {
+import { defineComponent, ref } from 'vue';
+import { Network } from '@/utils/Network';
+import { Endpoints } from '../../../../Core/Api/Api';
+import { ICollection } from '../../../../Core/types/Collection';
+import { IGetCollectionsResponse } from '../../../../Core/types/Response';
+
+interface DashboardData {
+	myCollections: ICollection[],
+	favourites: ICollection[],
+	availableCollections: ICollection[],
+}
+
+const Dashboard = defineComponent({
 	name: 'dashboard',
 	components: {
-		Container: Container,
-		Collection: Collection,
-		'card': Card,
-		'page': Page,
-		'panel': Panel,
+		Container,
+	  	Collection,
+		Card,
+		Page,
+		Panel,
+	},
+	data(): DashboardData {
+		return {
+			// list of all top level collections owned by user
+			myCollections: [],
+			favourites: [],
+
+			// list of all top level collections shared with user
+			availableCollections: [],
+		};
+	},
+	setup(props: any, context: any) {
+		// 3 most recently modified collections (can be low level collections)
+		const recentlyModified = ref([] as ICollection[]);
+
+		const getCollectionsCallback: Network.Callback = (response) => {
+			const collections = (response as IGetCollectionsResponse).collections;
+
+			if (collections.recentlyModified) {
+				recentlyModified.value = collections.recentlyModified;
+			}
+		};
+
+		Network.Post(Endpoints.GET_COLLECTIONS, { collections: [
+			'recentlyModified',
+			'myCollections',
+			'favourites',
+			'availableCollections',
+		],}, getCollectionsCallback);
+
+		return {
+			recentlyModified,
+		};
 	},
 	methods: {
 		getUsersName(): string {
 			return (this as any).$store.state.username;
 		},
 		createNewCollection(): void {
-			console.log('createNewCollection');
+			
 		},
 	},
-	computed: {
-		// 3 most recently modified collections (can be low level collections)
-		recentlyModified(): any[] {
-			return [
-				{
-					title: 'C1',
-					content: 'c1',
-				}, {
-					title: 'C2',
-					content: 'c2',
-				}, {
-					title: 'C3',
-					content: 'c3',
-				},
-			];
-		},
-		favourites(): any[] {
-			return [
-				{
-					title: 'C1',
-					content: 'c1',
-				},
-			];
-		},
-		// list of all top level collections owned by user
-		myCollections(): any[] {
-			return [
-				{
-					title: 'C1',
-					content: 'c1',
-				},
-			];
-		},
-		// list of all top level collections shared with user
-		availableCollections(): any[] {
-			return [
-				{
-					title: 'C1',
-					content: 'c1',
-				},
-			];
-		},
-	},
-};
+});
+
+export default Dashboard;

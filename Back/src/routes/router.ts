@@ -1,7 +1,8 @@
 import { EndpointRoutes, Api } from '../../../Core/Api/Api';
 import { ISuccessResponse } from '../../../Core/types/Response';
 import createAccount from './createAccount';
-import login from './login';
+import getCollectionsFn from './getCollections';
+import loginFn from './login';
 import { Route } from './route';
 
 type RouteMap = {
@@ -14,7 +15,7 @@ export const Routes: RouteMap = {
 		params: Api.AllEndpoints['createAccount'].params,
 	},
 	login: {
-		callback: login,
+		callback: loginFn,
 		params: Api.AllEndpoints['login'].params,
 	},
 	logout: {
@@ -37,5 +38,9 @@ export const Routes: RouteMap = {
 			req.transaction.sendResponse(res, payload);
 		},
 		params: Api.AllEndpoints['test'].params,
+	},
+	getCollections: {
+		callback: getCollectionsFn,
+		params: Api.AllEndpoints['getCollections'].params,
 	},
 };

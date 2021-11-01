@@ -5,7 +5,7 @@ class Entity {
 	constructor(type: EntityType) {
 		this.type = type;
 	}
-	move(distanceInMeters: number = 0) {
+	move(distanceInMeters = 0) {
 		console.log(`${this.type} moved ${distanceInMeters}m.`);
 	}
 }

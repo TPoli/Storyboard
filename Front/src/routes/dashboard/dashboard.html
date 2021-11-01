@@ -11,11 +11,11 @@
 				>
 					<template v-slot:cards>
 						<card
-							v-for="(recent, index) in recentlyModified"
-							v-bind:title="recent.title"
-							v-bind:content="recent.content"
-							v-bind:key="recent.id"
-						></card>
+							v-for="(card, index) in recentlyModified"
+							v-bind:title="card.title"
+							v-bind:content="card.content"
+							v-bind:key="card.id"
+						/>
 					</template>
 				</panel>
 
@@ -24,11 +24,11 @@
 				>
 					<template v-slot:cards>
 						<card
-							v-for="(favourite, index) in favourites"
-							v-bind:title="favourite.title"
-							v-bind:content="favourite.content"
-							v-bind:key="favourite.id"
-						></card>
+							v-for="(card, index) in favourites"
+							v-bind:title="card.title"
+							v-bind:content="card.content"
+							v-bind:key="card.id"
+						/>
 					</template>
 				</panel>
 				
@@ -41,11 +41,11 @@
 					<!-- have a create collection button in the boxes header -->
 					<template v-slot:cards>
 						<card
-							v-for="(favourite, index) in myCollections"
-							v-bind:title="favourite.title"
-							v-bind:content="favourite.content"
-							v-bind:key="favourite.id"
-						></card>
+							v-for="(card, index) in myCollections"
+							v-bind:title="card.title"
+							v-bind:content="card.content"
+							v-bind:key="card.id"
+						/>
 					</template>
 				</panel>
 				<panel
@@ -55,11 +55,11 @@
 				>
 					<template v-slot:cards>
 						<card
-							v-for="(favourite, index) in availableCollections"
-							v-bind:title="favourite.title"
-							v-bind:content="favourite.content"
-							v-bind:key="favourite.id"
-						></card>
+							v-for="(card, index) in availableCollections"
+							v-bind:title="card.title"
+							v-bind:content="card.content"
+							v-bind:key="card.id"
+						/>
 					</template>
 				</panel>
 			</div>

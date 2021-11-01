@@ -1,3 +1,4 @@
+import { ICollection } from "./Collection";
 
 export interface IResponse {
 	success: boolean;
@@ -25,6 +26,12 @@ export interface IAccountFailResponse extends IFailResponse {
 
 export interface ILoginResponse extends ISuccessResponse {
 	username: string;
+};
+
+export interface IGetCollectionsResponse extends ISuccessResponse {
+	collections: {
+		[keys: string]: ICollection[]
+	};
 };
 
 export type Response = ISuccessResponse | IAuthFailResponse | IAccountFailResponse | ILoginResponse;

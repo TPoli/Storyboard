@@ -4,7 +4,7 @@ type StoryboardConfig = {
 	serverPort: 3000,
 	connectionProtocal: 'http' | 'https',
 	siteUrl: 'localhost',
-	sitePort: 8080
+	sitePort: 8080,
 };
 
 const makeConfig = (): StoryboardConfig => {
@@ -13,7 +13,7 @@ const makeConfig = (): StoryboardConfig => {
 		serverPort: 3000,
 		connectionProtocal: 'http',
 		siteUrl: 'localhost',
-		sitePort: 8080
+		sitePort: 8080,
 	};
 };
 

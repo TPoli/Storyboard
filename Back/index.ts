@@ -104,16 +104,37 @@ const setupRoutes = () => {
                     return;
                 }
                 
-                const errorMessage = param.validator(value, param.name);
-                if (errorMessage) {
-                    console.log(errorMessage);
-                    const responseData: IFailResponse = {
-                        message: errorMessage,
-                        success: false,
-                    };
-                    res.send(responseData);
-                    return;
+                if (param.isArray) {
+                    let errorMessage = null;
+                    for (let i = 0; i < value.length; ++i) {
+                        errorMessage = param.validator(value[i], param.name);
+                        if (errorMessage) {
+                            break;
+                        }
+                    }
+                    
+                    if (errorMessage) {
+                        console.log(errorMessage);
+                        const responseData: IFailResponse = {
+                            message: errorMessage,
+                            success: false,
+                        };
+                        res.send(responseData);
+                        return;
+                    }
+                } else {
+                    const errorMessage = param.validator(value, param.name);
+                    if (errorMessage) {
+                        console.log(errorMessage);
+                        const responseData: IFailResponse = {
+                            message: errorMessage,
+                            success: false,
+                        };
+                        res.send(responseData);
+                        return;
+                    }
                 }
+                
                 validatedBody[param.name] = value;
             });
 

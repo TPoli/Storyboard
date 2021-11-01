@@ -12,4 +12,10 @@ import { Content } from "./Content";
 	content: Content[];
 };
 
-export { Collection };
+interface ICollection {
+	uuid: string,
+	title: string,
+	content: string,
+}
+
+export { Collection, ICollection, };

@@ -3,7 +3,7 @@ export type ValidationCallback = (value: any, name: string, constraints?: any) =
 
 const defaultStringConstraints = {
 	minLength: 0,
-	maxLength: 35
+	maxLength: 35,
 };
 
 export const stringValidation: ValidationCallback = (value: string, name: string, constraints: any = defaultStringConstraints) => {
@@ -15,7 +15,7 @@ export const stringValidation: ValidationCallback = (value: string, name: string
 };
 
 export const usernameValidation: ValidationCallback = (value: string, name: string) => {
-	let errorMessage = stringValidation(value, name, {...defaultStringConstraints, minLength: 4});
+	const errorMessage = stringValidation(value, name, {...defaultStringConstraints, minLength: 4,});
 	if (errorMessage) {
 		return errorMessage;
 	}
@@ -24,7 +24,7 @@ export const usernameValidation: ValidationCallback = (value: string, name: stri
 };
 
 export const passwordValidation: ValidationCallback = (value: string, name: string) => {
-	let errorMessage = stringValidation(value, name, {...defaultStringConstraints, minLength: 4});
+	const errorMessage = stringValidation(value, name, {...defaultStringConstraints, minLength: 4,});
 	if (errorMessage) {
 		return errorMessage;
 	}

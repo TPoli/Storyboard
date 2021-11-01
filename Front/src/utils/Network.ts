@@ -10,7 +10,7 @@ const axios = require('axios');
 axios.defaults.withCredentials = true;
 
 export namespace Network {
-	type networkCallback = (response: Response) => void;
+	export type Callback = (response: Response) => void;
 
 	const createUrl = (endpoint: string, params: object = {}) => {
 		let url = `${Config.connectionProtocal}://${Config.serverUrl}:${Config.serverPort}/${endpoint}`;
@@ -29,7 +29,7 @@ export namespace Network {
 		return url;
 	};
 
-	export const Get = (endpoint: EndpointRoutes, params: object, callback: networkCallback) => {
+	export const Get = (endpoint: EndpointRoutes, params: object, callback: Callback) => {
 		axios.get(createUrl(endpoint, params))
 			.then((response: IDataResposne) => {
 				console.log((response.data as any).url);
@@ -45,7 +45,7 @@ export namespace Network {
 			}); // add check to see if endpoint allows get
 	};
 
-	export const Post = (endpoint: EndpointRoutes, params: object, callback: networkCallback) => {
+	export const Post = (endpoint: EndpointRoutes, params: object, callback: Callback) => {
 
 		const networkCallback = (response: IDataResposne) => {
 			if (!response.data.success) {

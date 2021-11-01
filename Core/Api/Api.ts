@@ -1,21 +1,23 @@
 import { ExpressCallback, LoggedInRequest } from '../../Back/src/types/types';
 import { IAuthFailResponse } from '../types/Response';
-import { passwordValidation, usernameValidation, ValidationCallback } from './Validation';
+import { passwordValidation, stringValidation, usernameValidation, ValidationCallback } from './Validation';
 
 export type RequestMethods = 'POST' | 'GET';
 
-export type EndpointRoutes = 'test' | 'login' | 'logout' | 'createAccount';
+export type EndpointRoutes = 'test' | 'login' | 'logout' | 'createAccount' | 'getCollections';
 type EndpointMap = {[name: string]: EndpointRoutes};
 export const Endpoints: EndpointMap = {
 	TEST: 'test',
 	LOGIN: 'login',
 	LOGOUT: 'logout',
-	CREATE_ACCOUNT: 'createAccount'
+	CREATE_ACCOUNT: 'createAccount',
+	GET_COLLECTIONS: 'getCollections',
 };
 
 export type Parameter = {
 	name: string;
 	required?: true;
+	isArray?: boolean;
 	validator: ValidationCallback;
 };
 
@@ -37,7 +39,7 @@ const authenticationMiddleware: ExpressCallback = (req, res, next) => {
     }
     const payload: IAuthFailResponse = {
         success: false,
-        message: 'authentication failed'
+        message: 'authentication failed',
     };
     res.send(payload);
 };
@@ -47,16 +49,16 @@ namespace Api {
 		route: Endpoints.TEST,
 		params: [],
 		response: [],
-		methods: [ 'GET', 'POST' ],
-		middleware: authenticationMiddleware
+		methods: [ 'GET', 'POST', ],
+		middleware: authenticationMiddleware,
 	};
 
 	export const logout: Endpoint = {
 		route: Endpoints.LOGOUT,
 		params: [],
 		response: [],
-		methods: [ 'GET', 'POST' ],
-		middleware: authenticationMiddleware
+		methods: [ 'GET', 'POST', ],
+		middleware: authenticationMiddleware,
 	};
 
 	export const createAccount: Endpoint = {
@@ -64,15 +66,15 @@ namespace Api {
 		params: [
 			{
 				name: 'un',
-				validator: usernameValidation
+				validator: usernameValidation,
 			},
 			{
 				name: 'pw',
-				validator: passwordValidation
+				validator: passwordValidation,
 			},
 		],
 		response: [],
-		methods: [ 'POST' ],
+		methods: [ 'POST', ],
 	};
 
 	export const login: Endpoint = {
@@ -80,22 +82,36 @@ namespace Api {
 		params: [
 			{
 				name: 'un',
-				validator: usernameValidation
+				validator: usernameValidation,
 			},
 			{
 				name: 'pw',
-				validator: passwordValidation
+				validator: passwordValidation,
 			},
 		],
 		response: [],
-		methods: [ 'POST' ],
+		methods: [ 'POST', ],
+	};
+
+	export const getCollections: Endpoint = {
+		route: Endpoints.GET_COLLECTIONS,
+		params: [
+			{
+				name: 'collections',
+				isArray: true,
+				validator: stringValidation,
+			},
+		],
+		response: [],
+		methods: [ 'POST', ],
 	};
 
 	export const AllEndpoints: EndpointCollection = {
 		test: testRoute,
 		createAccount: createAccount,
 		login: login,
-		logout: logout
+		logout: logout,
+		getCollections,
 	};
 }
 

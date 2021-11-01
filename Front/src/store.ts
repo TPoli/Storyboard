@@ -3,7 +3,7 @@ import createPersistedState from 'vuex-persistedstate';
 export interface State {
 	username: string,
 	loggedIn: boolean
-};
+}
 
 export const store = createStore<State>({
 	state: {
