@@ -1,5 +1,3 @@
-import * as express from 'express';
-
 import AccountAR from './accountAR';
 import { Model, Column, ColumnType } from './model';
 import { Content } from '../../../Core/types/Content';

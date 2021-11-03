@@ -1,6 +1,6 @@
 import { EndpointRoutes } from '../../../Core/Api/Api';
 import { Response, IAuthFailResponse } from '../../../Core/types/Response';
-import { IDataResposne } from '../../../Core/types/Response';
+import { IDataResponse } from '../../../Core/types/Response';
 import {Config} from '../../../Core/Config/config';
 
 import { store } from '../store';
@@ -31,7 +31,7 @@ export namespace Network {
 
 	export const Get = (endpoint: EndpointRoutes, params: object, callback: Callback) => {
 		axios.get(createUrl(endpoint, params))
-			.then((response: IDataResposne) => {
+			.then((response: IDataResponse) => {
 				console.log((response.data as any).url);
 				console.log((response.data as any).explanation);
 				if (!response.data.success && (response.data as IAuthFailResponse).message === 'authentication failed') {
@@ -47,7 +47,7 @@ export namespace Network {
 
 	export const Post = (endpoint: EndpointRoutes, params: object, callback: Callback) => {
 
-		const networkCallback = (response: IDataResposne) => {
+		const networkCallback = (response: IDataResponse) => {
 			if (!response.data.success) {
 				if ((response.data as IAuthFailResponse).message === 'authentication failed') {
 					store.commit('logOut');

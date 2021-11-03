@@ -1,36 +1,6 @@
 import * as mysql from 'mysql2';
-import { Db } from '../db';
-
-export enum ColumnType {
-	'int' = 'INT',
-	'string' = 'VARCHAR(45)',
-	'tinytext' = 'TINYTEXT',
-	'json' = 'JSON',
-	'bool' = 'BOOLEAN',
-	'datetime' = 'DATETIME'
-}
-
-type Column = {
-	name: string;
-	type: ColumnType;
-	taintable: boolean;
-	primary: boolean;
-	nullable: boolean;
-	autoIncrement: boolean;
-	default?: 'NULL';
-	unique?: true;
-	references?: {
-		model: string,
-		column: string
-	};
-};
-
-export interface IIndexable {
-	[key: string]: any;
-}
-
-export type SaveCallback = (success: boolean) => void;
-type RefreshCallback = () => void;
+import { Db } from '../../db';
+import { Column, ColumnType, IIndexable, RefreshCallback, SaveCallback } from './types';
 
 abstract class Model implements IIndexable {
 	public table = '';
@@ -204,4 +174,3 @@ abstract class Model implements IIndexable {
 }
 
 export {Model};
-export {Column};

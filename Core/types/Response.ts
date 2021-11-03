@@ -40,6 +40,6 @@ export interface ICreateCollectionResponse extends ISuccessResponse {
 
 export type Response = ISuccessResponse | IAuthFailResponse | IAccountFailResponse | ILoginResponse | IGetCollectionsResponse | ICreateCollectionResponse;
 
-export interface IDataResposne {
+export interface IDataResponse {
 	data: Response;
 };
