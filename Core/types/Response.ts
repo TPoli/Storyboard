@@ -34,7 +34,11 @@ export interface IGetCollectionsResponse extends ISuccessResponse {
 	};
 };
 
-export type Response = ISuccessResponse | IAuthFailResponse | IAccountFailResponse | ILoginResponse;
+export interface ICreateCollectionResponse extends ISuccessResponse {
+	newCollection: ICollection;
+};
+
+export type Response = ISuccessResponse | IAuthFailResponse | IAccountFailResponse | ILoginResponse | IGetCollectionsResponse | ICreateCollectionResponse;
 
 export interface IDataResposne {
 	data: Response;

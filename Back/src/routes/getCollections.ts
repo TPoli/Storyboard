@@ -24,6 +24,10 @@ const getCollectionsFn: ExpressFinalCallback = (req, res, next) => {
 			],
 		},
 		
+		// 'myCollections',
+		// 'favourites',
+		// 'availableCollections',
+		// TODO stop hard coding the above
 	};
 	req.transaction.sendResponse(res, payload);
 };

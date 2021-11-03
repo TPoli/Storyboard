@@ -6,7 +6,7 @@ name: 'panel',
 		subHeading: String,
 		description: String,
 		buttonContent: String,
-		buttonCallback: () => {},
+		buttonCallback: Function,
 	},
 	data: function () {
 		return {

@@ -1,14 +1,21 @@
+import { defineComponent } from 'vue';
 
-export default {
-name: 'Card',
+const Card = defineComponent({
+	name: 'card',
 	props: {
+		contentId: String,
 		title: String,
 		content: String,
+		clickedCallback: Function,
 	},
 	methods: {
 		clicked() {
-			console.log('clicked');
-			//  this.$emit("name", data);
+			console.log(this.contentId)
+			if (this.clickedCallback) {
+				this.clickedCallback(this.contentId);
+			}
 		},
 	},
-};
+});
+
+export default Card;

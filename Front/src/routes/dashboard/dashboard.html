@@ -14,7 +14,9 @@
 							v-for="(card, index) in recentlyModified"
 							v-bind:title="card.title"
 							v-bind:content="card.content"
-							v-bind:key="card.id"
+							v-bind:id="card.uuid"
+							v-bind:contentId="card.uuid"
+							v-bind:clickedCallback="openCollection"
 						/>
 					</template>
 				</panel>
@@ -27,7 +29,9 @@
 							v-for="(card, index) in favourites"
 							v-bind:title="card.title"
 							v-bind:content="card.content"
-							v-bind:key="card.id"
+							v-bind:id="card.uuid"
+							v-bind:contentId="card.uuid"
+							v-bind:clickedCallback="openCollection"
 						/>
 					</template>
 				</panel>
@@ -44,7 +48,9 @@
 							v-for="(card, index) in myCollections"
 							v-bind:title="card.title"
 							v-bind:content="card.content"
-							v-bind:key="card.id"
+							v-bind:id="card.uuid"
+							v-bind:contentId="card.uuid"
+							v-bind:clickedCallback="openCollection"
 						/>
 					</template>
 				</panel>
@@ -58,7 +64,9 @@
 							v-for="(card, index) in availableCollections"
 							v-bind:title="card.title"
 							v-bind:content="card.content"
-							v-bind:key="card.id"
+							v-bind:id="card.uuid"
+							v-bind:contentId="card.uuid"
+							v-bind:clickedCallback="openCollection"
 						/>
 					</template>
 				</panel>

@@ -4,7 +4,7 @@ import { passwordValidation, stringValidation, usernameValidation, ValidationCal
 
 export type RequestMethods = 'POST' | 'GET';
 
-export type EndpointRoutes = 'test' | 'login' | 'logout' | 'createAccount' | 'getCollections';
+export type EndpointRoutes = 'test' | 'login' | 'logout' | 'createAccount' | 'getCollections' | 'createCollection';
 type EndpointMap = {[name: string]: EndpointRoutes};
 export const Endpoints: EndpointMap = {
 	TEST: 'test',
@@ -12,6 +12,7 @@ export const Endpoints: EndpointMap = {
 	LOGOUT: 'logout',
 	CREATE_ACCOUNT: 'createAccount',
 	GET_COLLECTIONS: 'getCollections',
+	CREATE_COLLECTION: 'createCollection',
 };
 
 export type Parameter = {
@@ -67,10 +68,12 @@ namespace Api {
 			{
 				name: 'un',
 				validator: usernameValidation,
+				required: true,
 			},
 			{
 				name: 'pw',
 				validator: passwordValidation,
+				required: true,
 			},
 		],
 		response: [],
@@ -83,10 +86,12 @@ namespace Api {
 			{
 				name: 'un',
 				validator: usernameValidation,
+				required: true,
 			},
 			{
 				name: 'pw',
 				validator: passwordValidation,
+				required: true,
 			},
 		],
 		response: [],
@@ -100,6 +105,19 @@ namespace Api {
 				name: 'collections',
 				isArray: true,
 				validator: stringValidation,
+				required: true,
+			},
+		],
+		response: [],
+		methods: [ 'POST', ],
+	};
+
+	export const createCollection: Endpoint = {
+		route: Endpoints.CREATE_COLLECTION,
+		params: [
+			{
+				name: 'parentId',
+				validator: stringValidation,
 			},
 		],
 		response: [],
@@ -112,6 +130,7 @@ namespace Api {
 		login: login,
 		logout: logout,
 		getCollections,
+		createCollection,
 	};
 }
 

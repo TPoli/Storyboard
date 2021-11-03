@@ -1,6 +1,7 @@
 import { EndpointRoutes, Api } from '../../../Core/Api/Api';
 import { ISuccessResponse } from '../../../Core/types/Response';
 import createAccount from './createAccount';
+import createCollectionsFn from './createCollections';
 import getCollectionsFn from './getCollections';
 import loginFn from './login';
 import { Route } from './route';
@@ -42,5 +43,9 @@ export const Routes: RouteMap = {
 	getCollections: {
 		callback: getCollectionsFn,
 		params: Api.AllEndpoints['getCollections'].params,
+	},
+	createCollection: {
+		callback: createCollectionsFn,
+		params: Api.AllEndpoints['createCollection'].params,
 	},
 };
