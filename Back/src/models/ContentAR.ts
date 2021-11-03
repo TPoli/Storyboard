@@ -1,8 +1,6 @@
-import * as express from 'express';
-
 import AccountAR from './accountAR';
 import { Model, Column, ColumnType } from './model';
-import { Content } from '../../../Core/types/Content';
+import { Content, ContentData } from '../../../Core/types/Content';
 import { Collection } from '../../../Core/types/Collection';
 import CollectionAR from './CollectionAR';
 
@@ -12,7 +10,7 @@ export default class ContentAR extends Model implements Content {
 	public name = '';
 	public siblingOrder = 0;
 	public parent: Collection|null = null;
-	public data: Object = {};
+	public data: ContentData = {};
 	
 	public version = 1;
 	public table = 'content';

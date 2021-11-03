@@ -8,13 +8,13 @@ import AccountAR from './src/models/accountAR';
 import TransactionsAR from './src/models/transactionsAR';
 import { Session } from 'inspector';
 
-import Storyboard from './src/storyboard';
 import setupAuth from './src/security/authentication';
 import { MinutesToMilliseconds } from '../Core/Utils/Utils';
 import { Config } from './src/Config';
 import { Routes } from './src/routes/router';
 import { IFailResponse } from '../Core/types/Response';
 import { ExpressCallback, LoggedInRequest } from './src/types/types';
+import passport from 'passport';
 
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
@@ -55,8 +55,8 @@ const setupExpress = () => {
         extended: true,
     }));
     app.use(bodyParser.json());
-    app.use(Storyboard.Instance().passport.initialize());
-    app.use(Storyboard.Instance().passport.session());
+    app.use(passport.initialize());
+    app.use(passport.session());
 };
 
 const createLogMiddlware = (endpoint: EndpointRoutes) => {
@@ -162,12 +162,13 @@ const setupRoutes = () => {
 
 setupAuth();
 
-Storyboard.Instance().passport.serializeUser(function(user: AccountAR, done: any) {
-    const session = new Session()
-    done(null, user.id);
-});
+const serializeUserFn = (user: Express.User, done: Function) => {
+    done(null, (user as AccountAR).id);
+};
+
+passport.serializeUser(serializeUserFn);
   
-Storyboard.Instance().passport.deserializeUser(function(id: number, done: any) {
+passport.deserializeUser(function(id: number, done: Function) {
     (new AccountAR).findOne({id: id,}, (error, account) => {
         if (error) {
             return done(null, false, { message: 'login failed.', });

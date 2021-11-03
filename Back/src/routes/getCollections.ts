@@ -1,8 +1,7 @@
 import { IGetCollectionsResponse } from '../../../Core/types/Response'
 import { ExpressFinalCallback } from '../types/types';
-import { randomUUID } from 'crypto';
 
-const getCollectionsFn: ExpressFinalCallback = (req, res, next) => {
+const getCollectionsFn: ExpressFinalCallback = (req, res) => {
 	const payload: IGetCollectionsResponse = {
 		success: true,
 		message: 'Well done!',

@@ -8,7 +8,11 @@ interface Content {
 	name: string;
 	siblingOrder: number;
 	parent: Collection|null;
-	data: any; // this will need to change later to a specific type (must be a object)
+	data: ContentData;
 };
 
-export { Content };
+interface ContentData {
+
+}
+
+export { Content, ContentData };

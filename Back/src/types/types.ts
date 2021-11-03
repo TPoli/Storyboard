@@ -9,4 +9,4 @@ export interface LoggedInRequest extends express.Request {
 	user: AccountAR
 }
 
-export type ExpressFinalCallback = (req: LoggedInRequest, res: express.Response, next: express.NextFunction) => void;
+export type ExpressFinalCallback = (req: LoggedInRequest, res: express.Response, next?: express.NextFunction) => void;

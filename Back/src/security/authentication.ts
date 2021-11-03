@@ -2,8 +2,8 @@ const bcrypt = require('bcrypt');
 import { Strategy } from 'passport-local';
 import random from 'random';
 
-import Storyboard from '../storyboard';
 import AccountAR from '../models/accountAR';
+import passport from 'passport';
 
 const createAccount = (req:any, username:any, password:any, done:any) => {
     const account = new AccountAR();
@@ -65,7 +65,7 @@ const createAccount = (req:any, username:any, password:any, done:any) => {
     bcrypt.genSalt(saltRounds, saltCallback);
 };
 
-const verifyUser = (username:any, password:any, done:any) => {
+const verifyUser = (username: string, password: string, done:any) => {
     (new AccountAR).findOne({username: username,}, (error, account: AccountAR|null) => {
         if (error) {
             return done(null, false, { message: 'login failed.', });
@@ -94,13 +94,13 @@ const verifyUser = (username:any, password:any, done:any) => {
 };
 
 export default () => {
-	Storyboard.Instance().passport.use('login', new Strategy({
+	passport.use('login', new Strategy({
 		usernameField: 'un',
 		passwordField: 'pw',
 		session: true,
 	}, verifyUser));
 	
-	Storyboard.Instance().passport.use('createAccount', new Strategy({
+	passport.use('createAccount', new Strategy({
 		usernameField: 'un',
 		passwordField: 'pw',
         passReqToCallback: true,
