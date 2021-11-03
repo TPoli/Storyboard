@@ -1,14 +1,17 @@
 import * as mysql from 'mysql2';
 import { Db } from '../../db';
-import { Column, ColumnType, IIndexable, RefreshCallback, SaveCallback } from './types';
+import saveModelFn from './save';
+import { Column, IIndexable, RefreshCallback, SaveCallback } from './types';
 
-abstract class Model implements IIndexable {
+abstract class ModelBase implements IIndexable {
 	public table = '';
 	public abstract version: number;
 	public abstract columns: Column[]
-	protected isNew = true;
-
+	public isNew = true;
 	id = -1;
+}
+
+abstract class Model extends ModelBase {
 
 	public static find<Type>(): Type|null {
 		return null;
@@ -57,110 +60,7 @@ abstract class Model implements IIndexable {
 	}
 
 	save(callback: SaveCallback, columns: string[] = []) {
-		if (this.isNew) { // insert
-			if (columns.length > 0) {
-				const values: any[] = [];
-				const paramKeys: string[] = [];
-				columns.forEach((column: string) => {
-					const colData = this.columns.find((col) => {
-						return col.name === column;
-					});
-					if(!colData) {
-						callback(false);
-						return;
-					}
-
-					const value = (this as IIndexable)[column];
-					if (colData.nullable && value === null) {
-						return;
-					}
-
-					paramKeys.push('?');
-
-					switch (colData.type) {
-						case ColumnType.json:
-						case ColumnType.datetime:
-							values.push(JSON.stringify(value));
-							break;
-						case ColumnType.bool:
-						case ColumnType.int:
-						case ColumnType.string:
-						case ColumnType.tinytext:
-							values.push(value);
-							break;
-						default:
-							callback(false);
-							return;
-					}
-				});
-				
-				const sql = 'INSERT INTO ' + this.table + '(' + columns.join(',') + ') VALUES (' + paramKeys.join(',') + ')';
-
-				Db.execute(sql, values, (error, results, fields) => {
-					if (error || !results) {
-						console.log(error);
-						callback(false);
-						return;
-					}
-					this.isNew = false;
-					this.id = (results as any).insertId;
-					callback(true);
-				});
-			} else {
-				console.log('INCOMPLETE');
-				callback(false);
-			}
-		} else { // update
-			if (columns.length > 0) {
-				const values: any[] = [];
-				columns.forEach((column: string) => {
-					const colData = this.columns.find((col) => {
-						return col.name === column;
-					});
-					if(!colData) {
-						callback(false);
-						return;
-					}
-
-					const value = (this as IIndexable)[column];
-					if (colData.nullable && value === null) {
-						return;
-					}
-
-					switch (colData.type) {
-						case ColumnType.json:
-						case ColumnType.datetime:
-							values.push(JSON.stringify(value));
-							break;
-						case ColumnType.bool:
-						case ColumnType.int:
-						case ColumnType.string:
-						case ColumnType.tinytext:
-							values.push(value);
-							break;
-						default:
-							callback(false);
-							return;
-					}
-				});
-
-				const sql = `UPDATE ${this.table} SET ${columns.join('= ?,')} = ? WHERE id = ${this.id}`;
-
-				Db.execute(sql, values, (error, results, fields) => {
-					if (error || !results) {
-						console.log(error);
-						callback(false);
-						return;
-					}
-					this.isNew = false;
-					this.id = (results as any).insertId;
-					callback(true);
-				});
-			} else {
-				console.log('INCOMPLETE');
-				callback(false);
-			}
-		}
+		saveModelFn(this, callback, columns);
 	}
 
 	// use after save() if you need to access any auto generated data such as ID
@@ -173,4 +73,4 @@ abstract class Model implements IIndexable {
 	};
 }
 
-export {Model};
+export {Model, ModelBase};
