@@ -3,7 +3,7 @@ import * as mysql from 'mysql2';
 import { Column } from './models/model';
 import VersionsAR from './models/versionsAR';
 import MutationsAR from './models/mutationsAR';
-import AccountAR from './models/accountAR';
+import { AccountAR } from './models/accountAR';
 import TransactionsAR from './models/transactionsAR';
 import { CamelCase } from '../../Core/Utils/Utils';
 import ContentAR from './models/ContentAR';

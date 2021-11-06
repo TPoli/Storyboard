@@ -4,9 +4,8 @@ import cors from 'cors';
 import { Api, EndpointRoutes, Parameter } from '../Core/Api/Api'
 import { Db } from './src/db';
 
-import AccountAR from './src/models/accountAR';
+import { AccountAR } from './src/models/accountAR';
 import TransactionsAR from './src/models/transactionsAR';
-import { Session } from 'inspector';
 
 import setupAuth from './src/security/authentication';
 import { MinutesToMilliseconds } from '../Core/Utils/Utils';

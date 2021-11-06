@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 import { Strategy } from 'passport-local';
 import random from 'random';
 
-import AccountAR from '../models/accountAR';
+import { AccountAR } from '../models/accountAR';
 import passport from 'passport';
 
 const createAccount = (req:any, username:any, password:any, done:any) => {

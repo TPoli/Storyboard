@@ -1,5 +1,5 @@
 import * as express from 'express';
-import AccountAR from '../models/accountAR';
+import { AccountAR } from '../models/accountAR';
 import TransactionsAR from '../models/transactionsAR';
 
 export type ExpressCallback = (req: express.Request, res: express.Response, next: express.NextFunction) => void;

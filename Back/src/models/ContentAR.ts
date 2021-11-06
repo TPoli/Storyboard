@@ -1,4 +1,4 @@
-import AccountAR from './accountAR';
+import { AccountAR } from './accountAR';
 import { Model, Column, ColumnType } from './model';
 import { Content, ContentData } from '../../../Core/types/Content';
 import { Collection } from '../../../Core/types/Collection';

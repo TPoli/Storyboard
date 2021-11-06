@@ -1,4 +1,4 @@
-import AccountAR from '../models/accountAR';
+import { AccountAR } from '../models/accountAR';
 import { IAuthFailResponse, ILoginResponse } from '../../../Core/types/Response'
 import { IIndexable } from '../models/model';
 import { ExpressFinalCallback } from '../types/types';

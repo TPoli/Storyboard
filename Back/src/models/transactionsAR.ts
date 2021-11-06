@@ -1,6 +1,6 @@
 import * as express from 'express';
 
-import AccountAR from './accountAR';
+import { AccountAR } from './accountAR';
 import { Model, Column, ColumnType, SaveCallback } from './model';
 import { IResponse } from '../../../Core/types/Response';
 
