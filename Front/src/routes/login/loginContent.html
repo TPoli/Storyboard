@@ -1,7 +1,7 @@
 <div>
 	<input v-model="username" placeholder="username">
 	<br>
-	<input v-model="password" placeholder="password">
+	<input v-model="password" placeholder="password" v-on:keyup.enter="login">
 	<br>
 	<button v-on:click="login">Login</button>
 	<br>
