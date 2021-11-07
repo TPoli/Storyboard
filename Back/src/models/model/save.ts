@@ -56,7 +56,9 @@ export default function saveModelFn(model: ModelBase, callback: SaveCallback, co
 					return;
 				}
 				model.isNew = false;
-				model.id = (results as any).insertId;
+				if (model.id === '' || model.id === -1) {
+					model.id = (results as any).insertId;
+				}
 				callback(true);
 			});
 		} else {

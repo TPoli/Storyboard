@@ -4,7 +4,7 @@ import { Content } from "./Content";
  * used to represent the hierarchy of content
  */
  interface Collection {
-	id: number;
+	id: string;
 	name: string;
 	siblingOrder: number;
 	parent: Collection|null;

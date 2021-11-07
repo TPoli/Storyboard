@@ -5,7 +5,7 @@ import { Collection } from '../../../Core/types/Collection';
 
 export default class CollectionAR extends Model implements Collection {
 
-	public id = -1;
+	public id = '';
 	public name = '';
 	public siblingOrder = 0;
 	public parent: Collection|null = null;
@@ -14,14 +14,17 @@ export default class CollectionAR extends Model implements Collection {
 	
 	public version = 1;
 	public table = 'collections';
-	public account: AccountAR|null = null;
+	public account: number|null = null;
+	public data: {
+		content: string,
+	}| null = null;
 	public columns = [
 		{
 			name: 'id',
 			primary: true,
 			taintable: false,
-			type: ColumnType.INT,
-			autoIncrement: true,
+			type: ColumnType.STRING,
+			autoIncrement: false,
 			nullable: false,
 			unique: true,
 		}, {
@@ -55,6 +58,12 @@ export default class CollectionAR extends Model implements Collection {
 				model: this.table,
 				column: 'id',
 			},
+		}, {
+			name: 'data',
+			primary: false,
+			taintable: true,
+			type: ColumnType.JSON,
+			nullable: false,
 		},
 	] as Column[];
 

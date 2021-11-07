@@ -18,12 +18,13 @@ export default class AccountAR extends Model {
 	public mobile: string|null = null;
 	public email: string|null = null;
 	public permissions: Object = {};
+	public myCollections: CollectionAR[] = [];
 
 	public modelRelations: IModelRelation[] = [
 		{
 			table: 'collections',
 			join: 'left',
-			name: 'testCollection',
+			name: 'myCollections',
 			childColumn: 'account',
 			parentColumn: 'id',
 			relationType: RelationType.ONE_TO_MANY,

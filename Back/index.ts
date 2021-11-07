@@ -11,7 +11,7 @@ import setupAuth from './src/security/authentication';
 import { MinutesToMilliseconds } from '../Core/Utils/Utils';
 import { Config } from './src/Config';
 import { Routes } from './src/routes/router';
-import { IFailResponse } from '../Core/types/Response';
+import { IAuthFailResponse, IFailResponse } from '../Core/types/Response';
 import { ExpressCallback, LoggedInRequest } from './src/types/types';
 import passport from 'passport';
 
@@ -148,12 +148,33 @@ const setupRoutes = () => {
         };
 
         const logMiddleware = createLogMiddlware(endpoint.route);
+
+        const checkAuthenticatedMiddleware: ExpressCallback = (req, res, next) => {
+            if (req.isAuthenticated()) {
+                return next()
+            }
+            const payload: IAuthFailResponse = {
+                success: false,
+                message: 'authentication failed',
+            };
+            return (req as LoggedInRequest).transaction.sendResponse(res, payload);
+        }
+
+        const middlewares = [
+            logMiddleware,
+            middleware,
+            Routes[endpoint.route].callback,
+        ];
+
+        if (Routes[endpoint.route].authenticatedUserRequired) {
+            middlewares.splice(1,0, checkAuthenticatedMiddleware);
+        }
         
         endpoint.methods.forEach((method) => {
             if (method === 'GET') {
-                app.get('/' + endpoint.route, logMiddleware, middleware, Routes[endpoint.route].callback);
+                app.get('/' + endpoint.route, ...middlewares);
             } else if (method === 'POST') {
-                app.post('/' + endpoint.route, logMiddleware, middleware, Routes[endpoint.route].callback);
+                app.post('/' + endpoint.route, ...middlewares);
             }
         });
     });

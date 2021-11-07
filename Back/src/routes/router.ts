@@ -14,10 +14,12 @@ export const Routes: RouteMap = {
 	createAccount: {
 		callback: createAccount,
 		params: Api.AllEndpoints['createAccount'].params,
+		authenticatedUserRequired: false,
 	},
 	login: {
 		callback: loginFn,
 		params: Api.AllEndpoints['login'].params,
+		authenticatedUserRequired: false,
 	},
 	logout: {
 		callback: (req, res) => {
@@ -29,6 +31,7 @@ export const Routes: RouteMap = {
 			req.transaction.sendResponse(res, payload);
 		},
 		params: Api.AllEndpoints['logout'].params,
+		authenticatedUserRequired: false,
 	},
 	test: {
 		callback: (req, res) => {
@@ -39,13 +42,16 @@ export const Routes: RouteMap = {
 			req.transaction.sendResponse(res, payload);
 		},
 		params: Api.AllEndpoints['test'].params,
+		authenticatedUserRequired: true,
 	},
 	getCollections: {
 		callback: getCollectionsFn,
 		params: Api.AllEndpoints['getCollections'].params,
+		authenticatedUserRequired: true,
 	},
 	createCollection: {
 		callback: createCollectionsFn,
 		params: Api.AllEndpoints['createCollection'].params,
+		authenticatedUserRequired: true,
 	},
 };

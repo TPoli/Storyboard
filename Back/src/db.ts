@@ -7,7 +7,6 @@ import MutationsAR from './models/mutationsAR';
 import { AccountAR } from './models/accountAR';
 import TransactionsAR from './models/transactionsAR';
 import { CamelCase } from '../../Core/Utils/Utils';
-import ContentAR from './models/ContentAR';
 import CollectionAR from './models/CollectionAR';
 import { Schema } from './models/schema';
 
@@ -21,7 +20,6 @@ export namespace Db {
 		// Mutations,
 		AccountAR,
 		TransactionsAR,
-		ContentAR,
 		CollectionAR,
 	] as Schema[];
 
@@ -65,10 +63,12 @@ export namespace Db {
 			if (!column.references) {
 				return;
 			}
+			const referencedTableName = `${databaseName}.${column.references.model}`;
+
 			const fkName = CamelCase([model.table, column.references.model, column.references.column, 'Fk', ]);
 			sql += `${(first ? '' : ',')}\nADD CONSTRAINT ${fkName}\n`;
 			sql += `FOREIGN KEY (${column.name})\n`;
-			sql += `REFERENCES ${tableName} (${column.references.column})\n`;
+			sql += `REFERENCES ${referencedTableName} (${column.references.column})\n`;
 			sql += 'ON UPDATE NO ACTION ON DELETE NO ACTION';
 			first = false;
 		});

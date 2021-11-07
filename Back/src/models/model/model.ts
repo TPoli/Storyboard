@@ -10,7 +10,7 @@ abstract class ModelBase implements IIndexable {
 	public abstract version: number;
 	public columns: Column[] = [];
 	public isNew = true;
-	id = -1;
+	id: number|string = -1;
 
 	public modelRelations: IModelRelation[] = [];
 }
