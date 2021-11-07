@@ -9,7 +9,7 @@ export default class VersionsAR extends Model {
 			name: 'id',
 			primary: true,
 			taintable: false,
-			type: ColumnType.int,
+			type: ColumnType.INT,
 			autoIncrement: true,
 			nullable: false,
 			unique: true,
@@ -17,12 +17,12 @@ export default class VersionsAR extends Model {
 			name: 'table_name',
 			primary: false,
 			taintable: false,
-			type: ColumnType.string,
+			type: ColumnType.STRING,
 		}, {
 			name: 'version',
 			primary: false,
 			taintable: false,
-			type: ColumnType.int,
+			type: ColumnType.INT,
 		},
 	] as Column[];
 

@@ -1,6 +1,7 @@
 import { Db } from '../../db';
+import { ColumnType } from './columnType';
 import { ModelBase } from './model';
-import { ColumnType, IIndexable, SaveCallback } from './types';
+import { IIndexable, SaveCallback } from './types';
 
 /**
  * saves the model to db and updates the isNew and id fields
@@ -30,14 +31,14 @@ export default function saveModelFn(model: ModelBase, callback: SaveCallback, co
 				paramKeys.push('?');
 
 				switch (colData.type) {
-					case ColumnType.json:
-					case ColumnType.datetime:
+					case ColumnType.JSON:
+					case ColumnType.DATE_TIME:
 						values.push(JSON.stringify(value));
 						break;
-					case ColumnType.bool:
-					case ColumnType.int:
-					case ColumnType.string:
-					case ColumnType.tinytext:
+					case ColumnType.BOOL:
+					case ColumnType.INT:
+					case ColumnType.STRING:
+					case ColumnType.TINY_TEXT:
 						values.push(value);
 						break;
 					default:
@@ -80,14 +81,14 @@ export default function saveModelFn(model: ModelBase, callback: SaveCallback, co
 				}
 
 				switch (colData.type) {
-					case ColumnType.json:
-					case ColumnType.datetime:
+					case ColumnType.JSON:
+					case ColumnType.DATE_TIME:
 						values.push(JSON.stringify(value));
 						break;
-					case ColumnType.bool:
-					case ColumnType.int:
-					case ColumnType.string:
-					case ColumnType.tinytext:
+					case ColumnType.BOOL:
+					case ColumnType.INT:
+					case ColumnType.STRING:
+					case ColumnType.TINY_TEXT:
 						values.push(value);
 						break;
 					default:

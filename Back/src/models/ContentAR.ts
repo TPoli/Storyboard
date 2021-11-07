@@ -20,7 +20,7 @@ export default class ContentAR extends Model implements Content {
 			name: 'id',
 			primary: true,
 			taintable: false,
-			type: ColumnType.int,
+			type: ColumnType.INT,
 			autoIncrement: true,
 			nullable: false,
 			unique: true,
@@ -28,7 +28,7 @@ export default class ContentAR extends Model implements Content {
 			name: 'account',
 			primary: true,
 			taintable: false,
-			type: ColumnType.int,
+			type: ColumnType.INT,
 			references: {
 				model: new AccountAR().table,
 				column: 'id',
@@ -37,13 +37,13 @@ export default class ContentAR extends Model implements Content {
 			name: 'siblingOrder',
 			primary: false,
 			taintable: true,
-			type: ColumnType.int,
+			type: ColumnType.INT,
 			nullable: false,
 		}, {
 			name: 'parent',
 			primary: false,
 			taintable: true,
-			type: ColumnType.int,
+			type: ColumnType.INT,
 			nullable: false,
 			references: {
 				model: new CollectionAR().table,
@@ -53,7 +53,7 @@ export default class ContentAR extends Model implements Content {
 			name: 'data',
 			primary: false,
 			taintable: true,
-			type: ColumnType.json,
+			type: ColumnType.JSON,
 			nullable: false,
 		},
 	] as Column[];

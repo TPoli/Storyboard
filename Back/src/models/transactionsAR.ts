@@ -13,7 +13,7 @@ export default class TransactionsAR extends Model {
 			name: 'id',
 			primary: true,
 			taintable: false,
-			type: ColumnType.int,
+			type: ColumnType.INT,
 			autoIncrement: true,
 			nullable: false,
 			unique: true,
@@ -21,7 +21,7 @@ export default class TransactionsAR extends Model {
 			name: 'account',
 			primary: true,
 			taintable: false,
-			type: ColumnType.int,
+			type: ColumnType.INT,
 			references: {
 				model: new AccountAR().table,
 				column: 'id',
@@ -30,25 +30,25 @@ export default class TransactionsAR extends Model {
 			name: 'route',
 			primary: false,
 			taintable: false,
-			type: ColumnType.string,
+			type: ColumnType.STRING,
 			nullable: false,
 		}, {
 			name: 'ipAddress',
 			primary: false,
 			taintable: true,
-			type: ColumnType.string,
+			type: ColumnType.STRING,
 			nullable: false,
 		}, {
 			name: 'params',
 			primary: false,
 			taintable: true,
-			type: ColumnType.json,
+			type: ColumnType.JSON,
 			nullable: false,
 		}, {
 			name: 'response',
 			primary: false,
 			taintable: true,
-			type: ColumnType.json,
+			type: ColumnType.JSON,
 		},
 	] as Column[];
 

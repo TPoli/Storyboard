@@ -1,73 +1,14 @@
 import CollectionAR from '../CollectionAR';
-import { Model, Column, ColumnType, SaveCallback } from '../model';
-import peppers from './peppers'
+import { IModelRelation, Model, SaveCallback } from '../model';
+import { RelationType } from '../model/modelRelation';
+import { columns } from './columns';
+import peppers from './peppers';
 
 export default class AccountAR extends Model {
 	
 	public version = 1;
 	public table = 'account';
-	public columns: Column[] = [
-		{
-			name: 'id',
-			primary: true,
-			taintable: false,
-			type: ColumnType.int,
-			autoIncrement: true,
-			nullable: false,
-			unique: true,
-		}, {
-			name: 'username',
-			primary: true,
-			taintable: true,
-			type: ColumnType.string,
-			autoIncrement: false,
-			nullable: false,
-		}, {
-			name: 'password',
-			primary: false,
-			taintable: true,
-			type: ColumnType.tinytext,
-			autoIncrement: false,
-			nullable: false,
-		}, {
-			name: 'salt',
-			primary: false,
-			taintable: false,
-			type: ColumnType.string,
-			autoIncrement: false,
-			nullable: false,
-		}, {
-			name: 'pepper',
-			primary: false,
-			taintable: false,
-			type: ColumnType.string,
-			autoIncrement: false,
-			nullable: false,
-		}, {
-			name: 'permissions',
-			primary: false,
-			taintable: false,
-			type: ColumnType.json,
-			autoIncrement: false,
-			nullable: false,
-		}, {
-			name: 'email',
-			primary: false,
-			taintable: true,
-			type: ColumnType.string,
-			autoIncrement: false,
-			nullable: true,
-			default: 'NULL',
-		}, {
-			name: 'mobile',
-			primary: false,
-			taintable: true,
-			type: ColumnType.string,
-			autoIncrement: false,
-			nullable: true,
-			default: 'NULL',
-		},
-	];
+	public columns = columns;
 
 	public id = -1;
 	public username = '';
@@ -78,12 +19,24 @@ export default class AccountAR extends Model {
 	public email: string|null = null;
 	public permissions: Object = {};
 
+	public modelRelations: IModelRelation[] = [
+		{
+			table: 'collections',
+			join: 'left',
+			name: 'testCollection',
+			childColumn: 'account',
+			parentColumn: 'id',
+			relationType: RelationType.ONE_TO_MANY,
+		},
+	];
+
 	public static Peppers = () => {
 		return peppers;
 	}
 
 	constructor() {
 		super();
+		this.init();
 	}
 
 	public createDefaultEntries = (callback: () => void) => {
@@ -91,13 +44,12 @@ export default class AccountAR extends Model {
 		const houseAccount = new AccountAR();
 		houseAccount.id=0;
 		houseAccount.username='houseaccount';
-		houseAccount.password=''; // empty string is a impossable input, cant be logged into
+		houseAccount.password=''; // empty string is a impossible input, cant be logged into
 		houseAccount.salt='';
 		houseAccount.pepper='';
 		houseAccount.mobile='';
 		houseAccount.email='';
 		houseAccount.permissions={};
-
 
 		const saveCallback: SaveCallback = (success: boolean) => {
 			callback();

@@ -1,12 +1,6 @@
+import { ColumnType } from './columnType';
 
-export enum ColumnType {
-	'int' = 'INT',
-	'string' = 'VARCHAR(45)',
-	'tinytext' = 'TINYTEXT',
-	'json' = 'JSON',
-	'bool' = 'BOOLEAN',
-	'datetime' = 'DATETIME'
-}
+
 
 export type Column = {
 	name: string;

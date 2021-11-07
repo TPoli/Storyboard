@@ -1,4 +1,5 @@
 import * as mysql from 'mysql2';
+import * as mysqlPromise from 'mysql2/promise';
 
 import { Column } from './models/model';
 import VersionsAR from './models/versionsAR';
@@ -8,8 +9,7 @@ import TransactionsAR from './models/transactionsAR';
 import { CamelCase } from '../../Core/Utils/Utils';
 import ContentAR from './models/ContentAR';
 import CollectionAR from './models/CollectionAR';
-
-type Schema = typeof VersionsAR | typeof MutationsAR | typeof AccountAR | typeof TransactionsAR;
+import { Schema } from './models/schema';
 
 export namespace Db {
 
@@ -26,6 +26,7 @@ export namespace Db {
 	] as Schema[];
 
 	let defaultConnection: mysql.Connection|null = null;
+	let defaultPromiseConnection: mysqlPromise.Connection|null = null;
 	let adminConnection: mysql.Connection|null = null;
 
 	const setForeignKeys = (schema: Schema, callback: () => void) => {
@@ -220,18 +221,20 @@ export namespace Db {
 		tableExists(VersionsAR.table, versionsReadyCallback);
 	};
 
-	const setupConnection = (next: () => void) => {
-		adminConnection = mysql.createConnection({
+	const setupConnection = async (next: () => void) => {
+		const adminConnectionData = {
 			host     : 'localhost',
 			user     : 'storyboard_admin',
 			password : 'storyboard_admin',
 			database : 'storyboard',
-		});
-		defaultConnection = adminConnection; // this needs to change
+		};
+		adminConnection = mysql.createConnection(adminConnectionData);
+		defaultConnection = mysql.createConnection(adminConnectionData); // this needs to change
+		defaultPromiseConnection = await mysqlPromise.createConnection(adminConnectionData);
 		ensureTablesSetup(next);
 	};
 
-	const ensureUsersSetup = (connection: mysql.Connection, next: () => void) => {
+	const ensureUsersSetup = async (connection: mysql.Connection, next: () => void) => {
 		const userQuery = 'SELECT EXISTS(SELECT 1 FROM mysql.user WHERE user = "storyboard_admin");';
 		const userQueryCallback: DbCallback = (error, results, fields) => {
 			if (error) {
@@ -271,7 +274,7 @@ export namespace Db {
 			FROM INFORMATION_SCHEMA.SCHEMATA
 	   		WHERE SCHEMA_NAME = ?;
 		`;
-		const databaseQueryCallback: DbCallback = (error, results, fields) => {
+		const databaseQueryCallback: DbCallback = async (error, results, fields) => {
 			if (error) {
 				throw error
 			}
@@ -297,5 +300,13 @@ export namespace Db {
 			throw new Error('default database connection couldn\'t be established');
 		}
 		defaultConnection.query(statement, params, callback);
+	};
+
+	// TODO convert to using this as default
+	export const promisedExecute = async (statement: string, params: any[]) => {
+		if (!defaultPromiseConnection) {
+			throw new Error('default database connection couldn\'t be established');
+		}
+		return await defaultPromiseConnection.execute(statement, params);
 	};
 }

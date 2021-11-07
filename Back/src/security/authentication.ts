@@ -55,10 +55,10 @@ const createAccount = (req:any, username:any, password:any, done:any) => {
         const peppers = AccountAR.Peppers();
         const pepperKeys = Object.keys(peppers);
         const pepperIndex = random.int(0, pepperKeys.length - 1);
-        const pepperkey = pepperKeys[pepperIndex];
-        const pepper = peppers[pepperkey];
+        const pepperKey = pepperKeys[pepperIndex];
+        const pepper = peppers[pepperKey];
 
-        account.pepper = pepperkey;
+        account.pepper = pepperKey;
         bcrypt.hash(password + pepper, salt, hashCallback);
     };
 

@@ -9,7 +9,7 @@ export default class MutationsAR extends Model {
 			name: 'id',
 			primary: true,
 			taintable: false,
-			type: ColumnType.int,
+			type: ColumnType.INT,
 			autoIncrement: true,
 			nullable: false,
 			unique: true,
@@ -17,17 +17,17 @@ export default class MutationsAR extends Model {
 			name: 'table_name',
 			primary: false,
 			taintable: false,
-			type: ColumnType.string,
+			type: ColumnType.STRING,
 		}, {
 			name: 'original_value',
 			primary: false,
 			taintable: true,
-			type: ColumnType.json,
+			type: ColumnType.JSON,
 		}, {
 			name: 'modified_value',
 			primary: false,
 			taintable: true,
-			type: ColumnType.json,
+			type: ColumnType.JSON,
 		}, 
 	] as Column[];
 

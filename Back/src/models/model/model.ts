@@ -1,30 +1,31 @@
 import * as mysql from 'mysql2';
 import findOneFn from './findOne';
+import { IModelRelation } from './modelRelation';
 import saveModelFn from './save';
 import { Column, IIndexable, RefreshCallback, SaveCallback } from './types';
-
-interface ModelRelation {
-	name: string;
-	table: string;
-	join: 'left' | 'inner' | 'outer';
-	parentColumn: string;
-	childColumn: string;
-
-	// should build query like
-	// SELECT base.*, ${name}.* from this.table AS base ${join} ${table} as ${name} ON this.${parentColumn} = ${childColumn}
-}
+import { addRelationship } from './index';
 
 abstract class ModelBase implements IIndexable {
 	public table = '';
 	public abstract version: number;
-	public abstract columns: Column[];
+	public columns: Column[] = [];
 	public isNew = true;
 	id = -1;
 
-	public modelRelations: ModelRelation[] = [];
+	public modelRelations: IModelRelation[] = [];
 }
 
 abstract class Model extends ModelBase {
+
+	constructor() {
+		super();
+	}
+
+	protected init = () => {
+		this.modelRelations.forEach(relation => {
+			addRelationship(this, relation);
+		});
+	}
 
 	public static find<Type>(): Type|null {
 		return null;
@@ -48,4 +49,4 @@ abstract class Model extends ModelBase {
 	};
 }
 
-export {Model, ModelBase};
+export { Model, ModelBase };
