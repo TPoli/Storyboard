@@ -1,7 +1,7 @@
 import * as mysql from 'mysql2';
 import findOneFn from './findOne';
 import { IModelRelation } from './modelRelation';
-import saveModelFn from './save';
+import {saveModelFn} from './save';
 import { Column, IIndexable, RefreshCallback, SaveCallback } from './types';
 import { addRelationship } from './index';
 
@@ -35,8 +35,8 @@ abstract class Model extends ModelBase {
 		findOneFn(this, params, callback);
 	}
 
-	public save(callback: SaveCallback, columns: string[] = []) {
-		saveModelFn(this, callback, columns);
+	public async save(callback: SaveCallback, columns: string[] = []) {
+		callback(await saveModelFn(this, columns));
 	}
 
 	// use after save() if you need to access any auto generated data such as ID
