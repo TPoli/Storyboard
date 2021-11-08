@@ -2,13 +2,14 @@ import * as mysql from 'mysql2';
 import * as mysqlPromise from 'mysql2/promise';
 
 import { Column } from './models/model';
-import VersionsAR from './models/versionsAR';
+import { VersionsAR } from './models/versionsAR';
 import MutationsAR from './models/mutationsAR';
 import { AccountAR } from './models/accountAR';
 import TransactionsAR from './models/transactionsAR';
 import { CamelCase } from '../../Core/Utils/Utils';
 import CollectionAR from './models/CollectionAR';
 import { Schema } from './models/schema';
+import { RecentCollectionsAR } from './models/recentCollectionsAR';
 
 export namespace Db {
 
@@ -21,6 +22,7 @@ export namespace Db {
 		AccountAR,
 		TransactionsAR,
 		CollectionAR,
+		RecentCollectionsAR,
 	] as Schema[];
 
 	let defaultConnection: mysql.Connection|null = null;
@@ -65,7 +67,7 @@ export namespace Db {
 			}
 			const referencedTableName = `${databaseName}.${column.references.model}`;
 
-			const fkName = CamelCase([model.table, column.references.model, column.references.column, 'Fk', ]);
+			const fkName = CamelCase([model.table, column.references.model, column.name, '_', column.references.column, 'Fk', ]);
 			sql += `${(first ? '' : ',')}\nADD CONSTRAINT ${fkName}\n`;
 			sql += `FOREIGN KEY (${column.name})\n`;
 			sql += `REFERENCES ${referencedTableName} (${column.references.column})\n`;

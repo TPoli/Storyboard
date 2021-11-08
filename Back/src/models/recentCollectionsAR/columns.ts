@@ -1,6 +1,6 @@
-import { AccountAR } from "../accountAR";
-import CollectionAR from "../CollectionAR";
-import { Column, ColumnType } from "../model";
+import { AccountAR } from '../accountAR';
+import CollectionAR from '../CollectionAR';
+import { Column, ColumnType } from '../model';
 
 const columns = [
 	{
