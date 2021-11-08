@@ -28,7 +28,7 @@ export const Routes: RouteMap = {
 				success: true,
 				message: 'logged out',
 			};
-			req.transaction.sendResponse(res, payload);
+			req.transaction.sendResponse(res, req, payload);
 		},
 		params: Api.AllEndpoints['logout'].params,
 		authenticatedUserRequired: false,
@@ -39,7 +39,7 @@ export const Routes: RouteMap = {
 				success: true,
 				message: 'Well done!',
 			};
-			req.transaction.sendResponse(res, payload);
+			req.transaction.sendResponse(res, req, payload);
 		},
 		params: Api.AllEndpoints['test'].params,
 		authenticatedUserRequired: true,

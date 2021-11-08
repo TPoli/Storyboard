@@ -1,5 +1,7 @@
-import { AccountAR } from '../accountAR';
-import CollectionAR from '../CollectionAR';
+import {
+	AccountAR,
+	CollectionAR
+} from '../';
 import { Column, ColumnType } from '../model';
 
 const columns = [
@@ -25,7 +27,7 @@ const columns = [
 		primary: false,
 		taintable: false,
 		type: ColumnType.STRING,
-		nullable: false,
+		nullable: true,
 		references: {
 			model: new CollectionAR().table,
 			column: 'id',
@@ -35,7 +37,7 @@ const columns = [
 		primary: false,
 		taintable: false,
 		type: ColumnType.STRING,
-		nullable: false,
+		nullable: true,
 		references: {
 			model: new CollectionAR().table,
 			column: 'id',
@@ -45,7 +47,7 @@ const columns = [
 		primary: false,
 		taintable: false,
 		type: ColumnType.STRING,
-		nullable: false,
+		nullable: true,
 		references: {
 			model: new CollectionAR().table,
 			column: 'id',

@@ -28,7 +28,7 @@ const getCollectionsFn: ExpressFinalCallback = (req, res) => {
 		// 'availableCollections',
 		// TODO stop hard coding the above
 	};
-	req.transaction.sendResponse(res, payload);
+	req.transaction.sendResponse(res, req, payload);
 };
 
 export default getCollectionsFn;

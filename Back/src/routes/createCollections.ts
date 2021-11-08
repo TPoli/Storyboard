@@ -1,7 +1,7 @@
 import { ICreateCollectionResponse, IFailResponse } from '../../../Core/types/Response'
 import { ExpressFinalCallback } from '../types/types';
 import { randomUUID } from 'crypto';
-import CollectionAR from '../models/CollectionAR';
+import { CollectionAR } from '../models';
 import { SaveCallback } from '../models/model';
 
 const createCollectionsFn: ExpressFinalCallback = async (req, res) => {
@@ -19,7 +19,7 @@ const createCollectionsFn: ExpressFinalCallback = async (req, res) => {
 				success: false,
 				message: `could not set parent to ${req.body.parentId}`,
 			};
-			return req.transaction.sendResponse(res, payload);
+			return req.transaction.sendResponse(res, req, payload);
 		}
 	}
 
@@ -39,16 +39,16 @@ const createCollectionsFn: ExpressFinalCallback = async (req, res) => {
 					uuid: collection.id + '',
 				},
 			};
-			return req.transaction.sendResponse(res, payload);
+			return req.transaction.sendResponse(res, req, payload);
 		}
 		const payload: IFailResponse = {
 			success: false,
 			message: 'db failed to save',
 		};
-		return req.transaction.sendResponse(res, payload);
+		return req.transaction.sendResponse(res, req, payload);
 	};
 
-	collection.save(saveCallback, [
+	collection.save(saveCallback, req, [
 		'id',
 		'account',
 		'name',

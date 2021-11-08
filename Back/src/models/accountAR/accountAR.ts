@@ -1,6 +1,11 @@
-import CollectionAR from '../CollectionAR';
-import { IModelRelation, Model, SaveCallback } from '../model';
-import { RelationType } from '../model/modelRelation';
+import {
+	IModelRelation,
+	Model,
+	SaveCallback,
+	CollectionAR,
+	RelationType,
+	RecentCollectionsAR
+} from '../';
 import { columns } from './columns';
 import peppers from './peppers';
 
@@ -19,6 +24,8 @@ export default class AccountAR extends Model {
 	public email: string|null = null;
 	public permissions: Object = {};
 	public myCollections: CollectionAR[] = [];
+	public recentCollectionsMap: RecentCollectionsAR|null = null;
+	public recentCollections: CollectionAR[] = [];
 
 	public modelRelations: IModelRelation[] = [
 		{
@@ -28,6 +35,13 @@ export default class AccountAR extends Model {
 			childColumn: 'account',
 			parentColumn: 'id',
 			relationType: RelationType.ONE_TO_MANY,
+		}, {
+			table: 'recentCollections',
+			join: 'left',
+			name: 'recentCollectionsMap',
+			childColumn: 'account',
+			parentColumn: 'id',
+			relationType: RelationType.ONE_TO_ONE,
 		},
 	];
 
@@ -56,7 +70,7 @@ export default class AccountAR extends Model {
 			callback();
 		};
 
-		houseAccount.save(saveCallback, [
+		houseAccount.save(saveCallback, null, [
 			'id',
 			'username',
 			'password',

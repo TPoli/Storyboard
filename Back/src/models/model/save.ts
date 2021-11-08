@@ -1,7 +1,7 @@
 import { Db } from '../../db';
 import { ColumnType } from './columnType';
 import { ModelBase } from './model';
-import { IIndexable, SaveCallback } from './types';
+import { IIndexable } from './types';
 
 const parametise = (model: ModelBase, columns: string[]) => {
 	const keys: string[] = [];

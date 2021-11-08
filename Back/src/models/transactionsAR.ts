@@ -1,10 +1,16 @@
 import * as express from 'express';
 
-import { AccountAR } from './accountAR';
-import { Model, Column, ColumnType, SaveCallback } from './model';
+import {
+	Model,
+	Column,
+	ColumnType,
+	SaveCallback,
+	AccountAR
+} from './';
 import { IResponse } from '../../../Core/types/Response';
+import { LoggedInRequest } from '../types/types';
 
-export default class TransactionsAR extends Model {
+export class TransactionsAR extends Model {
 	
 	public version = 1;
 	public table = 'transactions';
@@ -63,11 +69,11 @@ export default class TransactionsAR extends Model {
 		super();
 	}
 
-	public sendResponse = (response: express.Response, payload: IResponse) => {
+	public sendResponse = (response: express.Response, req: LoggedInRequest|null, payload: IResponse) => {
 		response.send(payload); // dont wait for db to resolve to respond to user
 
 		this.response = payload;
 		const callback: SaveCallback = (success) => {}; // unused but required
-		this.save(callback, ['response',]);
+		this.save(callback, req, ['response',]);
 	}
 }

@@ -1,9 +1,11 @@
 import * as mysql from 'mysql2';
+
 import findOneFn from './findOne';
 import { IModelRelation } from './modelRelation';
-import {saveModelFn} from './save';
-import { Column, IIndexable, RefreshCallback, SaveCallback } from './types';
+import { saveModelFn } from './save';
+import { Column, IIndexable, SaveCallback } from './types';
 import { addRelationship } from './index';
+import { LoggedInRequest } from '../../types/types';
 
 abstract class ModelBase implements IIndexable {
 	public table = '';
@@ -35,13 +37,19 @@ abstract class Model extends ModelBase {
 		findOneFn(this, params, callback);
 	}
 
-	public async save(callback: SaveCallback, columns: string[] = []) {
-		callback(await saveModelFn(this, columns));
+	public async save(callback: SaveCallback, req: LoggedInRequest|null, columns: string[] = []) {
+		const saveResult = await saveModelFn(this, columns);
+		callback(saveResult);
+		this.afterSave(req);
+	}
+
+	public async afterSave(req: LoggedInRequest|null) {
+		return; // not implemented yet
 	}
 
 	// use after save() if you need to access any auto generated data such as ID
-	public refresh(callback: RefreshCallback): void {
-		callback();
+	public async refresh(): Promise<void> {
+		return; // not implemented yet
 	}
 
 	public createDefaultEntries = (callback: () => void) => {

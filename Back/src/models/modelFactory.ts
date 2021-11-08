@@ -1,7 +1,10 @@
-import { AccountAR } from './accountAR';
-import CollectionAR from './CollectionAR';
+import {
+	CollectionAR,
+	AccountAR,
+	RecentCollectionsAR
+} from './';
 
-export type ActiveRecords = AccountAR | CollectionAR;
+export type ActiveRecords = AccountAR | CollectionAR | RecentCollectionsAR;
 
 export const createModel = (modelName: string): ActiveRecords | null => {
 	switch (modelName) {
@@ -9,6 +12,8 @@ export const createModel = (modelName: string): ActiveRecords | null => {
 			return new AccountAR();
 		case 'collections':
 			return new CollectionAR();
+		case 'recentCollections':
+			return new RecentCollectionsAR();
 		default:
 			return null;
 	}

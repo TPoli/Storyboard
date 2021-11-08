@@ -1,8 +1,14 @@
-import { AccountAR } from './accountAR';
-import { Model, Column, ColumnType } from './model';
+import {
+	AccountAR,
+	Model,
+	Column,
+	ColumnType,
+	RecentCollectionsAR
+} from './';
 import { Collection } from '../../../Core/types/Collection';
+import { LoggedInRequest } from '../types/types';
 
-export default class CollectionAR extends Model implements Collection {
+export class CollectionAR extends Model implements Collection {
 
 	public id = '';
 	public name = '';
@@ -67,5 +73,31 @@ export default class CollectionAR extends Model implements Collection {
 
 	constructor() {
 		super();
+	}
+
+	public async afterSave(req: LoggedInRequest | null) {
+		super.afterSave(req);
+
+		if (!req) {
+			return;
+		}
+
+		const recentCollectionsMap = req?.user?.recentCollectionsMap ?? new RecentCollectionsAR();
+
+		if (this.id === recentCollectionsMap.recentId1) {
+			// most recently modified this collection, nothing to update
+			return;
+		}
+		recentCollectionsMap.recentId3 = recentCollectionsMap.recentId2;
+		recentCollectionsMap.recentId2 = recentCollectionsMap.recentId1;
+		recentCollectionsMap.recentId1 = this.id;
+		recentCollectionsMap.account = req.user.id;
+		recentCollectionsMap.save(() => {}, req, [
+			'id',
+			'account',
+			'recentId1',
+			'recentId2',
+			'recentId3',
+		]);
 	}
 }

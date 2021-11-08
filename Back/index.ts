@@ -4,8 +4,10 @@ import cors from 'cors';
 import { Api, EndpointRoutes, Parameter } from '../Core/Api/Api'
 import { Db } from './src/db';
 
-import { AccountAR } from './src/models/accountAR';
-import TransactionsAR from './src/models/transactionsAR';
+import {
+    AccountAR,
+    TransactionsAR
+} from './src/models';
 
 import setupAuth from './src/security/authentication';
 import { MinutesToMilliseconds } from '../Core/Utils/Utils';
@@ -80,7 +82,7 @@ const createLogMiddlware = (endpoint: EndpointRoutes) => {
         transaction.ipAddress = req.ip;
         
         (req as LoggedInRequest).transaction = transaction;
-        transaction.save(saved, [
+        transaction.save(saved, (req as LoggedInRequest), [
             'account',
             'route',
             'params',
@@ -157,7 +159,7 @@ const setupRoutes = () => {
                 success: false,
                 message: 'authentication failed',
             };
-            return (req as LoggedInRequest).transaction.sendResponse(res, payload);
+            return (req as LoggedInRequest).transaction.sendResponse(res, (req as LoggedInRequest), payload);
         }
 
         const middlewares = [

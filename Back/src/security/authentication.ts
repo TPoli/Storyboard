@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 import { Strategy } from 'passport-local';
 import random from 'random';
 
-import { AccountAR } from '../models/accountAR';
+import { AccountAR } from '../models';
 import passport from 'passport';
 
 const createAccount = (req:any, username:any, password:any, done:any) => {
@@ -12,12 +12,10 @@ const createAccount = (req:any, username:any, password:any, done:any) => {
     account.email = req?.body?.email ?? null;
     account.mobile = req?.body?.mobile ?? null;
 
-    const refreshed = () => {
-        return done(null, account);
-    };
-    const saved = (success: boolean) => {
+    const saved = async (success: boolean) => {
         if (success) {
-            account.refresh(refreshed);
+            await account.refresh();
+            return done(null, account);
         } else {
             return done(null, false, { message: 'login failed.', });
         }
@@ -41,7 +39,7 @@ const createAccount = (req:any, username:any, password:any, done:any) => {
         if (account.mobile) {
             columnsToSave.push('mobile');
         }
-        account.save(saved, columnsToSave);
+        account.save(saved, req, columnsToSave);
     };
 
     const saltRounds = 10;

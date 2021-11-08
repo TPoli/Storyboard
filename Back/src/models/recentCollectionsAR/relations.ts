@@ -1,4 +1,7 @@
-import { IModelRelation, RelationType } from '../model/modelRelation';
+import {
+	RelationType,
+	IModelRelation
+} from '../';
 
 const modelRelations: IModelRelation[] = [
 	{

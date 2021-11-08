@@ -1,6 +1,6 @@
 import { Model, Column, ColumnType } from './model';
 
-export default class MutationsAR extends Model {
+export class MutationsAR extends Model {
 	
 	public version = 1;
 	public static table = 'mutations';

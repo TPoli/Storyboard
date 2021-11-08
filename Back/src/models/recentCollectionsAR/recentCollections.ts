@@ -1,15 +1,19 @@
-import CollectionAR from '../CollectionAR';
-import { Model, Column, IModelRelation } from '../model';
-import { columns } from './columns';
+import {
+	CollectionAR,
+	Model,
+	Column,
+	IModelRelation
+} from '../';
 import { modelRelations } from './relations';
+import { columns } from './columns';
 
 export class RecentCollectionsAR extends Model {
 	// metadata
 	public version = 1;
+	public table = 'recentCollections';
 
 	// columns
 	public id = '';
-	public table = 'recentCollections';
 	public account: number|null = null;
 	public recentId1 = '';
 	public recentId2 = '';

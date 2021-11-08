@@ -1,15 +1,17 @@
 import * as mysql from 'mysql2';
 import * as mysqlPromise from 'mysql2/promise';
 
-import { Column } from './models/model';
-import { VersionsAR } from './models/versionsAR';
-import MutationsAR from './models/mutationsAR';
-import { AccountAR } from './models/accountAR';
-import TransactionsAR from './models/transactionsAR';
 import { CamelCase } from '../../Core/Utils/Utils';
-import CollectionAR from './models/CollectionAR';
 import { Schema } from './models/schema';
-import { RecentCollectionsAR } from './models/recentCollectionsAR';
+import {
+	CollectionAR,
+	MutationsAR,
+	TransactionsAR,
+	AccountAR,
+	VersionsAR,
+	RecentCollectionsAR,
+	Column
+} from './models';
 
 export namespace Db {
 
