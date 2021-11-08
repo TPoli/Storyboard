@@ -1,6 +1,6 @@
-import { Model, Column, ColumnType } from './model';
+import { Model, Column, ColumnType } from '../model';
 
-export default class VersionsAR extends Model {
+export class VersionsAR extends Model {
 	
 	public version = 1;
 	public static table = 'versions';
