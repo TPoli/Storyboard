@@ -1,4 +1,3 @@
-import { Content } from "./Content";
 
 /**
  * used to represent the hierarchy of content
@@ -9,7 +8,6 @@ import { Content } from "./Content";
 	siblingOrder: number;
 	parent: Collection|null;
 	children: Collection[];
-	content: Content[];
 };
 
 interface ICollection {

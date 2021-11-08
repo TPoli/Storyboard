@@ -1,6 +1,5 @@
 import { AccountAR } from './accountAR';
 import { Model, Column, ColumnType } from './model';
-import { Content } from '../../../Core/types/Content';
 import { Collection } from '../../../Core/types/Collection';
 
 export default class CollectionAR extends Model implements Collection {
@@ -10,7 +9,6 @@ export default class CollectionAR extends Model implements Collection {
 	public siblingOrder = 0;
 	public parent: Collection|null = null;
 	public children: Collection[] = [];
-	public content: Content[] = [];
 	
 	public version = 1;
 	public table = 'collections';
