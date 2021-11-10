@@ -4,7 +4,6 @@ import {
 	Model,
 	Column,
 	ColumnType,
-	SaveCallback,
 	AccountAR
 } from './';
 import { IResponse } from '../../../Core/types/Response';
@@ -73,7 +72,6 @@ export class TransactionsAR extends Model {
 		response.send(payload); // dont wait for db to resolve to respond to user
 
 		this.response = payload;
-		const callback: SaveCallback = (success) => {}; // unused but required
-		this.save(callback, req, ['response',]);
+		this.save(req, ['response',]);
 	}
 }

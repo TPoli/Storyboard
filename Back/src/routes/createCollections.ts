@@ -2,7 +2,6 @@ import { ICreateCollectionResponse, IFailResponse } from '../../../Core/types/Re
 import { ExpressFinalCallback } from '../types/types';
 import { randomUUID } from 'crypto';
 import { CollectionAR } from '../models';
-import { SaveCallback } from '../models/model';
 
 const createCollectionsFn: ExpressFinalCallback = async (req, res) => {
 
@@ -29,33 +28,31 @@ const createCollectionsFn: ExpressFinalCallback = async (req, res) => {
 		content: '',
 	};
 
-	const saveCallback: SaveCallback = (success) => {
-		if (success) {
-			const payload: ICreateCollectionResponse = {
-				success: true,
-				newCollection: {
-					title: collection.name,
-					content: collection.data?.content ?? '',
-					uuid: collection.id + '',
-				},
-			};
-			return req.transaction.sendResponse(res, req, payload);
-		}
-		const payload: IFailResponse = {
-			success: false,
-			message: 'db failed to save',
-		};
-		return req.transaction.sendResponse(res, req, payload);
-	};
-
-	collection.save(saveCallback, req, [
+	const success = await collection.save(req, [
 		'id',
 		'account',
 		'name',
 		'siblingOrder',
 		'parent',
 		'data',
-	])
+	]);
+
+	if (success) {
+		const payload: ICreateCollectionResponse = {
+			success: true,
+			newCollection: {
+				title: collection.name,
+				content: collection.data?.content ?? '',
+				uuid: collection.id + '',
+			},
+		};
+		return req.transaction.sendResponse(res, req, payload);
+	}
+	const payload: IFailResponse = {
+		success: false,
+		message: 'db failed to save',
+	};
+	return req.transaction.sendResponse(res, req, payload);
 };
 
 export default createCollectionsFn;

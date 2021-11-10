@@ -1,7 +1,5 @@
 import { ColumnType } from './columnType';
 
-
-
 export type Column = {
 	name: string;
 	type: ColumnType;
@@ -21,5 +19,4 @@ export interface IIndexable {
 	[key: string]: any;
 }
 
-export type SaveCallback = (success: boolean) => void;
 export type RefreshCallback = () => void;

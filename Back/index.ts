@@ -61,19 +61,7 @@ const setupExpress = () => {
 };
 
 const createLogMiddlware = (endpoint: EndpointRoutes) => {
-    const middleware: ExpressCallback = (req, res, next) => {
-        const saved = (success: boolean) => {
-            if (success) {
-                next();
-            } else {
-                const response: IFailResponse = {
-                    message: 'faled to process request',
-                    success: false,
-                };
-                res.send(response);
-            }
-        };
-
+    const middleware: ExpressCallback = async (req, res, next) => {
         const transaction = new TransactionsAR();
         transaction.params = req.body;
         transaction.response = {};
@@ -82,13 +70,23 @@ const createLogMiddlware = (endpoint: EndpointRoutes) => {
         transaction.ipAddress = req.ip;
         
         (req as LoggedInRequest).transaction = transaction;
-        transaction.save(saved, (req as LoggedInRequest), [
+        const success = await transaction.save((req as LoggedInRequest), [
             'account',
             'route',
             'params',
             'response',
             'ipAddress',
         ]);
+
+        if (success) {
+            next();
+        } else {
+            const response: IFailResponse = {
+                message: 'faled to process request',
+                success: false,
+            };
+            res.send(response);
+        }
     };
     return middleware;
 };

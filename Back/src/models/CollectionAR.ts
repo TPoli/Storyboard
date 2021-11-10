@@ -75,24 +75,26 @@ export class CollectionAR extends Model implements Collection {
 		super();
 	}
 
-	public async afterSave(req: LoggedInRequest | null) {
-		super.afterSave(req);
+	public async afterSave(req: LoggedInRequest | null): Promise<boolean> {
+		if(!(await super.afterSave(req))) {
+			return false;
+		}
 
 		if (!req) {
-			return;
+			return false;
 		}
 
 		const recentCollectionsMap = req?.user?.recentCollectionsMap ?? new RecentCollectionsAR();
 
 		if (this.id === recentCollectionsMap.recentId1) {
 			// most recently modified this collection, nothing to update
-			return;
+			return true;
 		}
 		recentCollectionsMap.recentId3 = recentCollectionsMap.recentId2;
 		recentCollectionsMap.recentId2 = recentCollectionsMap.recentId1;
 		recentCollectionsMap.recentId1 = this.id;
 		recentCollectionsMap.account = req.user.id;
-		recentCollectionsMap.save(() => {}, req, [
+		return await recentCollectionsMap.save(req, [
 			'id',
 			'account',
 			'recentId1',

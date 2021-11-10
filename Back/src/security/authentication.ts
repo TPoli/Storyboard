@@ -12,16 +12,7 @@ const createAccount = (req:any, username:any, password:any, done:any) => {
     account.email = req?.body?.email ?? null;
     account.mobile = req?.body?.mobile ?? null;
 
-    const saved = async (success: boolean) => {
-        if (success) {
-            await account.refresh();
-            return done(null, account);
-        } else {
-            return done(null, false, { message: 'login failed.', });
-        }
-    };
-
-    const hashCallback = (err: Error, hash: string) => {
+    const hashCallback = async (err: Error, hash: string) => {
         if (err) {
             return done(null, false, { message: 'login failed.', });
         }
@@ -39,7 +30,11 @@ const createAccount = (req:any, username:any, password:any, done:any) => {
         if (account.mobile) {
             columnsToSave.push('mobile');
         }
-        account.save(saved, req, columnsToSave);
+        if (await account.save(req, columnsToSave)) {
+            await account.refresh();
+            return done(null, account);
+        }
+        return done(null, false, { message: 'login failed.', });
     };
 
     const saltRounds = 10;

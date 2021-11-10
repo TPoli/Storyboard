@@ -1,6 +1,6 @@
 import { RelationType } from './model/modelRelation';
 
-import { Model, IModelRelation, SaveCallback, Column, ColumnType, IIndexable } from './model';
+import { Model, IModelRelation, Column, ColumnType, IIndexable } from './model';
 import { AccountAR } from './accountAR';
 
 import { CollectionAR } from './CollectionAR';
@@ -15,7 +15,6 @@ export {
 	AccountAR,
 	Model,
 	IModelRelation,
-	SaveCallback,
 	CollectionAR,
 	Column,
 	ColumnType,

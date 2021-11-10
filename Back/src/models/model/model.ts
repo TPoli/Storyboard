@@ -3,7 +3,7 @@ import * as mysql from 'mysql2';
 import findOneFn from './findOne';
 import { IModelRelation } from './modelRelation';
 import { saveModelFn } from './save';
-import { Column, IIndexable, SaveCallback } from './types';
+import { Column, IIndexable } from './types';
 import { addRelationship } from './index';
 import { LoggedInRequest } from '../../types/types';
 
@@ -37,14 +37,16 @@ abstract class Model extends ModelBase {
 		findOneFn(this, params, callback);
 	}
 
-	public async save(callback: SaveCallback, req: LoggedInRequest|null, columns: string[] = []) {
+	public async save(req: LoggedInRequest|null, columns: string[] = []): Promise<boolean> {
 		const saveResult = await saveModelFn(this, columns);
-		callback(saveResult);
-		this.afterSave(req);
+		if (!saveResult) {
+			return false;
+		}
+		return await this.afterSave(req);
 	}
 
-	public async afterSave(req: LoggedInRequest|null) {
-		return; // not implemented yet
+	public async afterSave(req: LoggedInRequest|null): Promise<boolean> {
+		return true;
 	}
 
 	// use after save() if you need to access any auto generated data such as ID

@@ -1,7 +1,6 @@
 import {
 	IModelRelation,
 	Model,
-	SaveCallback,
 	CollectionAR,
 	RelationType,
 	RecentCollectionsAR
@@ -54,7 +53,7 @@ export default class AccountAR extends Model {
 		this.init();
 	}
 
-	public createDefaultEntries = (callback: () => void) => {
+	public createDefaultEntries = async (callback: () => void) => {
 		// account that acts as system user
 		const houseAccount = new AccountAR();
 		houseAccount.id=0;
@@ -66,11 +65,7 @@ export default class AccountAR extends Model {
 		houseAccount.email='';
 		houseAccount.permissions={};
 
-		const saveCallback: SaveCallback = (success: boolean) => {
-			callback();
-		};
-
-		houseAccount.save(saveCallback, null, [
+		await houseAccount.save(null, [
 			'id',
 			'username',
 			'password',
@@ -80,5 +75,7 @@ export default class AccountAR extends Model {
 			'email',
 			'permissions',
 		]);
+
+		callback();
 	};
 }
