@@ -15,12 +15,16 @@ const parametise = (model: ModelBase, columns: string[]) => {
 			return false;
 		}
 
+		keys.push('?');
+
 		const value = (model as IIndexable)[column];
-		if (colData.nullable && value === null) {
+		if (value === null) {
+			if (!colData.nullable) {
+				return false;
+			}
+			values.push(null);
 			return true;
 		}
-
-		keys.push('?');
 
 		switch (colData.type) {
 			case ColumnType.JSON:
@@ -69,6 +73,7 @@ const insert = async (model: ModelBase, columns: string[]): Promise<boolean> => 
 
 			return true;
 		} catch (error) {
+			console.log('Database ERROR: ', JSON.stringify(error), '\n');
 			return false;
 		}
 	} else {

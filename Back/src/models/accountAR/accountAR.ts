@@ -10,10 +10,11 @@ import peppers from './peppers';
 
 export default class AccountAR extends Model {
 	
+	// metadata
 	public version = 1;
 	public table = 'account';
-	public columns = columns;
-
+	
+	// columns
 	public id = -1;
 	public username = '';
 	public password = '';
@@ -22,9 +23,11 @@ export default class AccountAR extends Model {
 	public mobile: string|null = null;
 	public email: string|null = null;
 	public permissions: Object = {};
-	public myCollections: CollectionAR[] = [];
-	public recentCollectionsMap: RecentCollectionsAR|null = null;
-	public recentCollections: CollectionAR[] = [];
+	public columns = columns;
+
+	//relations
+	public myCollections: () => Promise<CollectionAR[]> = async () => [];
+	public recentCollections: () => Promise<RecentCollectionsAR|null> = async () => null;
 
 	public modelRelations: IModelRelation[] = [
 		{
@@ -37,7 +40,7 @@ export default class AccountAR extends Model {
 		}, {
 			table: 'recentCollections',
 			join: 'left',
-			name: 'recentCollectionsMap',
+			name: 'recentCollections',
 			childColumn: 'account',
 			parentColumn: 'id',
 			relationType: RelationType.ONE_TO_ONE,
@@ -50,7 +53,6 @@ export default class AccountAR extends Model {
 
 	constructor() {
 		super();
-		this.init();
 	}
 
 	public createDefaultEntries = async (callback: () => void) => {

@@ -307,10 +307,10 @@ export namespace Db {
 	};
 
 	// TODO convert to using this as default
-	export const promisedExecute = async (statement: string, params: any[]) => {
+	export const promisedExecute = async (statement: string, params: any[] = []) => {
 		if (!defaultPromiseConnection) {
 			throw new Error('default database connection couldn\'t be established');
 		}
-		return await defaultPromiseConnection.execute(statement, params);
+		return await defaultPromiseConnection.query(statement, params);
 	};
 }

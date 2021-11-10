@@ -1,33 +1,32 @@
+import { ICollection } from '../../../Core/types/Collection';
 import { IGetCollectionsResponse } from '../../../Core/types/Response'
+import { CollectionAR } from '../models';
 import { ExpressFinalCallback } from '../types/types';
 
-const getCollectionsFn: ExpressFinalCallback = (req, res) => {
+const getCollectionsFn: ExpressFinalCallback = async (req, res) => {
+
+	const recentCollectionsModel = await req.user.recentCollections();
+
+	const recent = await recentCollectionsModel?.collections() ?? [];
+	const myCollections = await req.user.myCollections();
+
+	const collectionModelToInterface = (relation: CollectionAR): ICollection => {
+		return {
+			title: relation.name,
+			content: relation.data?.content ?? '',
+			uuid: relation.id,
+		};
+	};
+
 	const payload: IGetCollectionsResponse = {
 		success: true,
 		message: 'Well done!',
 		collections: {
-			recentlyModified:[
-				{
-					title: 'R1',
-					content: 'Recent-1',
-					uuid: 'randomUUID()',
-				}, {
-					title: 'R2',
-					content: 'Recent-2',
-					uuid: 'randomUUID()',
-				}, {
-					title: 'R3',
-					content: 'Recent-3',
-					uuid: 'randomUUID()',
-				}, 
-			],
+			recentlyModified: recent.map(collectionModelToInterface),
+			myCollections: myCollections.map(collectionModelToInterface),
 		},
-		
-		// 'myCollections',
-		// 'favourites',
-		// 'availableCollections',
-		// TODO stop hard coding the above
 	};
+	
 	req.transaction.sendResponse(res, req, payload);
 };
 

@@ -84,7 +84,7 @@ export class CollectionAR extends Model implements Collection {
 			return false;
 		}
 
-		const recentCollectionsMap = req?.user?.recentCollectionsMap ?? new RecentCollectionsAR();
+		const recentCollectionsMap = await req?.user?.recentCollections() ?? new RecentCollectionsAR();
 
 		if (this.id === recentCollectionsMap.recentId1) {
 			// most recently modified this collection, nothing to update
@@ -95,7 +95,6 @@ export class CollectionAR extends Model implements Collection {
 		recentCollectionsMap.recentId1 = this.id;
 		recentCollectionsMap.account = req.user.id;
 		return await recentCollectionsMap.save(req, [
-			'id',
 			'account',
 			'recentId1',
 			'recentId2',

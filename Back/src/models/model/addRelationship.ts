@@ -22,40 +22,32 @@ const getRelationFromRow = (relation: IModelRelation, row: RowDataPacket): Model
 
 const addRelationship: Signature = (model, relation) => {
 	const dataKey = 'relation_' + relation.name;
-	Object.defineProperty(model, relation.name, {
-		set: function(value) {
-			(model as IIndexable)[dataKey] = value;
-		},
-		get: async function() {
-			if (typeof (model as IIndexable)[dataKey] === 'undefined') {
+	model[relation.name] = async () => {
+		if (typeof (model as IIndexable)[dataKey] === 'undefined') {
+			const sql = `SELECT * from ${relation.table} WHERE ${relation.childColumn} = ?`;
+			const [ rows, ] = await Db.promisedExecute(sql, [(model as IIndexable)[relation.parentColumn],]);
 
-				const sql = `SELECT * from ${relation.table} WHERE ${relation.childColumn} = ${(model as IIndexable)[relation.parentColumn]}`;
-				const [ rows, ] = await Db.promisedExecute(sql, []);
-
-				if (!Array.isArray(rows) || rows.length === 0) {
-					(this as IIndexable)[dataKey] = null;
-					return null;
-				}
-
-				const models: Model[] = [];
-				rows.forEach(row => {
-					models.push(
-						getRelationFromRow(relation, row as RowDataPacket)
-					);
-				});
-				
-				if (relation.relationType === RelationType.ONE_TO_ONE) {
-					(this as IIndexable)[dataKey] = models[0];
-				} else {
-					(this as IIndexable)[dataKey] = models;
-				}
+			if (!Array.isArray(rows) || rows.length === 0) {
+				(model as IIndexable)[dataKey] = null;
+				return null;
 			}
 
-			return (this as IIndexable)[dataKey];
-		},
-		enumerable: true,
-		configurable: true, 
-	});
+			const models: Model[] = [];
+			rows.forEach(row => {
+				models.push(
+					getRelationFromRow(relation, row as RowDataPacket)
+				);
+			});
+			
+			if (relation.relationType === RelationType.ONE_TO_ONE) {
+				(model as IIndexable)[dataKey] = models[0];
+			} else {
+				(model as IIndexable)[dataKey] = models;
+			}
+		}
+
+		return (model as IIndexable)[dataKey];
+	};
 };
 
 export {addRelationship};

@@ -7,14 +7,23 @@ import {
 export type ActiveRecords = AccountAR | CollectionAR | RecentCollectionsAR;
 
 export const createModel = (modelName: string): ActiveRecords | null => {
+	let model: ActiveRecords | null = null;
 	switch (modelName) {
 		case 'accounts':
-			return new AccountAR();
+			model = new AccountAR();
+			break;
 		case 'collections':
-			return new CollectionAR();
+			model = new CollectionAR();
+			break;
 		case 'recentCollections':
-			return new RecentCollectionsAR();
+			model = new RecentCollectionsAR();
+			break;
 		default:
 			return null;
 	}
+
+	if (model) {
+		model.init();
+	}
+	return model;
 };

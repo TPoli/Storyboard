@@ -23,7 +23,7 @@ abstract class Model extends ModelBase {
 		super();
 	}
 
-	protected init = () => {
+	public init = () => {
 		this.modelRelations.forEach(relation => {
 			addRelationship(this, relation);
 		});

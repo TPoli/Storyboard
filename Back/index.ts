@@ -196,6 +196,7 @@ passport.deserializeUser(function(id: number, done: Function) {
         if (!account) {
             return done(null, false, { message: 'login failed.', });
         }
+        account.init();
         return done(null, account);
     });
 });
