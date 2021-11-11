@@ -1,3 +1,4 @@
+import { OkPacket } from 'mysql2';
 import { Db } from '../../db';
 import { ColumnType } from './columnType';
 import { ModelBase } from './model';
@@ -68,7 +69,7 @@ const insert = async (model: ModelBase, columns: string[]): Promise<boolean> => 
 			}
 			model.isNew = false;
 			if (model.id === '' || model.id === -1) {
-				model.id = (dbResults[0] as any).insertId;
+				model.id = (dbResults[0] as OkPacket).insertId;
 			}
 
 			return true;

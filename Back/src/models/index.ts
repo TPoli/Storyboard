@@ -10,7 +10,6 @@ import { TransactionsAR } from './transactionsAR';
 import { MutationsAR } from './mutationsAR';
 import { VersionsAR } from './versionsAR';
 
-
 export {
 	AccountAR,
 	Model,

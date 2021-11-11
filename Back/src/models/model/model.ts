@@ -37,15 +37,31 @@ abstract class Model extends ModelBase {
 		findOneFn(this, params, callback);
 	}
 
+	/**
+	 * overload this function if there is any preparation required before saving.
+	 * @param req LoggedInRequest|null
+	 * @returns Promise<boolean>
+	 */
+	protected async beforeSave(req: LoggedInRequest|null): Promise<boolean> {
+		return true;
+	}
+
 	public async save(req: LoggedInRequest|null, columns: string[] = []): Promise<boolean> {
-		const saveResult = await saveModelFn(this, columns);
-		if (!saveResult) {
+		if(!await this.beforeSave(req)) {
+			return false;
+		}
+		if (!await saveModelFn(this, columns)) {
 			return false;
 		}
 		return await this.afterSave(req);
 	}
 
-	public async afterSave(req: LoggedInRequest|null): Promise<boolean> {
+	/**
+	 * overload this function if there is any logic that needs to be executed after saving.
+	 * @param req LoggedInRequest|null
+	 * @returns Promise<boolean>
+	 */
+	protected async afterSave(req: LoggedInRequest|null): Promise<boolean> {
 		return true;
 	}
 

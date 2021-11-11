@@ -87,7 +87,7 @@ const verifyUser = (username: string, password: string, done:any) => {
     });
 };
 
-export default () => {
+export default async (): Promise<void> => {
 	passport.use('login', new Strategy({
 		usernameField: 'un',
 		passwordField: 'pw',
