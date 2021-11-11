@@ -47,9 +47,7 @@ export default class AccountAR extends Model {
 		},
 	];
 
-	public static Peppers = () => {
-		return peppers;
-	}
+	public static Peppers = peppers;
 
 	constructor() {
 		super();

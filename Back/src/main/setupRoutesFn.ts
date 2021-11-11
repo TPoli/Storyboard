@@ -1,8 +1,8 @@
-import { createLogMiddlewareFn } from ".";
-import { Api, Parameter } from "../../../Core/Api/Api";
-import { IFailResponse, IAuthFailResponse } from "../../../Core/types/Response";
-import { Routes } from "../routes/router";
-import { ExpressCallback, LoggedInRequest } from "../types/types";
+import { createLogMiddlewareFn } from '.';
+import { Api, Parameter } from '../../../Core/Api/Api';
+import { IFailResponse, IAuthFailResponse } from '../../../Core/types/Response';
+import { Routes } from '../routes/router';
+import { ExpressCallback, LoggedInRequest } from '../types/types';
 
 const setupRoutesFn = (app: any) => {
     Object.entries(Api.AllEndpoints).forEach(([, endpoint,]) => {

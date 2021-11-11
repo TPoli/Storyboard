@@ -1,10 +1,11 @@
 import * as mysql from 'mysql2';
+import { RowDataPacket } from 'mysql2';
 
 import { Db } from '../../db';
 import { Model, ModelBase } from './model';
 import { IIndexable } from './types';
 
-export default function findOneFn<Type extends Model>(model: ModelBase, params: Object, callback: (error: mysql.QueryError|null, result: Type|null) => void) {
+export default async function findOneFn<Type extends Model>(model: Type, params: Object): Promise<Type|null> {
 	let sql = 'SELECT ';
 	const usedParameters: any[] = [];
 	
@@ -27,20 +28,24 @@ export default function findOneFn<Type extends Model>(model: ModelBase, params: 
 		}
 	}
 
-	const queryCallback: Db.DbCallback = (error, results, fields) => {
-		if (error || !results || !results[0]) {
-			callback(error, null);
-			return;
+	try {
+		const dbResults = await Db.promisedExecute(sql, usedParameters);
+
+		if (!dbResults) {
+			return null;
 		}
-		const result = results[0];
+
+		const result = Array.isArray(dbResults[0])
+			? dbResults[0][0] as RowDataPacket
+			: dbResults[0];
 		
 		Object.entries(result).forEach(([key, value,]) => {
 			(model as IIndexable)[key] = value;
 		});
 		model.isNew = false;
-
-		callback(error, model as unknown as Type);
-	};
-
-	Db.execute(sql, usedParameters, queryCallback);
+		return model;
+	} catch (error) {
+		console.log('Database ERROR: ', JSON.stringify(error), '\n');
+		return null;
+	}
 }

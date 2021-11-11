@@ -46,7 +46,7 @@ const createAccount = (req:any, username:any, password:any, done:any) => {
         account.salt = salt;
         
         // assign a random pepper to the account
-        const peppers = AccountAR.Peppers();
+        const peppers = AccountAR.Peppers;
         const pepperKeys = Object.keys(peppers);
         const pepperIndex = random.int(0, pepperKeys.length - 1);
         const pepperKey = pepperKeys[pepperIndex];
@@ -59,31 +59,29 @@ const createAccount = (req:any, username:any, password:any, done:any) => {
     bcrypt.genSalt(saltRounds, saltCallback);
 };
 
-const verifyUser = (username: string, password: string, done:any) => {
-    (new AccountAR).findOne({username: username,}, (error, account: AccountAR|null) => {
-        if (error) {
-            return done(null, false, { message: 'login failed.', });
-        }
-        if (!account) {
-            return done(null, false, { message: 'login failed.', });
-        }
+const verifyUser = async (username: string, password: string, done:any) => {
 
-        const pepper = AccountAR.Peppers()[account.pepper];
-        if (!pepper) {
+    const account = await (new AccountAR).findOne({username: username,}) as AccountAR|null;
+
+    if (!account) {
+        return done(null, false, { message: 'login failed.', });
+    }
+
+    const pepper = AccountAR.Peppers[account.pepper];
+    if (!pepper) {
+        return done(null, false, { message: 'login failed.', });
+    }
+    bcrypt.hash(password + pepper, account.salt, function(err: Error, hash: string) {
+        if (err) {
             return done(null, false, { message: 'login failed.', });
         }
-
-        bcrypt.hash(password + pepper, account.salt, function(err: Error, hash: string) {
-            if (err) {
-                return done(null, false, { message: 'login failed.', });
-            }
-            
-            if (account.password === hash) {
-                return done(null, account);
-            } else {
-                return done(null, false, { message: 'login failed.', });
-            }
-        });
+        
+        if (account.password === hash) {
+            account.init();
+            return done(null, account);
+        } else {
+            return done(null, false, { message: 'login failed.', });
+        }
     });
 };
 

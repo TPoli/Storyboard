@@ -4,7 +4,7 @@ import cors from 'cors';
 import { Db } from './src/db';
 
 import {
-    AccountAR,
+    AccountAR
 } from './src/models';
 
 import setupAuth from './src/security/authentication';
@@ -62,17 +62,13 @@ const serializeUserFn = (user: Express.User, done: Function) => {
 
 passport.serializeUser(serializeUserFn);
   
-passport.deserializeUser(function(id: number, done: Function) {
-    (new AccountAR).findOne({id: id,}, (error, account) => {
-        if (error) {
-            return done(null, false, { message: 'login failed.', });
-        }
-        if (!account) {
-            return done(null, false, { message: 'login failed.', });
-        }
-        account.init();
-        return done(null, account);
-    });
+passport.deserializeUser(async function(id: number, done: Function) {
+    const account = await (new AccountAR).findOne({id: id,});
+    if (!account) {
+        return done(null, false, { message: 'login failed.', });
+    }
+    account.init();
+    return done(null, account);
 });
 
 const launchServer = () => {

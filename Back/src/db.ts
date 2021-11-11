@@ -299,14 +299,6 @@ export namespace Db {
 		ensureDbIsSetup(next);
 	};
 
-	export const execute = (statement: string, params: any[], callback: DbCallback ) => {
-		if (!defaultConnection) {
-			throw new Error('default database connection couldn\'t be established');
-		}
-		defaultConnection.query(statement, params, callback);
-	};
-
-	// TODO convert to using this as default
 	export const promisedExecute = async (statement: string, params: any[] = []) => {
 		if (!defaultPromiseConnection) {
 			throw new Error('default database connection couldn\'t be established');

@@ -33,8 +33,8 @@ abstract class Model extends ModelBase {
 		return null;
 	}
 
-	public findOne<Type extends Model>(params: Object, callback: (error: mysql.QueryError|null, result: Type|null) => void): void {
-		findOneFn(this, params, callback);
+	public async findOne<Type extends Model>(params: Object): Promise<Type|null> {
+		return await findOneFn(this as unknown as Type, params);
 	}
 
 	/**

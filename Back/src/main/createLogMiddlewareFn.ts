@@ -1,7 +1,7 @@
-import { EndpointRoutes } from "../../../Core/Api/Api";
-import { IFailResponse } from "../../../Core/types/Response";
-import { TransactionsAR } from "../models";
-import { ExpressCallback, LoggedInRequest } from "../types/types";
+import { EndpointRoutes } from '../../../Core/Api/Api';
+import { IFailResponse } from '../../../Core/types/Response';
+import { TransactionsAR } from '../models';
+import { ExpressCallback, LoggedInRequest } from '../types/types';
 
 const createLogMiddlewareFn = (endpoint: EndpointRoutes) => {
     const middleware: ExpressCallback = async (req, res, next) => {
