@@ -1,6 +1,7 @@
 import { Network } from '../../utils/Network';
 import { Endpoints } from '../../../../Core/Api/Api';
 import { ILoginResponse, Response } from '../../../../Core/types/Response';
+import { getState, setState } from '@/store';
 
 export default {
 	name: 'loginContent',
@@ -9,14 +10,14 @@ export default {
 	},
 	data: function () {
 		return {
-			username: (this as any).$store.state.username,
+			username: getState(this).username,
 			password: '',
 		};
 	},
 	methods: {
 		login() {
 			const loginCallback = (response: Response): void => {
-				(this as any).$store.commit('login', (response as ILoginResponse).username);
+				setState(this).login((response as ILoginResponse).username);
 
 				const fullPath = (this as any).$route.fullPath;
 				if (fullPath === '/login' || fullPath === '/')

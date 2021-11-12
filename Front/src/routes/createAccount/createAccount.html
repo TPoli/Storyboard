@@ -1,14 +1,10 @@
 <div>
-	<div>Create Account</div>
-  	
-  	
-
-	<Page msg="this container is in the create account screen">
+	<Page>
 		<template v-slot:header>
 			<div>Create Account</div>
 		</template>
 		<template v-slot:sidebar>
-			<div>sidy</div>
+			<!-- TODO remove this sidebar -->
 		</template>
 		<template v-slot:content>
 			<input v-model="username" placeholder="username">
@@ -25,9 +21,6 @@
 			<input v-model="mobile" placeholder="mobile">
 			<br>
 			2 Factor Authentication (Comeing Soon)
-		</template>
-		<template v-slot:footer>
-			<div>feet</div>
 		</template>
 	</Page>
 </div>

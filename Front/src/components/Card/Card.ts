@@ -10,7 +10,6 @@ const Card = defineComponent({
 	},
 	methods: {
 		clicked() {
-			console.log(this.contentId)
 			if (this.clickedCallback) {
 				this.clickedCallback(this.contentId);
 			}

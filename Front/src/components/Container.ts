@@ -10,14 +10,6 @@ name: 'Container',
 		msg: String,
 	},
 	methods: {
-		test() {
-			const entity = new Entity('Location');
-			entity.move(7);
-			Network.Post(Endpoints.TEST, {}, (response: IResponse) => {
-				
-			});
-			return 'test';
-		},
 		login() {
 			const loginCallback = (response: IResponse) => {
 

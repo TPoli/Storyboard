@@ -3,6 +3,7 @@ import { Endpoints } from '../../../../Core/Api/Api';
 import { Network } from '../../utils/Network';
 import { IResponse } from '../../../../Core/types/Response';
 import LoginModal from '../Modals/LoginModal/LoginModal.vue';
+import { getState, setState } from '@/store';
 
 
 export default {
@@ -38,13 +39,13 @@ name: 'Page',
 		},
 		logout() {
 			const logoutCallback = (response: IResponse) => {
-				(this as any).$store.commit('logOut');
+				setState(this).logOut();
 				(this as any).$router.push({path: '/login',});
 			};
 			Network.Post(Endpoints.LOGOUT, {}, logoutCallback);
 		},
 		loggedIn() {
-			return (this as any).$store.state.loggedIn;
+			return getState(this).loggedIn;
 		},
 		shouldDisplayLogin() {
 			if ((this as any).loggedIn()) {

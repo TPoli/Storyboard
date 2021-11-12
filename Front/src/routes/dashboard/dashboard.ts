@@ -10,6 +10,7 @@ import { Network } from '@/utils/Network';
 import { Endpoints } from '../../../../Core/Api/Api';
 import { ICollection } from '../../../../Core/types/Collection';
 import { ICreateCollectionResponse, IGetCollectionsResponse } from '../../../../Core/types/Response';
+import { getState, setState } from '@/store';
 
 const Dashboard = defineComponent({
 	name: 'dashboard',
@@ -65,7 +66,7 @@ const Dashboard = defineComponent({
 	},
 	methods: {
 		getUsersName(): string {
-			return (this as any).$store.state.username;
+			return getState(this).username;
 		},
 		createNewCollection(): void {
 			const createCollectionCallback: Network.Callback = (response) => {
@@ -74,8 +75,20 @@ const Dashboard = defineComponent({
 			};
 			Network.Post(Endpoints.CREATE_COLLECTION, {}, createCollectionCallback);
 		},
-		openCollection(collectionId: String): void {
-			console.log(`TODO: open collection page for ${collectionId}`);
+		openCollection(collectionId: string): void {
+			const collection = [
+				...this.myCollections,
+				...this.recentlyModified,
+				...this.favourites,
+				...this.availableCollections,
+			].find(((collection) => {
+				return collection.uuid === collectionId;
+			}));
+			if (!collection) {
+				return;
+			}
+			setState(this).openCollection(collection);
+			(this as any).$router.push({path: '/collection',});
 		},
 	},
 });
