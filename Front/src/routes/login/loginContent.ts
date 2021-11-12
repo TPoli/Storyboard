@@ -2,6 +2,7 @@ import { Network } from '../../utils/Network';
 import { Endpoints } from '../../../../Core/Api/Api';
 import { ILoginResponse, Response } from '../../../../Core/types/Response';
 import { getState, setState } from '@/store';
+import { setRoute } from '@/router';
 
 export default {
 	name: 'loginContent',
@@ -22,7 +23,7 @@ export default {
 				const fullPath = (this as any).$route.fullPath;
 				if (fullPath === '/login' || fullPath === '/')
 				{
-					(this as any).$router.push({path: '/dashboard',});
+					setRoute(this, '/dashboard');
 				}
 			
 			};

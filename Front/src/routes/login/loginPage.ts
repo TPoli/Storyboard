@@ -1,3 +1,4 @@
+import { setRoute } from '@/router';
 import Page from '../../components/Page/Page.vue';
 import loginContent from './loginContent.vue';
 
@@ -15,10 +16,10 @@ export default {
 	},
 	methods: {
 		createAccount() {
-			(this as any).$router.push({path: '/createaccount',});
+			setRoute(this, '/createaccount');
 		},
 		dashboard() {
-			(this as any).$router.push({path: '/dashboard',});
+			setRoute(this, '/dashboard');
 		},
 	},
 };

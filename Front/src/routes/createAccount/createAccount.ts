@@ -4,6 +4,7 @@ import { Response, ILoginResponse } from '../../../../Core/types/Response';
 
 import Page from '../../components/Page/Page.vue';
 import { setState } from '@/store';
+import { setRoute } from '@/router';
 
 export default {
 	name: 'createAccount',
@@ -22,7 +23,7 @@ export default {
 		createAccount() {
 			const accountCreatedCallback = (response: Response): void => {
 				setState(this).login((response as ILoginResponse).username);
-				(this as any).$router.push({path: '/dashboard',});
+				setRoute(this, '/dashboard');
 			};
 			const params = {
 				un: (this as any).username,

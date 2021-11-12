@@ -4,6 +4,7 @@ import { Network } from '../../utils/Network';
 import { IResponse } from '../../../../Core/types/Response';
 import LoginModal from '../Modals/LoginModal/LoginModal.vue';
 import { getState, setState } from '@/store';
+import { setRoute } from '@/router';
 
 
 export default {
@@ -21,7 +22,7 @@ name: 'Page',
 	},
 	methods: {
 		navigateToLogin() {
-			(this as any).$router.push({path: '/login',});
+			setRoute(this, '/login');
 		},
 		test() {
 			const entity = new Entity('Location');
@@ -40,7 +41,7 @@ name: 'Page',
 		logout() {
 			const logoutCallback = (response: IResponse) => {
 				setState(this).logOut();
-				(this as any).$router.push({path: '/login',});
+				setRoute(this, '/login');
 			};
 			Network.Post(Endpoints.LOGOUT, {}, logoutCallback);
 		},

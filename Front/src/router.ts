@@ -1,11 +1,18 @@
-import { createRouter, createWebHistory } from 'vue-router';
+import { createRouter, createWebHistory, Router } from 'vue-router';
 
 import loginPage from './routes/login/loginPage.vue';
 import CreateAccount from './routes/createAccount/createAccount.vue';
 import dashboard from './routes/dashboard/dashboard.vue';
 import collectionPage from './routes/collectionPage/collectionPage.vue';
 
-const routes = [
+type paths = '/' | '/login' | '/createaccount' | '/dashboard' | '/collection';
+
+interface routeMap {
+	path: paths;
+	component: any;
+}
+
+const routes: routeMap[] = [
 	{ path: '/', component: loginPage, },
 	{ path: '/login', component: loginPage, },
 	{ path: '/createaccount', component: CreateAccount, },
@@ -18,4 +25,12 @@ const router = createRouter({
 	routes,
 });
 
-export default router;
+const setRoute = (component: any, path: paths) => {
+	const componentRouter = component.$router as Router;
+	componentRouter.push({path,});
+}
+
+export {
+	router,
+	setRoute
+};
