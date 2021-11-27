@@ -57,7 +57,12 @@ export default {
 			return false;
 		},
 		save() {
-			const saveCollectionCallback: Network.Callback = () => {
+			const asyncSave = async (params: any) => {
+				const result = await Network.Post(Endpoints.SAVE_COLLECTION, params);
+				if (!result) {
+					return;
+				}
+
 				const savedCollection = cloneCollection((this as unknown as CollectionPageData).collection);
 				(this as unknown as CollectionPageData).originalCollection = savedCollection;
 
@@ -65,7 +70,8 @@ export default {
 					setState(this).openCollection(savedCollection);
 				}
 			};
-			Network.Post(Endpoints.SAVE_COLLECTION, (this as unknown as CollectionPageData).collection ?? {}, saveCollectionCallback);
+
+			asyncSave((this as unknown as CollectionPageData).collection ?? {});
 		},
 	},
 	computed: {

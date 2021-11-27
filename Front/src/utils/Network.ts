@@ -1,4 +1,4 @@
-import { EndpointRoutes } from '../../../Core/Api/Api';
+import { EndpointRoutes, Api } from '../../../Core/Api/Api';
 import { Response, IAuthFailResponse } from '../../../Core/types/Response';
 import { IDataResponse } from '../../../Core/types/Response';
 import {Config} from '../../../Core/Config/config';
@@ -45,26 +45,36 @@ export namespace Network {
 			}); // add check to see if endpoint allows get
 	};
 
-	export const Post = (endpoint: EndpointRoutes, params: object, callback: Callback) => {
+	export const Post = async (endpoint: EndpointRoutes, params: object, callback?: Callback) => {
 
-		const networkCallback = (response: IDataResponse) => {
+		if (!Api.AllEndpoints[endpoint].methods.find(restMethod => restMethod === 'POST')) {
+			// route doesn't support post
+			return false;
+		}
+
+		try {
+			const response = await axios({
+				method: 'post',
+				url: createUrl(endpoint),
+				data: params,
+			});
+
 			if (!response.data.success) {
 				if ((response.data as IAuthFailResponse).message === 'authentication failed') {
 					store.commit('logOut');
 				}
-				return;
+				return false;
 			}
-			callback(response.data);
-		};
 
-		axios({
-			method: 'post',
-			url: createUrl(endpoint),
-			data: params,
-		})
-			.then(networkCallback)
-			.catch((error: any) => {
-				console.log(error);
-			}); // add check to see if endpoint allows post
+			if (callback) {
+				callback(response.data);
+			}
+
+			return response.data;
+		} catch (error) {
+			console.log(JSON.stringify(error));
+
+			return false;
+		}
 	};
 }
