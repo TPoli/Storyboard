@@ -1,10 +1,24 @@
 <div>
 	<Page>
 		<template v-slot:header>
-			<div>{{collection.title}}</div>
+			<!-- TODO add breadcrumbs here -->
 		</template>
 		<template v-slot:content>
+			<!-- TODO make the below two fields toggle between each other based on selection -->
+			<h1>{{collection.title}}</h1>
+			<input v-model="collection.title" :placeholder="collection.title">
+
+			<br>
 			{{collection.content}}
+			<br>
+			<textarea v-model="collection.content" :placeholder="collection.content"> </textarea>
+			
+			<br>
+			<button
+			:disabled="!allowSave"
+			v-on:click="save">
+				save
+			</button>
 		</template>
 	</Page>
 </div>

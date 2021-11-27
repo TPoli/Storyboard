@@ -2,6 +2,7 @@ import { EndpointRoutes, Api } from '../../../Core/Api/Api';
 import { ISuccessResponse } from '../../../Core/types/Response';
 import createAccount from './createAccount';
 import createCollectionsFn from './createCollections';
+import saveCollectionsFn from './saveCollections';
 import getCollectionsFn from './getCollections';
 import loginFn from './login';
 import { Route } from './route';
@@ -52,6 +53,11 @@ export const Routes: RouteMap = {
 	createCollection: {
 		callback: createCollectionsFn,
 		params: Api.AllEndpoints['createCollection'].params,
+		authenticatedUserRequired: true,
+	},
+	saveCollection: {
+		callback: saveCollectionsFn,
+		params: Api.AllEndpoints['saveCollection'].params,
 		authenticatedUserRequired: true,
 	},
 };

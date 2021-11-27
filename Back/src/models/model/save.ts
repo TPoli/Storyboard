@@ -65,6 +65,7 @@ const insert = async (model: ModelBase, columns: string[]): Promise<boolean> => 
 		try {
 			const dbResults = await Db.promisedExecute(sql, values);
 			if (!dbResults) {
+				console.log('no dbResults');
 				return false;
 			}
 			model.isNew = false;
@@ -88,10 +89,11 @@ const update = async (model: ModelBase, columns: string[]): Promise<boolean> => 
 		const { values, success, } = parametise(model, columns);
 
 		if (!success) {
+			console.log('failed to parametise');
 			return false;
 		}
 
-		const sql = `UPDATE ${model.table} SET ${columns.join('= ?,')} = ? WHERE id = ${model.id}`;
+		const sql = `UPDATE ${model.table} SET ${columns.join('= ?,')} = ? WHERE id = '${model.id}'`;
 
 		try {
 			const dbResults = await Db.promisedExecute(sql, values);
@@ -101,6 +103,8 @@ const update = async (model: ModelBase, columns: string[]): Promise<boolean> => 
 
 			return true;
 		} catch (error) {
+			console.log(JSON.stringify(error));
+
 			return false;
 		}
 	} else {

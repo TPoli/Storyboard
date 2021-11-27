@@ -1,10 +1,10 @@
 import { ExpressCallback, LoggedInRequest } from '../../Back/src/types/types';
 import { IAuthFailResponse } from '../types/Response';
-import { passwordValidation, stringValidation, usernameValidation, ValidationCallback } from './Validation';
+import { passwordValidation, stringValidation, usernameValidation, uuidValidation, ValidationCallback } from './Validation';
 
 export type RequestMethods = 'POST' | 'GET';
 
-export type EndpointRoutes = 'test' | 'login' | 'logout' | 'createAccount' | 'getCollections' | 'createCollection';
+export type EndpointRoutes = 'test' | 'login' | 'logout' | 'createAccount' | 'getCollections' | 'createCollection' | 'saveCollection';
 type EndpointMap = {[name: string]: EndpointRoutes};
 export const Endpoints: EndpointMap = {
 	TEST: 'test',
@@ -13,6 +13,7 @@ export const Endpoints: EndpointMap = {
 	CREATE_ACCOUNT: 'createAccount',
 	GET_COLLECTIONS: 'getCollections',
 	CREATE_COLLECTION: 'createCollection',
+	SAVE_COLLECTION: 'saveCollection',
 };
 
 export type Parameter = {
@@ -117,6 +118,30 @@ namespace Api {
 		params: [
 			{
 				name: 'parentId',
+				validator: uuidValidation,
+			},
+		],
+		response: [],
+		methods: [ 'POST', ],
+	};
+
+	export const saveCollection: Endpoint = {
+		route: Endpoints.SAVE_COLLECTION,
+		params: [
+			{
+				name: 'uuid',
+				validator: uuidValidation,
+			},
+			{
+				name: 'parentId',
+				validator: uuidValidation,
+			},
+			{
+				name: 'title',
+				validator: stringValidation,
+			},
+			{
+				name: 'content',
 				validator: stringValidation,
 			},
 		],
@@ -131,6 +156,7 @@ namespace Api {
 		logout: logout,
 		getCollections,
 		createCollection,
+		saveCollection,
 	};
 }
 
