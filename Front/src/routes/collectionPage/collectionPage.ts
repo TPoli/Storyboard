@@ -1,4 +1,4 @@
-import { getState, setState } from '@/store';
+import { getState, setState, StoreComponent } from '@/store';
 import { Network } from '@/utils/Network';
 import { Endpoints } from '../../../../Core/Api/Api';
 import { ICollection } from '../../../../Core/types/Collection';
@@ -23,8 +23,8 @@ export default {
 	},
 	data: function (): CollectionPageData {
 		return {
-			collection: cloneCollection(getState(this).currentCollection),
-			originalCollection: cloneCollection(getState(this).currentCollection),
+			collection: cloneCollection(getState(this as unknown as StoreComponent).currentCollection),
+			originalCollection: cloneCollection(getState(this as unknown as StoreComponent).currentCollection),
 		};
 	},
 	methods: {
@@ -67,7 +67,7 @@ export default {
 				(this as unknown as CollectionPageData).originalCollection = savedCollection;
 
 				if (savedCollection) {
-					setState(this).openCollection(savedCollection);
+					setState(this as unknown as StoreComponent).openCollection(savedCollection);
 				}
 			};
 

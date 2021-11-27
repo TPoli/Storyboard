@@ -1,7 +1,13 @@
+import { Component } from 'vue';
 import { createStore, Store, StoreOptions } from 'vuex';
 import createPersistedState from 'vuex-persistedstate';
 import { IIndexable } from '../../Back/src/models';
 import { ICollection } from '../../Core/types/Collection';
+
+export type StoreComponent = Component & {
+	$store: Store<State>;
+};
+
 export interface State {
 	username: string,
 	loggedIn: boolean,
@@ -17,7 +23,7 @@ export interface IStateMutations {
 interface StateObject {
 	state: State;
 	mutations: IStateMutations;
-	plugins: any[];
+	plugins: Function[];
 }
 
 const defaultState: State = {
@@ -53,14 +59,13 @@ const stateObject: StateObject = {
 
 export const store = createStore<State>(stateObject as unknown as StoreOptions<State>);
 
-export const getState = (component: any): State => {
+export const getState = (component: StoreComponent): State => {
 	return component.$store.state as State;
 }
 
-
-export const setState = (component: any) => {
+export const setState = (component: StoreComponent) => {
 	
-	const store = (component as any).$store as Store<State>;
+	const store = component.$store;
 
 	return {
 		login: (username: string) => {

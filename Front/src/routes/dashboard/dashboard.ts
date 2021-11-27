@@ -10,7 +10,7 @@ import { Network } from '@/utils/Network';
 import { Endpoints } from '../../../../Core/Api/Api';
 import { ICollection } from '../../../../Core/types/Collection';
 import { ICreateCollectionResponse, IGetCollectionsResponse } from '../../../../Core/types/Response';
-import { getState, setState } from '@/store';
+import { getState, setState, StoreComponent } from '@/store';
 import { setRoute } from '@/router';
 
 const Dashboard = defineComponent({
@@ -67,7 +67,7 @@ const Dashboard = defineComponent({
 	},
 	methods: {
 		getUsersName(): string {
-			return getState(this).username;
+			return getState(this as unknown as StoreComponent).username;
 		},
 		createNewCollection(): void {
 			const createCollectionCallback: Network.Callback = (response) => {
@@ -88,7 +88,7 @@ const Dashboard = defineComponent({
 			if (!collection) {
 				return;
 			}
-			setState(this).openCollection(collection);
+			setState(this as unknown as StoreComponent).openCollection(collection);
 			setRoute(this, '/collection');
 		},
 	},

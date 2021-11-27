@@ -29,20 +29,33 @@ export namespace Network {
 		return url;
 	};
 
-	export const Get = (endpoint: EndpointRoutes, params: object, callback: Callback) => {
-		axios.get(createUrl(endpoint, params))
-			.then((response: IDataResponse) => {
-				console.log((response.data as any).url);
-				console.log((response.data as any).explanation);
-				if (!response.data.success && (response.data as IAuthFailResponse).message === 'authentication failed') {
-					// router.push({path: '/login'});
-					return;
+	export const Get = async (endpoint: EndpointRoutes, params: object, callback?: Callback) => {
+
+		if (!Api.AllEndpoints[endpoint].methods.find(restMethod => restMethod === 'GET')) {
+			// route doesn't support get
+			return false;
+		}
+
+		try {
+			const response = axios.get(createUrl(endpoint, params));
+
+			if (!response.data.success) {
+				if ((response.data as IAuthFailResponse).message === 'authentication failed') {
+					store.commit('logOut');
 				}
+				return false;
+			}
+
+			if (callback) {
 				callback(response.data);
-			})
-			.catch((error: any) => {
-				console.log(error);
-			}); // add check to see if endpoint allows get
+			}
+
+			return response.data;
+		} catch (error) {
+			console.log(JSON.stringify(error));
+
+			return false;
+		}
 	};
 
 	export const Post = async (endpoint: EndpointRoutes, params: object, callback?: Callback) => {

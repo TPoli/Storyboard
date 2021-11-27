@@ -3,7 +3,7 @@ import { Endpoints } from '../../../../Core/Api/Api';
 import { Response, ILoginResponse } from '../../../../Core/types/Response';
 
 import Page from '../../components/Page/Page.vue';
-import { setState } from '@/store';
+import { setState, StoreComponent } from '@/store';
 import { setRoute } from '@/router';
 
 export default {
@@ -22,7 +22,7 @@ export default {
 	methods: {
 		createAccount() {
 			const accountCreatedCallback = (response: Response): void => {
-				setState(this).login((response as ILoginResponse).username);
+				setState(this as unknown as StoreComponent).login((response as ILoginResponse).username);
 				setRoute(this, '/dashboard');
 			};
 			const params = {
