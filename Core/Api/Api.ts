@@ -106,7 +106,10 @@ namespace Api {
 				name: 'collections',
 				isArray: true,
 				validator: stringValidation,
-				required: true,
+			},
+			{
+				name: 'parentId',
+				validator: uuidValidation,
 			},
 		],
 		response: [],

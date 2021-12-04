@@ -14,6 +14,24 @@
 			<textarea v-model="collection.content" :placeholder="collection.content"> </textarea>
 			
 			<br>
+
+			<panel
+					title="Children"
+					subHeading="created by you"
+					buttonContent="Create new collection"
+					v-bind:buttonCallback="createNewCollection"
+				>
+					<template v-slot:cards>
+						<card
+							v-for="(card, index) in childCollections"
+							v-bind:title="card.title"
+							v-bind:content="card.content"
+							v-bind:id="card.uuid"
+							v-bind:contentId="card.uuid"
+							v-bind:clickedCallback="openCollection"
+						/>
+					</template>
+				</panel>
 			<button
 			:disabled="!allowSave"
 			v-on:click="save">

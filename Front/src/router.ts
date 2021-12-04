@@ -5,11 +5,12 @@ import CreateAccount from './routes/createAccount/createAccount.vue';
 import dashboard from './routes/dashboard/dashboard.vue';
 import collectionPage from './routes/collectionPage/collectionPage.vue';
 
-type paths = '/' | '/login' | '/createaccount' | '/dashboard' | '/collection';
+export type paths = '/' | '/login' | '/createaccount' | '/dashboard' | '/collection/:id';
 
 interface routeMap {
 	path: paths;
 	component: any;
+	props?: true;
 }
 
 const routes: routeMap[] = [
@@ -17,7 +18,7 @@ const routes: routeMap[] = [
 	{ path: '/login', component: loginPage, },
 	{ path: '/createaccount', component: CreateAccount, },
 	{ path: '/dashboard', component: dashboard, },
-	{ path: '/collection', component: collectionPage, },
+	{ path: '/collection/:id', component: collectionPage, props: true},
 ];
 
 const router = createRouter({

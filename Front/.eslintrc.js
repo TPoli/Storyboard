@@ -10,6 +10,12 @@ module.exports = {
     parser: '@typescript-eslint/parser',
   },
   rules: {
-    
+    "comma-dangle": ["warn", {
+      "arrays": "always",
+      "objects": "always",
+      "imports": "never",
+      "exports": "never",
+      "functions": "never"
+    }],
   },
 };

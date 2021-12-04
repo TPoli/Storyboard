@@ -6,8 +6,8 @@
 	id: string;
 	name: string;
 	siblingOrder: number;
-	parent: Collection|null;
-	children: Collection[];
+	parent: string|null;
+	children: string[];
 };
 
 interface ICollection {

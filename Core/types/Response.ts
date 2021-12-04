@@ -28,10 +28,11 @@ export interface ILoginResponse extends ISuccessResponse {
 	username: string;
 };
 
+export interface IGetCollectionsPayload {
+	[keys: string]: ICollection[]
+};
 export interface IGetCollectionsResponse extends ISuccessResponse {
-	collections: {
-		[keys: string]: ICollection[]
-	};
+	collections: IGetCollectionsPayload;
 };
 
 export interface ICreateCollectionResponse extends ISuccessResponse {

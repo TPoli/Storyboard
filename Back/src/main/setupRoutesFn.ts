@@ -12,8 +12,20 @@ const setupRoutesFn = (app: any) => {
             const validatedBody: any = {};
             endpoint.params.forEach((param: Parameter) => {
                 const value = req?.body[param.name] ?? null;
-                if (!param.required && value === null) {
-                    return;
+
+                if (value === null) {
+                    if (!param.required) {
+                        return;
+                    } else {
+                        const errorMessage = `missing required param ${param.name}`;
+                        console.log(errorMessage);
+                        const responseData: IFailResponse = {
+                            message: errorMessage,
+                            success: false,
+                        };
+                        res.send(responseData);
+                        return;
+                    }
                 }
                 
                 if (param.isArray) {

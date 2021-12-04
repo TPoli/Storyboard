@@ -1,6 +1,5 @@
 import { EndpointRoutes, Api } from '../../../Core/Api/Api';
 import { Response, IAuthFailResponse } from '../../../Core/types/Response';
-import { IDataResponse } from '../../../Core/types/Response';
 import {Config} from '../../../Core/Config/config';
 
 import { store } from '../store';

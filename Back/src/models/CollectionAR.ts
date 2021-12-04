@@ -13,8 +13,8 @@ export class CollectionAR extends Model implements Collection {
 	public id = '';
 	public name = '';
 	public siblingOrder = 0;
-	public parent: Collection|null = null;
-	public children: Collection[] = [];
+	public parent: string|null = null;
+	public children: string[] = [];
 	
 	public version = 1;
 	public table = 'collections';
@@ -56,7 +56,7 @@ export class CollectionAR extends Model implements Collection {
 			name: 'parent',
 			primary: false,
 			taintable: true,
-			type: ColumnType.INT,
+			type: ColumnType.STRING,
 			nullable: true,
 			references: {
 				model: this.table,

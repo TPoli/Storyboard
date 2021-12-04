@@ -11,7 +11,7 @@ import { Endpoints } from '../../../../Core/Api/Api';
 import { ICollection } from '../../../../Core/types/Collection';
 import { ICreateCollectionResponse, IGetCollectionsResponse } from '../../../../Core/types/Response';
 import { getState, setState, StoreComponent } from '@/store';
-import { setRoute } from '@/router';
+import { paths, setRoute } from '@/router';
 
 const Dashboard = defineComponent({
 	name: 'dashboard',
@@ -89,7 +89,7 @@ const Dashboard = defineComponent({
 				return;
 			}
 			setState(this as unknown as StoreComponent).openCollection(collection);
-			setRoute(this, '/collection');
+			setRoute(this, '/collection/' + collectionId  as unknown as paths);
 		},
 	},
 });

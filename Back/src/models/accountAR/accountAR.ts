@@ -27,7 +27,15 @@ export default class AccountAR extends Model {
 
 	//relations
 	public myCollections: () => Promise<CollectionAR[]> = async () => [];
-	public availableCollections: () => Promise<CollectionAR[]> = async () => [];
+	public availableCollections: () => Promise<CollectionAR[]> = async () => {
+		
+		const results: CollectionAR[] = [
+			...(await this.myCollections()),
+			// list of all externally linked collections
+		];
+
+		return results;
+	};
 	public recentCollections: () => Promise<RecentCollectionsAR|null> = async () => null;
 
 	public modelRelations: IModelRelation[] = [

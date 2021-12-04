@@ -11,8 +11,9 @@ const createCollectionsFn: ExpressFinalCallback = async (req, res) => {
 
 	if (req.body.parentId) {
 		const myCollections = await req.user.myCollections();
-		if (!myCollections.find((myCollection) => {
-			return myCollection.account === req.user.id;
+		const availableCollections = await req.user.availableCollections();
+		if (![...myCollections, ...availableCollections,].find((availableCollection) => {
+			return (availableCollection.account === req.user.id);
 		})) {
 			// fail, cant set collections parent to invalid collection
 			const payload: IFailResponse = {
