@@ -84,8 +84,9 @@ const setupWebserver = async () => {
     launchServer();
 };
 
-const main = () => {
-    Db.InitDb(setupWebserver);
+const main = async () => {
+    await Db.InitDb();
+    setupWebserver();
 };
 
 main();

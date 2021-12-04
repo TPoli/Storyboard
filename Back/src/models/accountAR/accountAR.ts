@@ -62,7 +62,7 @@ export default class AccountAR extends Model {
 		super();
 	}
 
-	public createDefaultEntries = async (callback: () => void) => {
+	public createDefaultEntries = async () => {
 		// account that acts as system user
 		const houseAccount = new AccountAR();
 		houseAccount.id=0;
@@ -85,6 +85,6 @@ export default class AccountAR extends Model {
 			'permissions',
 		]);
 
-		callback();
+		return;
 	};
 }

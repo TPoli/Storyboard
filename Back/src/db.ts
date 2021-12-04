@@ -12,6 +12,7 @@ import {
 	RecentCollectionsAR,
 	Column
 } from './models';
+import { OkPacket, RowDataPacket } from 'mysql2/promise';
 
 export namespace Db {
 
@@ -29,9 +30,9 @@ export namespace Db {
 
 	let defaultConnection: mysql.Connection|null = null;
 	let defaultPromiseConnection: mysqlPromise.Connection|null = null;
-	let adminConnection: mysql.Connection|null = null;
+	let adminConnection: mysqlPromise.Connection|null = null;
 
-	const setForeignKeys = (schema: Schema, callback: () => void) => {
+	const setForeignKeys = async (schema: Schema) => {
 		if (!adminConnection) {
 			throw new Error('admin database connection not established');
 		}
@@ -47,16 +48,8 @@ export namespace Db {
 		});
 
 		if (foreignKeyColumns.length === 0) {
-			callback();
 			return;
 		}
-
-		const createCallback: DbCallback = (error, results, fields) => {
-			if (error) {
-				throw error
-			}
-			model.createDefaultEntries(callback);
-		};
 
 		const tableName = `${databaseName}.${model.table}`;
 
@@ -77,15 +70,21 @@ export namespace Db {
 			first = false;
 		});
 
-		adminConnection.query(sql, createCallback);
+		try {
+			await adminConnection.query(sql);
+			return await model.createDefaultEntries();
+		} catch (error) {
+			throw error;
+		}
 	};
 
-	const createTable = (schema: Schema, callback: () => void) => {
+	const createTable = async (schema: Schema) => {
 		if (!adminConnection) {
 			throw new Error('admin database connection not established');
 		}
 
 		const model = new schema();
+		console.log(`Creating table ${model.table}`);
 		let createQuery = `CREATE TABLE \`${databaseName}\`.\`${model.table}\` (`;
 		const primaryKeys: string[] = [];
 		const uniqueKeys: string[] = [];
@@ -124,17 +123,15 @@ export namespace Db {
 
 		createQuery += ')';
 
-		const createCallback: DbCallback = (error, results, fields) => {
-			if (error) {
-				throw error
-			}
-			model.createDefaultEntries(callback);
-		};
-
-		adminConnection.query(createQuery, createCallback);
+		try {
+			await adminConnection.query(createQuery);
+			return model.createDefaultEntries();
+		} catch (error) {
+			throw error;
+		}
 	};
 
-	const tableExists = (tableName: string, callback: (exists: boolean) => void): void => {
+	const tableExists = async (tableName: string): Promise<boolean> => {
 		if (!adminConnection) {
 			throw new Error('admin database connection not established');
 		}
@@ -145,129 +142,100 @@ export namespace Db {
 			LIMIT 1;
 		`;
 
-		const existsCallback: DbCallback = (error, results, fields) => {
-			if (error) {
-				throw error
-			}
-			callback(results.length > 0);
-		};
-
-		adminConnection.query(existsQuery, [databaseName, tableName,], existsCallback);
+		try {
+			const results = await adminConnection.query(existsQuery, [databaseName, tableName,]) as RowDataPacket[][];
+			return !!(results[0]?.length ?? false);
+		} catch (error) {
+			throw error;
+		}
 	};
 
-	const ensureForeignKeysSet = (next: () => void, newSchemas: Schema[]) => {
-		let completed = 0;
-			
-		const completedCallback = () => {
-			++completed;
-			if(completed === schemas.length) {
-				// database is finally ready, launch the server using next();
-				next(); // needs to be called after all of the callbacks in forEach resolve
-			}
-		};
+	const ensureForeignKeysSet = async (newSchemas: Schema[]) => {
+		for (const schema of newSchemas) {
+			await setForeignKeys(schema);
+		}
 
-		newSchemas.forEach((schema: Schema) => {
-			setForeignKeys(schema, completedCallback);
-		});
+		return;
 	};
 
-	const ensureTablesSetup = (next: () => void) => {
-		const checkTheRestOfTheTables = () => {
-			let completed = 0;
-			const newSchemas: Schema[] = [];
-			const completedCallback = () => {
-				++completed;
-				if(completed === schemas.length) {
-					if (newSchemas.length === 0) {
-						// database is finally ready, launch the server using next();
-						next(); // needs to be called after all of the callbacks in forEach resolve
-					} else {
-						ensureForeignKeysSet(next, newSchemas);
-					}
-				}
-			};
+	const checkTheRestOfTheTables = async () => {
+		const newSchemas: Schema[] = [];
 
-			schemas.forEach((schema: Schema) => {
-				const model = new schema();
-				tableExists(model.table, (exists: boolean) => {
-					if (exists) {
-						completedCallback();
-					} else {
-						// this should be awaited
-						newSchemas.push(schema);
-						createTable(schema, completedCallback);
-					}
-					// both of the above should check version + run migrations instead of just running completeCallback
-				});
-			});
-		};
+		for (const schema of schemas) {
+			const model = new schema();
+			const exists = await tableExists(model.table);
 
-		const mutationsReadyCallback = (exists: boolean) => {
 			if (!exists) {
-				createTable(MutationsAR, () => {
-					checkTheRestOfTheTables();
-				});
-			} else {
-				checkTheRestOfTheTables();
+				newSchemas.push(schema);
+				await createTable(schema);
 			}
-		};
+			// TODO should check version + run migrations
+		}
 
-		const versionsReadyCallback = (exists: boolean) => {
-			if (!exists) {
-				createTable(VersionsAR, () => {
-					tableExists(MutationsAR.table, mutationsReadyCallback);
-				});
-			} else {
-				tableExists(MutationsAR.table, mutationsReadyCallback);
-			}
-		};
-
-		tableExists(VersionsAR.table, versionsReadyCallback);
+		return ensureForeignKeysSet(newSchemas);
 	};
 
-	const setupConnection = async (next: () => void) => {
+	const ensureTablesSetup = async () => {
+
+		const versionsTableExists = await tableExists(VersionsAR.table);
+		if (!versionsTableExists) {
+			await createTable(VersionsAR);
+		}
+
+		const mutationsTableExists = await tableExists(MutationsAR.table);
+		if (!mutationsTableExists) {
+			await createTable(MutationsAR);
+		}
+
+
+		return checkTheRestOfTheTables();
+	};
+
+	const setupConnection = async () => {
 		const adminConnectionData = {
 			host     : 'localhost',
 			user     : 'storyboard_admin',
 			password : 'storyboard_admin',
 			database : 'storyboard',
 		};
-		adminConnection = mysql.createConnection(adminConnectionData);
+		adminConnection = await mysqlPromise.createConnection(adminConnectionData);
 		defaultConnection = mysql.createConnection(adminConnectionData); // this needs to change
 		defaultPromiseConnection = await mysqlPromise.createConnection(adminConnectionData);
-		ensureTablesSetup(next);
+		
+		return ensureTablesSetup();
 	};
 
-	const ensureUsersSetup = async (connection: mysql.Connection, next: () => void) => {
+	const ensureUsersSetup = async (connection: mysqlPromise.Connection) => {
 		const userQuery = 'SELECT EXISTS(SELECT 1 FROM mysql.user WHERE user = "storyboard_admin");';
-		const userQueryCallback: DbCallback = (error, results, fields) => {
-			if (error) {
-				throw error
-			}
+		
+		try {
+			const results = await connection.query(userQuery);
+			
 			let foundAdmin = false;
 			if (results.length > 0) {
 				Object.entries(results[0]).forEach(([, result,]) => {
 					foundAdmin = 0 !== result;
 				});
 			}
+			
 			if (!foundAdmin)
 			{
 				throw new Error('admin user not found');
-				// create user storyboard_admin
-				// will also need to setup non-admin user for least privlaged access
 			}
-			setupConnection(next);
-		};
 
-		connection.query(userQuery, userQueryCallback);
+			return setupConnection();
+
+		} catch (error) {
+			throw error;
+		}
 	};
 
 	/**
 	 * no functionality yet, purpose to detect existance of database, schemas and users and create them if missing
 	 * @param next function to call once complete
 	 */
-	const ensureDbIsSetup = (next: () => void) => {
-		const connection = mysql.createConnection({
+	const ensureDbIsSetup = async () => {
+		const connection = await mysqlPromise.createConnection({
 			host     : 'localhost',
 			user     : 'root',
 			password : 'password',
@@ -278,25 +246,23 @@ export namespace Db {
 			FROM INFORMATION_SCHEMA.SCHEMATA
 	   		WHERE SCHEMA_NAME = ?;
 		`;
-		const databaseQueryCallback: DbCallback = async (error, results, fields) => {
-			if (error) {
-				throw error
-			}
-			if (results.length === 0)
+
+		try {
+			const results = await connection.query(databaseQuery, [databaseName,]) as OkPacket[];
+			if (!results || results.length === 0)
 			{
 				// create database
 				throw new Error('database doesnt exist');
 			}
-
-			ensureUsersSetup(connection, next);
-		};
-
-		connection.query(databaseQuery, [databaseName,], databaseQueryCallback);
+			
+			return ensureUsersSetup(connection);
+		} catch (error) {
+			throw error;
+		}
 	};
 
-	// this function needs to be made synchronous
-	export const InitDb = (next: () => void) => {
-		ensureDbIsSetup(next);
+	export const InitDb = async () => {
+		return ensureDbIsSetup();
 	};
 
 	export const promisedExecute = async (statement: string, params: any[] = []) => {

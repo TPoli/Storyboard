@@ -70,8 +70,8 @@ abstract class Model extends ModelBase {
 		return; // not implemented yet
 	}
 
-	public createDefaultEntries = (callback: () => void) => {
-		callback();
+	public createDefaultEntries = async () => {
+		return;
 	};
 }
 
