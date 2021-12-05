@@ -1,4 +1,6 @@
-<div class='page'>
+<div
+	class='page'
+>
 	<div id='header' class="header">
 		<div v-if='loggedIn()'>
 			<button v-on:click="logout">Logout</button>
@@ -12,7 +14,7 @@
 	</div>
 
 	<div class='core'>
-		<div id='sidebar' class='sidebar'>
+		<div v-if="displaySidebar" id='sidebar' class='sidebar'>
 			<slot name="sidebar"></slot>
 
 			<a v-bind:class="{active : isActiveRoute('/dashboard')}" href="/dashboard">Dashboard</a>

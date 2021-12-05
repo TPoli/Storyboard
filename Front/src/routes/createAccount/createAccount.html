@@ -1,11 +1,9 @@
 <div>
-	<Page>
+	<Page :displaySidebar="false">
 		<template v-slot:header>
 			<div>Create Account</div>
 		</template>
-		<template v-slot:sidebar>
-			<!-- TODO remove this sidebar -->
-		</template>
+
 		<template v-slot:content>
 			<input v-model="username" placeholder="username">
 			<br>

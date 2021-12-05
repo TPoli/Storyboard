@@ -18,7 +18,10 @@ name: 'Page',
 		};
 	},
 	props: {
-		
+		displaySidebar: {
+			default: true,
+			type: Boolean
+		},
 	},
 	methods: {
 		navigateToLogin() {
