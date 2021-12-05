@@ -90,10 +90,25 @@ export class CollectionAR extends Model implements Collection {
 			// most recently modified this collection, nothing to update
 			return true;
 		}
-		recentCollectionsMap.recentId3 = recentCollectionsMap.recentId2;
-		recentCollectionsMap.recentId2 = recentCollectionsMap.recentId1;
-		recentCollectionsMap.recentId1 = this.id;
+
+		const recentIds: string[] = [
+			this.id,
+		];
+		if (recentCollectionsMap.recentId1 && !recentIds.includes(recentCollectionsMap.recentId1)) {
+			recentIds.push(recentCollectionsMap.recentId1);
+		}
+		if (recentCollectionsMap.recentId2 && !recentIds.includes(recentCollectionsMap.recentId2)) {
+			recentIds.push(recentCollectionsMap.recentId2);
+		}
+		if (recentCollectionsMap.recentId3 && !recentIds.includes(recentCollectionsMap.recentId3)) {
+			recentIds.push(recentCollectionsMap.recentId3);
+		}
+
+		recentCollectionsMap.recentId1 = recentIds?.[0] ?? null;
+		recentCollectionsMap.recentId2 = recentIds?.[1] ?? null;
+		recentCollectionsMap.recentId3 = recentIds?.[2] ?? null;
 		recentCollectionsMap.account = req.user.id;
+
 		return await recentCollectionsMap.save(req, [
 			'account',
 			'recentId1',
