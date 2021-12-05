@@ -9,6 +9,25 @@ const getChildCollections = async (availableCollections: CollectionAR[], parentI
 	});
 };
 
+const TopLevelOnly = async (collections: CollectionAR[]): Promise<CollectionAR[]> => {
+		const filtered: CollectionAR[] = [];
+		let allCollections: CollectionAR[] = [];
+
+		for (const collection of collections) {
+			const {
+				containsParent,
+				allCollections: newAllCollections,
+			} = await collection.ListContainsParent(collections, allCollections);
+			allCollections = newAllCollections;
+
+			if (!containsParent) {
+				filtered.push(collection);
+			}
+		}
+		
+		return filtered;
+};
+
 const getCollectionsFn: ExpressFinalCallback = async (req, res) => {
 
 	const requestedCollections: string[] = req.body.collections ?? [];
@@ -53,7 +72,7 @@ const getCollectionsFn: ExpressFinalCallback = async (req, res) => {
 	}
 
 	if (returnMyCollections) {
-		collectionsPayload.myCollections = myCollections.map(collectionModelToInterface);
+		collectionsPayload.myCollections = (await TopLevelOnly(myCollections)).map(collectionModelToInterface);
 	}
 
 	if (returnFavouriteCollections) {
@@ -61,8 +80,8 @@ const getCollectionsFn: ExpressFinalCallback = async (req, res) => {
 	}
 
 	if (returnAvailableCollections) {
-		// TODO this should be filtered, anything that has a parent, grandparent etc also in this list should be removed
-		collectionsPayload.availableCollections = available.map(collectionModelToInterface);
+		const unownedButAvailable = (await TopLevelOnly(available)).filter(collection => collection.account !== req.user.id);
+		collectionsPayload.availableCollections = unownedButAvailable.map(collectionModelToInterface);
 	}
 
 	if (returnChildCollections) {
