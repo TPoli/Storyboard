@@ -1,5 +1,5 @@
 import { OkPacket } from 'mysql2';
-import { Db } from '../../db';
+import { promisedExecute } from '../../db';
 import { ColumnType } from './columnType';
 import { ModelBase } from './model';
 import { IIndexable } from './types';
@@ -63,7 +63,7 @@ const insert = async (model: ModelBase, columns: string[]): Promise<boolean> => 
 		const sql = 'INSERT INTO ' + model.table + '(' + columns.join(',') + ') VALUES (' + keys.join(',') + ')';
 
 		try {
-			const dbResults = await Db.promisedExecute(sql, values);
+			const dbResults = await promisedExecute(sql, values);
 			if (!dbResults) {
 				console.log('no dbResults');
 				return false;
@@ -96,7 +96,7 @@ const update = async (model: ModelBase, columns: string[]): Promise<boolean> => 
 		const sql = `UPDATE ${model.table} SET ${columns.join('= ?,')} = ? WHERE id = '${model.id}'`;
 
 		try {
-			const dbResults = await Db.promisedExecute(sql, values);
+			const dbResults = await promisedExecute(sql, values);
 			if (!dbResults) {
 				return false;
 			}

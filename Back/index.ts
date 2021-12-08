@@ -1,7 +1,7 @@
 const express = require('express');
 import cors from 'cors';
 
-import { Db } from './src/db';
+import { Db } from './src/db/db';
 
 import {
     AccountAR

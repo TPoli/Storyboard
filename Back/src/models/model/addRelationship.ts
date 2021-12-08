@@ -1,5 +1,5 @@
 import { RowDataPacket } from 'mysql2/promise';
-import { Db } from '../../db';
+import { promisedExecute } from '../../db';
 import { createModel } from '../modelFactory';
 import { Model } from './model';
 import { IModelRelation, RelationType } from './modelRelation';
@@ -25,7 +25,7 @@ const addRelationship: Signature = (model, relation) => {
 	model[relation.name] = async () => {
 		if (typeof (model as IIndexable)[dataKey] === 'undefined') {
 			const sql = `SELECT * from ${relation.table} WHERE ${relation.childColumn} = ?`;
-			const [ rows, ] = await Db.promisedExecute(sql, [(model as IIndexable)[relation.parentColumn],]);
+			const [ rows, ] = await promisedExecute(sql, [(model as IIndexable)[relation.parentColumn],]);
 
 			if (!Array.isArray(rows) || rows.length === 0) {
 				(model as IIndexable)[dataKey] = null;
