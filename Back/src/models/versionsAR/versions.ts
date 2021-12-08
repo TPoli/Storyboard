@@ -3,7 +3,7 @@ import { Model, Column, ColumnType } from '../model';
 export class VersionsAR extends Model {
 	
 	public version = 1;
-	public static table = 'versions';
+	public table = 'versions';
 	public columns = [
 		{
 			name: 'id',

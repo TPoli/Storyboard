@@ -1,31 +1,33 @@
 import { RowDataPacket } from 'mysql2/promise';
 import { CamelCase } from '../../../Core/Utils/Utils';
-import { AccountAR, CollectionAR, Column, MutationsAR, RecentCollectionsAR, TransactionsAR, VersionsAR } from '../models';
+import { AccountAR, CollectionAR, Column, MutationsAR, RecentCollectionsAR, TransactionsAR, VersionsAR, FavouritesAR } from '../models';
 import { Schema } from '../models/schema';
 import { dbName } from './config';
 import { AdminConnection } from './db';
 
 const schemas = [
-	// Versions,
-	// Mutations,
+	VersionsAR,
+	MutationsAR,
 	AccountAR,
 	TransactionsAR,
 	CollectionAR,
 	RecentCollectionsAR,
+	FavouritesAR,
 ] as Schema[];
 
 export const ensureTablesSetup = async () => {
 
-	const versionsTableExists = await tableExists(VersionsAR.table);
+	const versions = new VersionsAR();
+	const versionsTableExists = await tableExists(versions.table);
 	if (!versionsTableExists) {
 		await createTable(VersionsAR);
 	}
 
-	const mutationsTableExists = await tableExists(MutationsAR.table);
+	const mutations = new MutationsAR();
+	const mutationsTableExists = await tableExists(mutations.table);
 	if (!mutationsTableExists) {
 		await createTable(MutationsAR);
 	}
-
 
 	return checkTheRestOfTheTables();
 };

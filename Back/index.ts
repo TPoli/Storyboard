@@ -1,7 +1,7 @@
 const express = require('express');
 import cors from 'cors';
 
-import { Db } from './src/db/db';
+import { InitDb } from './src/db';
 
 import {
     AccountAR
@@ -85,7 +85,7 @@ const setupWebserver = async () => {
 };
 
 const main = async () => {
-    await Db.InitDb();
+    await InitDb();
     setupWebserver();
 };
 
