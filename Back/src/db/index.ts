@@ -1,6 +1,6 @@
-import { InitDb, promisedExecute } from './db';
+import { InitDb, query } from './db';
 
 export {
 	InitDb,
-	promisedExecute
+	query
 };

@@ -30,6 +30,6 @@ export const InitDb = async () => {
 	return ensureTablesSetup();
 };
 
-export const promisedExecute = async (statement: string, params: any[] = []) => {
+export const query = async (statement: string, params: any[] = []) => {
 	return await UserConnection().query(statement, params);
 };

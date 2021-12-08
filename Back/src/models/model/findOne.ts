@@ -1,6 +1,6 @@
 import { RowDataPacket } from 'mysql2';
 
-import { promisedExecute } from '../../db';
+import { query } from '../../db';
 import { Model } from './model';
 import { IIndexable } from './types';
 
@@ -28,7 +28,7 @@ export default async function findOneFn<Type extends Model>(model: Type, params:
 	}
 
 	try {
-		const dbResults = await promisedExecute(sql, usedParameters);
+		const dbResults = await query(sql, usedParameters);
 
 		if (!dbResults) {
 			return null;
