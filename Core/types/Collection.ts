@@ -14,6 +14,7 @@ interface ICollection {
 	uuid: string,
 	title: string,
 	content: string,
+	favourite: boolean,
 }
 
 export { Collection, ICollection, };

@@ -6,7 +6,7 @@ import { Network } from '@/utils/Network';
 
 import { Endpoints } from '@/../../Core/Api/Api';
 import { ICollection } from '@/../../Core/types/Collection';
-import { ICreateCollectionResponse, IGetCollectionsResponse } from '@/../../Core/types/Response';
+import { ICreateCollectionResponse, IFavouriteCollectionResponse, IGetCollectionsResponse } from '@/../../Core/types/Response';
 
 import Page from '@/components/Page/Page.vue';
 import Panel from '@/components/Panel/Panel.vue';
@@ -120,6 +120,25 @@ const CollectionPage = defineComponent({
 			setState(this as unknown as StoreComponent).openCollection(collection);
 			setRoute(this, '/collection/' + collection.uuid as unknown as paths);
 		},
+		toggleFavourite() {
+			if (!this.collection) {
+				return;
+			}
+
+			const createCollectionCallback: Network.Callback = (response) => {
+				const favouriteResponse = (response as IFavouriteCollectionResponse);
+				if (!this.collection || !favouriteResponse.success || favouriteResponse.collectionId !== this.collection?.uuid) {
+					return; // TODO - handle issue
+				}
+
+				this.collection.favourite = favouriteResponse.favourite;
+			};
+
+			Network.Post(Endpoints.FAVOURITE_COLLECTION, {
+				uuid: this.collection.uuid,
+				favourite: !this.collection.favourite,
+			}, createCollectionCallback);
+		}
 	},
 	computed: {
 		allowSave() {

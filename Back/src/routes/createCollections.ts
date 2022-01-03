@@ -46,6 +46,7 @@ const createCollectionsFn: ExpressFinalCallback = async (req, res) => {
 				title: collection.name,
 				content: collection.data?.content ?? '',
 				uuid: collection.id + '',
+				favourite: false,
 			},
 		};
 		return req.transaction.sendResponse(res, req, payload);

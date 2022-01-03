@@ -9,9 +9,10 @@ const columns = [
 		name: 'id',
 		primary: true,
 		taintable: false,
-		type: ColumnType.INT,
-		autoIncrement: true,
+		type: ColumnType.STRING,
+		autoIncrement: false,
 		nullable: false,
+		unique: true,
 	}, {
 		name: 'accountId',
 		primary: true,
@@ -26,7 +27,6 @@ const columns = [
 		primary: false,
 		taintable: false,
 		type: ColumnType.STRING,
-		nullable: true,
 		references: {
 			model: new CollectionAR().table,
 			column: 'id',

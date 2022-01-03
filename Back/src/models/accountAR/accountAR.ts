@@ -5,6 +5,7 @@ import {
 	RelationType,
 	RecentCollectionsAR
 } from '../';
+import { FavouritesAR } from '../favouritesAR';
 import { columns } from './columns';
 import peppers from './peppers';
 
@@ -27,6 +28,7 @@ export default class AccountAR extends Model {
 
 	//relations
 	public myCollections: () => Promise<CollectionAR[]> = async () => [];
+	public myFavourites: () => Promise<FavouritesAR[]> = async () => [];
 	public availableCollections: () => Promise<CollectionAR[]> = async () => {
 		
 		const results: CollectionAR[] = [
@@ -53,6 +55,13 @@ export default class AccountAR extends Model {
 			childColumn: 'account',
 			parentColumn: 'id',
 			relationType: RelationType.ONE_TO_ONE,
+		}, {
+			table: 'favourites',
+			join: 'left',
+			name: 'myFavourites',
+			childColumn: 'accountId',
+			parentColumn: 'id',
+			relationType: RelationType.ONE_TO_MANY,
 		},
 	];
 
@@ -86,5 +95,16 @@ export default class AccountAR extends Model {
 		]);
 
 		return;
+	};
+
+	public getCollectionById = async (id: string): Promise<CollectionAR|null> => {
+
+		const availableCollection = (await this.availableCollections()).find(collection => collection.id === id);
+
+		if (availableCollection) {
+			return availableCollection;
+		}
+
+		return null;
 	};
 }

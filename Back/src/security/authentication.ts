@@ -1,9 +1,10 @@
-const bcrypt = require('bcrypt');
+import * as  bcrypt from 'bcrypt';
 import { Strategy } from 'passport-local';
 import random from 'random';
 
 import { AccountAR } from '../models';
 import passport from 'passport';
+import verifyUser from './verifyUser';
 
 const createAccount = (req:any, username:any, password:any, done:any) => {
     const account = new AccountAR();
@@ -12,8 +13,8 @@ const createAccount = (req:any, username:any, password:any, done:any) => {
     account.email = req?.body?.email ?? null;
     account.mobile = req?.body?.mobile ?? null;
 
-    const hashCallback = async (err: Error, hash: string) => {
-        if (err) {
+    const hashCallback = async (err?: Error, hash?: string) => {
+        if (err || !hash) {
             return done(null, false, { message: 'login failed.', });
         }
         account.password = hash;
@@ -39,8 +40,8 @@ const createAccount = (req:any, username:any, password:any, done:any) => {
     };
 
     const saltRounds = 10;
-    const saltCallback = (err: Error, salt: string) => {
-        if (err) {
+    const saltCallback = (err?: Error, salt?: string) => {
+        if (err || !salt) {
             return done(null, false, { message: 'login failed.', });
         }
         account.salt = salt;
@@ -57,32 +58,6 @@ const createAccount = (req:any, username:any, password:any, done:any) => {
     };
 
     bcrypt.genSalt(saltRounds, saltCallback);
-};
-
-const verifyUser = async (username: string, password: string, done:any) => {
-
-    const account = await (new AccountAR).findOne({username: username,}) as AccountAR|null;
-
-    if (!account) {
-        return done(null, false, { message: 'login failed.', });
-    }
-
-    const pepper = AccountAR.Peppers[account.pepper];
-    if (!pepper) {
-        return done(null, false, { message: 'login failed.', });
-    }
-    bcrypt.hash(password + pepper, account.salt, function(err: Error, hash: string) {
-        if (err) {
-            return done(null, false, { message: 'login failed.', });
-        }
-        
-        if (account.password === hash) {
-            account.init();
-            return done(null, account);
-        } else {
-            return done(null, false, { message: 'login failed.', });
-        }
-    });
 };
 
 export default async (): Promise<void> => {

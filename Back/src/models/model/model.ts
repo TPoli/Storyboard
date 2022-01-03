@@ -1,11 +1,10 @@
-import * as mysql from 'mysql2';
-
 import findOneFn from './findOne';
 import { IModelRelation } from './modelRelation';
 import { saveModelFn } from './save';
 import { Column, IIndexable } from './types';
 import { addRelationship } from './index';
 import { LoggedInRequest } from '../../types/types';
+import { deleteModelFn } from './delete';
 
 abstract class ModelBase implements IIndexable {
 	public table = '';
@@ -54,6 +53,17 @@ abstract class Model extends ModelBase {
 			return false;
 		}
 		return await this.afterSave(req);
+	}
+
+	public async delete(req: LoggedInRequest|null): Promise<boolean> {
+		// TODO add before delete hook
+		if (!await deleteModelFn(this)) {
+			return false;
+		}
+
+		return true;
+
+		// TODO add after delete hook
 	}
 
 	/**

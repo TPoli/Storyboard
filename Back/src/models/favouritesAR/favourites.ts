@@ -14,7 +14,7 @@ export class FavouritesAR extends Model {
 	public table = 'favourites';
 
 	// columns
-	public id = -1;
+	public id = '';
 	public accountId: number|null = null;
 	public collectionId: string|null = null;
 	public columns: Column[] = columns;

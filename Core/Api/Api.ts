@@ -1,10 +1,10 @@
 import { ExpressCallback, LoggedInRequest } from '../../Back/src/types/types';
 import { IAuthFailResponse } from '../types/Response';
-import { passwordValidation, stringValidation, usernameValidation, uuidValidation, ValidationCallback } from './Validation';
+import { booleanValidation, passwordValidation, stringValidation, usernameValidation, uuidValidation, ValidationCallback } from './Validation';
 
 export type RequestMethods = 'POST' | 'GET';
 
-export type EndpointRoutes = 'test' | 'login' | 'logout' | 'createAccount' | 'getCollections' | 'createCollection' | 'saveCollection';
+export type EndpointRoutes = 'test' | 'login' | 'logout' | 'createAccount' | 'getCollections' | 'createCollection' | 'saveCollection' | 'favouriteCollection';
 type EndpointMap = {[name: string]: EndpointRoutes};
 export const Endpoints: EndpointMap = {
 	TEST: 'test',
@@ -14,6 +14,7 @@ export const Endpoints: EndpointMap = {
 	GET_COLLECTIONS: 'getCollections',
 	CREATE_COLLECTION: 'createCollection',
 	SAVE_COLLECTION: 'saveCollection',
+	FAVOURITE_COLLECTION: 'favouriteCollection',
 };
 
 export type Parameter = {
@@ -152,6 +153,22 @@ namespace Api {
 		methods: [ 'POST', ],
 	};
 
+	export const favouriteCollection: Endpoint = {
+		route: Endpoints.FAVOURITE_COLLECTION,
+		params: [
+			{
+				name: 'uuid',
+				validator: uuidValidation,
+			},
+			{
+				name: 'favourite',
+				validator: booleanValidation,
+			},
+		],
+		response: [],
+		methods: [ 'POST', ],
+	};
+
 	export const AllEndpoints: EndpointCollection = {
 		test: testRoute,
 		createAccount: createAccount,
@@ -160,6 +177,7 @@ namespace Api {
 		getCollections,
 		createCollection,
 		saveCollection,
+		favouriteCollection,
 	};
 }
 

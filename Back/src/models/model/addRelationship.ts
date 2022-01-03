@@ -29,7 +29,11 @@ const addRelationship: Signature = (model, relation) => {
 
 			if (!Array.isArray(rows) || rows.length === 0) {
 				(model as IIndexable)[dataKey] = null;
-				return null;
+				
+				return (relation.relationType === RelationType.ONE_TO_ONE
+					? null
+					: []
+				);
 			}
 
 			const models: Model[] = [];

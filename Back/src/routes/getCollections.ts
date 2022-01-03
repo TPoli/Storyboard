@@ -28,6 +28,17 @@ const TopLevelOnly = async (collections: CollectionAR[]): Promise<CollectionAR[]
 		return filtered;
 };
 
+const collectionModelToInterfaceFn = (favourites: CollectionAR[]) => (
+	(relation: CollectionAR): ICollection => {
+		return {
+			title: relation.name,
+			content: relation.data?.content ?? '',
+			uuid: relation.id,
+			favourite: !!favourites.find(favourite => favourite.id === relation.id),
+		};
+	}
+);
+
 const getCollectionsFn: ExpressFinalCallback = async (req, res) => {
 
 	const requestedCollections: string[] = req.body.collections ?? [];
@@ -57,35 +68,29 @@ const getCollectionsFn: ExpressFinalCallback = async (req, res) => {
 		: []
 	);
 
-	const collectionModelToInterface = (relation: CollectionAR): ICollection => {
-		return {
-			title: relation.name,
-			content: relation.data?.content ?? '',
-			uuid: relation.id,
-		};
-	};
+	
 
 	const collectionsPayload: IGetCollectionsPayload = {};
 
 	if (returnRecent) {
-		collectionsPayload.recentlyModified = recent.map(collectionModelToInterface);
+		collectionsPayload.recentlyModified = recent.map(collectionModelToInterfaceFn(favourites));
 	}
 
 	if (returnMyCollections) {
-		collectionsPayload.myCollections = (await TopLevelOnly(myCollections)).map(collectionModelToInterface);
+		collectionsPayload.myCollections = (await TopLevelOnly(myCollections)).map(collectionModelToInterfaceFn(favourites));
 	}
 
 	if (returnFavouriteCollections) {
-		collectionsPayload.favourites = favourites.map(collectionModelToInterface);
+		collectionsPayload.favourites = favourites.map(collectionModelToInterfaceFn(favourites));
 	}
 
 	if (returnAvailableCollections) {
 		const unownedButAvailable = (await TopLevelOnly(available)).filter(collection => collection.account !== req.user.id);
-		collectionsPayload.availableCollections = unownedButAvailable.map(collectionModelToInterface);
+		collectionsPayload.availableCollections = unownedButAvailable.map(collectionModelToInterfaceFn(favourites));
 	}
 
 	if (returnChildCollections) {
-		collectionsPayload.childCollections = children.map(collectionModelToInterface);
+		collectionsPayload.childCollections = children.map(collectionModelToInterfaceFn(favourites));
 	}
 
 	const payload: IGetCollectionsResponse = {

@@ -39,11 +39,16 @@ export interface ICreateCollectionResponse extends ISuccessResponse {
 	newCollection: ICollection;
 };
 
+export interface IFavouriteCollectionResponse extends ISuccessResponse {
+	collectionId: String;
+	favourite: boolean;
+};
+
 export interface ISaveCollectionResponse extends ISuccessResponse {
 	message: 'Collection Saved';
 };
 
-export type Response = ISuccessResponse | IAuthFailResponse | IAccountFailResponse | ILoginResponse | IGetCollectionsResponse | ICreateCollectionResponse | ISaveCollectionResponse;
+export type Response = ISuccessResponse | IAuthFailResponse | IAccountFailResponse | ILoginResponse | IGetCollectionsResponse | ICreateCollectionResponse | ISaveCollectionResponse | IFavouriteCollectionResponse;
 
 export interface IDataResponse {
 	data: Response;

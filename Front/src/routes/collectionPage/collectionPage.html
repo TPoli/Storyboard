@@ -6,6 +6,7 @@
 		<template v-slot:content>
 			<!-- TODO make the below two fields toggle between each other based on selection -->
 			<h1>{{collection.title}}</h1>
+			<button v-on:click="toggleFavourite">{{ collection.favourite ? 'Unfavourite' : 'Favourite'}}</button>
 			<input v-model="collection.title" :placeholder="collection.title">
 
 			<br>

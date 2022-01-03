@@ -2,7 +2,12 @@ import * as mysqlPromise from 'mysql2/promise';
 import { OkPacket } from 'mysql2/promise';
 import { dbName, host, systemAdminPassword, systemAdminUser } from './config';
 
-export const ensureDbIsSetup = async () => {
+type Connections = {
+	adminConnection: mysqlPromise.Connection,
+    userConnection: mysqlPromise.Connection,
+};
+
+export const ensureDbIsSetup = async (): Promise<Connections> => {
 	const connection = await mysqlPromise.createConnection({
 		host,
 		user: systemAdminUser,
@@ -28,7 +33,7 @@ export const ensureDbIsSetup = async () => {
 	}
 };
 
-const ensureUsersSetup = async (connection: mysqlPromise.Connection) => {
+const ensureUsersSetup = async (connection: mysqlPromise.Connection): Promise<Connections> => {
 	const userQuery = 'SELECT EXISTS(SELECT 1 FROM mysql.user WHERE user = "storyboard_admin");';
 	
 	try {
@@ -53,7 +58,7 @@ const ensureUsersSetup = async (connection: mysqlPromise.Connection) => {
 	}
 };
 
-const setupConnection = async () => {
+const setupConnection = async (): Promise<Connections> => {
 	const adminConnectionData = {
 		host,
 		user     : 'storyboard_admin',

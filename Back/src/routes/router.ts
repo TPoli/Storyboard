@@ -6,6 +6,7 @@ import saveCollectionsFn from './saveCollections';
 import getCollectionsFn from './getCollections';
 import loginFn from './login';
 import { Route } from './route';
+import favouriteCollectionFn from './favouriteCollection';
 
 type RouteMap = {
 	[key in EndpointRoutes]: Route;
@@ -58,6 +59,11 @@ export const Routes: RouteMap = {
 	saveCollection: {
 		callback: saveCollectionsFn,
 		params: Api.AllEndpoints['saveCollection'].params,
+		authenticatedUserRequired: true,
+	},
+	favouriteCollection: {
+		callback: favouriteCollectionFn,
+		params: Api.AllEndpoints['favouriteCollection'].params,
 		authenticatedUserRequired: true,
 	},
 };
