@@ -1,6 +1,5 @@
 import { IFailResponse, ISaveCollectionResponse } from '../../../Core/types/Response'
 import { ExpressFinalCallback } from '../types/types';
-import { randomUUID } from 'crypto';
 import { AccountAR, CollectionAR } from '../models';
 
 const findCollection = async (uuid: string, user: AccountAR): Promise<CollectionAR | null> => {
@@ -33,9 +32,7 @@ const saveCollectionsFn: ExpressFinalCallback = async (req, res) => {
 			return req.transaction.sendResponse(res, req, response);
 		}
 	} else {
-		const uuid = randomUUID();
 		collection = new CollectionAR();
-		collection.id = uuid;
 		collection.account = req.user.id;
 	}
 

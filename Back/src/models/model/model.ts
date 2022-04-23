@@ -8,13 +8,14 @@ import { LoggedInRequest } from '../../types/types';
 import { deleteModelFn } from './delete';
 import { Schema } from '../schema';
 import { TableNames } from '../tableNames';
+import { randomUUID } from 'crypto';
 
 abstract class ModelBase implements IIndexable {
 	public table: TableNames = TableNames.ABSTRACT;
 	public abstract version: number;
 	public columns: Column[] = [];
 	public isNew = true;
-	id: number|string = -1;
+	id = '';
 
 	public modelRelations: IModelRelation[] = [];
 }
@@ -45,6 +46,9 @@ abstract class Model extends ModelBase {
 	 * @returns Promise<boolean>
 	 */
 	protected async beforeSave(req: LoggedInRequest|null): Promise<boolean> {
+		if (!this.id) {
+			this.id = randomUUID();
+		}
 		return true;
 	}
 

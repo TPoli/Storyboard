@@ -1,11 +1,9 @@
 import { ICreateCollectionResponse, IFailResponse } from '../../../Core/types/Response'
 import { ExpressFinalCallback } from '../types/types';
-import { randomUUID } from 'crypto';
 import { CollectionAR } from '../models';
 
 const createCollectionsFn: ExpressFinalCallback = async (req, res) => {
 
-	const uuid = randomUUID();
 	const collection = new CollectionAR();
 	collection.account = req.user.id;
 
@@ -24,7 +22,6 @@ const createCollectionsFn: ExpressFinalCallback = async (req, res) => {
 		}
 	}
 
-	collection.id = uuid;
 	collection.parent = req.body.parentId;
 	collection.data = {
 		content: '',
@@ -45,7 +42,7 @@ const createCollectionsFn: ExpressFinalCallback = async (req, res) => {
 			newCollection: {
 				title: collection.name,
 				content: collection.data?.content ?? '',
-				uuid: collection.id + '',
+				uuid: collection.id,
 				favourite: false,
 			},
 		};

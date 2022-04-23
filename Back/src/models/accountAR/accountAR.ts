@@ -1,4 +1,3 @@
-import { randomUUID } from 'crypto';
 import {
 	IModelRelation,
 	Model,
@@ -20,7 +19,6 @@ export class AccountAR extends Model {
 	public table = TableNames.ACCOUNT;
 
 	// columns
-	public id = randomUUID();
 	public username = '';
 	public password = '';
 	public salt = '';

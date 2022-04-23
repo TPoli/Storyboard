@@ -9,12 +9,10 @@ import { Collection } from '../../../Core/types/Collection';
 import { LoggedInRequest } from '../types/types';
 import { PermissionsAR } from './permissionsAR';
 import { PermissionType } from '../../../Core/types/Models/Permissions';
-import { randomUUID } from 'crypto';
 import { TableNames } from './tableNames';
 
 export class CollectionAR extends Model implements Collection {
 
-	public id = '';
 	public name = '';
 	public siblingOrder = 0;
 	public parent: string|null = null;
@@ -94,7 +92,6 @@ export class CollectionAR extends Model implements Collection {
 		const existingPermissions = usersPermissions.find(permission => permission.collectionId = this.id);
 		if (!existingPermissions) {
 			const newPermissions = new PermissionsAR({
-				id: randomUUID(),
 				collectionId: this.id,
 				permissionType: PermissionType.OWNER,
 				accountId: user.id,

@@ -59,7 +59,6 @@ export class TransactionsAR extends Model {
 		},
 	] as Column[];
 
-	public id = -1;
 	public account = houseAccountId;
 	public route = '';
 	public params: Object = {};

@@ -16,7 +16,6 @@ export class RecentCollectionsAR extends Model {
 	public table = TableNames.RECENT_COLLECTIONS;
 
 	// columns
-	public id = '';
 	public account: string|null = null;
 	public recentId1: string|null = null;
 	public recentId2: string|null = null;

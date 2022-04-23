@@ -71,9 +71,6 @@ const insert = async (model: ModelBase, columns: string[]): Promise<boolean> => 
 				return false;
 			}
 			model.isNew = false;
-			if (model.id === '' || model.id === -1) {
-				model.id = (dbResults[0] as OkPacket).insertId;
-			}
 
 			return true;
 		} catch (error) {
