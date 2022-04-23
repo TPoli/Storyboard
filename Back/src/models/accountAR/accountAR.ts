@@ -7,6 +7,7 @@ import {
 	RecentCollectionsAR,
 	PermissionsAR
 } from '../';
+import { TableNames } from '../tableNames';
 import { columns } from './columns';
 import peppers from './peppers';
 
@@ -16,7 +17,7 @@ export class AccountAR extends Model {
 	
 	// metadata
 	public version = 1;
-	public table = 'account';
+	public table = TableNames.ACCOUNT;
 
 	// columns
 	public id = randomUUID();
