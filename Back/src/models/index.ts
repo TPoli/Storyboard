@@ -9,7 +9,7 @@ import { TransactionsAR } from './transactionsAR';
 
 import { MutationsAR } from './mutationsAR';
 import { VersionsAR } from './versionsAR';
-import { FavouritesAR } from './favouritesAR';
+import { PermissionsAR } from './permissionsAR';
 
 export {
 	AccountAR,
@@ -24,5 +24,5 @@ export {
 	MutationsAR,
 	VersionsAR,
 	IIndexable,
-	FavouritesAR
+	PermissionsAR
 };

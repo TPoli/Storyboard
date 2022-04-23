@@ -1,3 +1,4 @@
+import findAllFn from './findAll';
 import findOneFn from './findOne';
 import { IModelRelation } from './modelRelation';
 import { saveModelFn } from './save';
@@ -5,9 +6,11 @@ import { Column, IIndexable } from './types';
 import { addRelationship } from './index';
 import { LoggedInRequest } from '../../types/types';
 import { deleteModelFn } from './delete';
+import { Schema } from '../schema';
+import { TableNames } from '../tableNames';
 
 abstract class ModelBase implements IIndexable {
-	public table = '';
+	public table: TableNames = TableNames.ABSTRACT;
 	public abstract version: number;
 	public columns: Column[] = [];
 	public isNew = true;
@@ -28,8 +31,8 @@ abstract class Model extends ModelBase {
 		});
 	}
 
-	public static find<Type>(): Type|null {
-		return null;
+	public static find<Type extends Model>(schema: Schema, params: Object): Promise<Type[]> {
+		return findAllFn(schema, params);
 	}
 
 	public async findOne<Type extends Model>(params: Object): Promise<Type|null> {

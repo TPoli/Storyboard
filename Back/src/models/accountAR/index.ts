@@ -1,5 +1,5 @@
-import AccountAR from './accountAR';
+import { AccountAR, houseAccountId} from './accountAR';
 
 export {
-	AccountAR
+	AccountAR, houseAccountId
 };

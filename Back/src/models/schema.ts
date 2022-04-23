@@ -4,7 +4,8 @@ import {
 	RecentCollectionsAR,
 	AccountAR,
 	VersionsAR,
-	MutationsAR
+	MutationsAR,
+	PermissionsAR
 } from './';
 
-export type Schema = typeof VersionsAR | typeof MutationsAR | typeof AccountAR | typeof TransactionsAR | typeof CollectionAR | typeof RecentCollectionsAR;
+export type Schema = typeof VersionsAR | typeof MutationsAR | typeof AccountAR | typeof TransactionsAR | typeof CollectionAR | typeof RecentCollectionsAR | typeof PermissionsAR;

@@ -53,8 +53,12 @@ const getCollectionsFn: ExpressFinalCallback = async (req, res) => {
 
 	const recent = await recentCollectionsModel?.collections() ?? [];
 	const myCollections = await req.user.myCollections();
+	const userPermissions = await req.user.myPermissions();
 
-	const favourites: CollectionAR[] = [];
+	const favourites: CollectionAR[] = myCollections.filter(collection => {
+		const findPermission = userPermissions.find(permissions => permissions.collectionId = collection.id);
+		return !!findPermission && findPermission.favourite;
+	});
 	
 	const available: CollectionAR[] = (
 		returnAvailableCollections || returnChildCollections
@@ -67,8 +71,6 @@ const getCollectionsFn: ExpressFinalCallback = async (req, res) => {
 		? await getChildCollections(available, req.body.parentId)
 		: []
 	);
-
-	
 
 	const collectionsPayload: IGetCollectionsPayload = {};
 

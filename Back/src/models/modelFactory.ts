@@ -2,10 +2,10 @@ import {
 	CollectionAR,
 	AccountAR,
 	RecentCollectionsAR,
-	FavouritesAR
+	PermissionsAR
 } from './';
 
-export type ActiveRecords = AccountAR | CollectionAR | RecentCollectionsAR | FavouritesAR;
+export type ActiveRecords = AccountAR | CollectionAR | RecentCollectionsAR | PermissionsAR;
 
 export const createModel = (modelName: string): ActiveRecords | null => {
 	let model: ActiveRecords | null = null;
@@ -19,9 +19,8 @@ export const createModel = (modelName: string): ActiveRecords | null => {
 		case 'recentCollections':
 			model = new RecentCollectionsAR();
 			break;
-		case 'favourites':
-			model = new FavouritesAR();
-			break;
+		case 'permissions':
+			model = new PermissionsAR();
 		default:
 			return null;
 	}

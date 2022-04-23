@@ -1,6 +1,7 @@
 import { EndpointRoutes } from '../../../Core/Api/Api';
 import { IFailResponse } from '../../../Core/types/Response';
 import { TransactionsAR } from '../models';
+import { houseAccountId } from '../models/accountAR';
 import { ExpressCallback, LoggedInRequest } from '../types/types';
 
 const createLogMiddlewareFn = (endpoint: EndpointRoutes) => {
@@ -9,7 +10,7 @@ const createLogMiddlewareFn = (endpoint: EndpointRoutes) => {
         transaction.params = req.body;
         transaction.response = {};
         transaction.route = endpoint;
-        transaction.account = 1; // house account
+        transaction.account = houseAccountId;
         transaction.ipAddress = req.ip;
         
         (req as LoggedInRequest).transaction = transaction;

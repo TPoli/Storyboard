@@ -8,11 +8,13 @@ import {
 } from './';
 import { IResponse } from '../../../Core/types/Response';
 import { LoggedInRequest } from '../types/types';
+import { houseAccountId } from './accountAR';
+import { TableNames } from './tableNames';
 
 export class TransactionsAR extends Model {
 	
 	public version = 1;
-	public table = 'transactions';
+	public table = TableNames.TRANSACTIONS;
 	public columns = [
 		{
 			name: 'id',
@@ -26,7 +28,7 @@ export class TransactionsAR extends Model {
 			name: 'account',
 			primary: true,
 			taintable: false,
-			type: ColumnType.INT,
+			type: ColumnType.STRING,
 			references: {
 				model: new AccountAR().table,
 				column: 'id',
@@ -58,7 +60,7 @@ export class TransactionsAR extends Model {
 	] as Column[];
 
 	public id = -1;
-	public account = 1;
+	public account = houseAccountId;
 	public route = '';
 	public params: Object = {};
 	public response: Object|null = null;

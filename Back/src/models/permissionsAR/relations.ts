@@ -5,13 +5,6 @@ import {
 
 const modelRelations: IModelRelation[] = [
 	{
-		table: 'account',
-		join: 'left',
-		name: 'account',
-		childColumn: 'id',
-		parentColumn: 'accountId',
-		relationType: RelationType.ONE_TO_ONE,
-	}, {
 		table: 'collections',
 		join: 'left',
 		name: 'collection',

@@ -1,9 +1,10 @@
 import { Model, Column, ColumnType } from '../model';
+import { TableNames } from '../tableNames';
 
 export class VersionsAR extends Model {
 	
 	public version = 1;
-	public table = 'versions';
+	public table = TableNames.VERSIONS;
 	public columns = [
 		{
 			name: 'id',

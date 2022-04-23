@@ -8,7 +8,6 @@ import verifyUser from './verifyUser';
 
 const createAccount = (req:any, username:any, password:any, done:any) => {
     const account = new AccountAR();
-    account.permissions = {};
     account.username = username;
     account.email = req?.body?.email ?? null;
     account.mobile = req?.body?.mobile ?? null;
@@ -19,6 +18,7 @@ const createAccount = (req:any, username:any, password:any, done:any) => {
         }
         account.password = hash;
         const columnsToSave = [
+            'id',
             'username',
             'password',
             'permissions',

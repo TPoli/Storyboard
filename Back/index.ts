@@ -86,7 +86,7 @@ const setupWebserver = async () => {
 
 const main = async () => {
     await InitDb();
-    setupWebserver();
+    await setupWebserver();
 };
 
 main();

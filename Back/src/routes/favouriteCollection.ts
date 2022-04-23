@@ -1,9 +1,9 @@
-import { randomUUID } from 'crypto';
-
 import { IFailResponse, IFavouriteCollectionResponse } from '../../../Core/types/Response'
 import { ExpressFinalCallback } from '../types/types';
-import { FavouritesAR } from '../models';
-
+/**
+ * Purpose:
+ * to set the favourite status of a collection for the current user
+ */
 const favouriteCollectionFn: ExpressFinalCallback = async (req, res) => {
 
 	const uuid = req.body.uuid;
@@ -19,62 +19,36 @@ const favouriteCollectionFn: ExpressFinalCallback = async (req, res) => {
 		return req.transaction.sendResponse(res, req, payload);
 	}
 
-	const existingFavourites = await req.user.myFavourites();
-	
-	const existingFavourite = existingFavourites.find(favourite => favourite.collectionId === uuid);
-
-	if (!req.body.favourite) {
-		if (!existingFavourite) {
-			const payload: IFailResponse = {
-				success: false,
-				message: 'Can\'t unfavourite - not marked as favourite.',
-				footerError: 'Can\'t unfavourite - not marked as favourite.',
-			};
-			return req.transaction.sendResponse(res, req, payload);
-		}
-
-		const deleted = await existingFavourite.delete(req);
-
-		if (deleted) {
-			const payload: IFavouriteCollectionResponse = {
-				success: true,
-				collectionId: uuid,
-				favourite: false,
-			};
-			return req.transaction.sendResponse(res, req, payload);
-		}
+	const relatedPermissions = (await req.user.myPermissions()).find(permission => permission.collectionId === uuid);
+	if (!relatedPermissions) {
 		const payload: IFailResponse = {
 			success: false,
-			message: 'db failed to save',
+			message: 'could not verify permission to modify collection.',
 		};
 		return req.transaction.sendResponse(res, req, payload);
 	}
 
-	if (existingFavourite) {
-		const payload: IFailResponse = {
-			success: false,
-			message: 'Can\'t favourite - already marked as favourite.',
-			footerError: 'Can\'t favourite - already marked as favourite.',
+	// no change required
+	if (req.body.favourite === relatedPermissions.favourite) {
+		const payload: IFavouriteCollectionResponse = {
+			success: true,
+			collectionId: uuid,
+			favourite: false,
 		};
 		return req.transaction.sendResponse(res, req, payload);
 	}
 
-	const newFavourite = new FavouritesAR();
-	newFavourite.accountId = req.user.id;
-	newFavourite.collectionId = uuid;
-	newFavourite.id = randomUUID();
-		
-	const success = await newFavourite.save(req, [
-		'id',
-		'accountId',
-		'collectionId',
+	relatedPermissions.favourite = req.body.favourite;
+	const success = await relatedPermissions.save(req, [
+		'favourite',
+		'lastUpdated',
 	]);
 
 	if (success) {
 		const payload: IFavouriteCollectionResponse = {
 			success: true,
 			collectionId: uuid,
-			favourite: true,
+			favourite: relatedPermissions.favourite,
 		};
 		return req.transaction.sendResponse(res, req, payload);
 	}

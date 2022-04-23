@@ -7,6 +7,10 @@ import {
 } from './';
 import { Collection } from '../../../Core/types/Collection';
 import { LoggedInRequest } from '../types/types';
+import { PermissionsAR } from './permissionsAR';
+import { PermissionType } from '../../../Core/types/Models/Permissions';
+import { randomUUID } from 'crypto';
+import { TableNames } from './tableNames';
 
 export class CollectionAR extends Model implements Collection {
 
@@ -17,8 +21,8 @@ export class CollectionAR extends Model implements Collection {
 	public children: string[] = [];
 	
 	public version = 1;
-	public table = 'collections';
-	public account: number|null = null;
+	public table = TableNames.COLLECTIONS;
+	public account: string|null = null;
 	public data: {
 		content: string,
 	}| null = null;
@@ -35,7 +39,7 @@ export class CollectionAR extends Model implements Collection {
 			name: 'account',
 			primary: true,
 			taintable: false,
-			type: ColumnType.INT,
+			type: ColumnType.STRING,
 			references: {
 				model: new AccountAR().table,
 				column: 'id',
@@ -82,6 +86,36 @@ export class CollectionAR extends Model implements Collection {
 
 		if (!req) {
 			return false;
+		}
+
+		const user = req.user;
+
+		const usersPermissions = await user.myPermissions();
+		const existingPermissions = usersPermissions.find(permission => permission.collectionId = this.id);
+		if (!existingPermissions) {
+			const newPermissions = new PermissionsAR({
+				id: randomUUID(),
+				collectionId: this.id,
+				permissionType: PermissionType.OWNER,
+				accountId: user.id,
+			});
+			const permissionsCreated = await newPermissions.save(req, [
+				'id',
+				'favourite',
+				'lastUpdated',
+				'permissionType',
+				'collectionId',
+				'accountId',
+			]);
+
+			if (!permissionsCreated) {
+				// TODO rollback
+			}
+		} else {
+			existingPermissions.lastUpdated = new Date();
+			existingPermissions.save(req, [
+				'lastUpdated',
+			])
 		}
 
 		const recentCollectionsMap = await req?.user?.recentCollections() ?? new RecentCollectionsAR();

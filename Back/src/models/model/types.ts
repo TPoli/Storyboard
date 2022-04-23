@@ -1,3 +1,4 @@
+import { TableNames } from '../tableNames';
 import { ColumnType } from './columnType';
 
 export type Column = {
@@ -10,7 +11,7 @@ export type Column = {
 	default?: 'NULL';
 	unique?: true;
 	references?: {
-		model: string,
+		model: TableNames,
 		column: string
 	};
 };

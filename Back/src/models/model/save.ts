@@ -29,8 +29,10 @@ const parametise = (model: ModelBase, columns: string[]) => {
 
 		switch (colData.type) {
 			case ColumnType.JSON:
-			case ColumnType.DATE_TIME:
 				values.push(JSON.stringify(value));
+				break;
+			case ColumnType.DATE_TIME:
+				values.push(value.toISOString().slice(0, 19).replace('T', ' '));
 				break;
 			case ColumnType.BOOL:
 			case ColumnType.INT:

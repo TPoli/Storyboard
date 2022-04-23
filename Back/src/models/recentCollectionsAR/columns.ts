@@ -17,7 +17,7 @@ const columns = [
 		name: 'account',
 		primary: true,
 		taintable: false,
-		type: ColumnType.INT,
+		type: ColumnType.STRING,
 		references: {
 			model: new AccountAR().table,
 			column: 'id',

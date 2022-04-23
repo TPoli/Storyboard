@@ -1,9 +1,10 @@
 import { Model, Column, ColumnType } from './model';
+import { TableNames } from './tableNames';
 
 export class MutationsAR extends Model {
 	
 	public version = 1;
-	public table = 'mutations';
+	public table = TableNames.MUTATIONS;
 	public columns = [
 		{
 			name: 'id',
