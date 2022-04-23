@@ -49,9 +49,6 @@ const getCollectionsFn: ExpressFinalCallback = async (req, res) => {
 	const returnAvailableCollections = requestedCollections.indexOf('availableCollections') >= 0;
 	const returnChildCollections = !!(req.body.parentId ?? false);
 
-	const recentCollectionsModel = await req.user.recentCollections();
-
-	const recent = await recentCollectionsModel?.collections() ?? [];
 	const myCollections = await req.user.myCollections();
 	const userPermissions = await req.user.myPermissions();
 
@@ -75,7 +72,8 @@ const getCollectionsFn: ExpressFinalCallback = async (req, res) => {
 	const collectionsPayload: IGetCollectionsPayload = {};
 
 	if (returnRecent) {
-		collectionsPayload.recentlyModified = recent.map(collectionModelToInterfaceFn(favourites));
+		const recentCollections = await req.user.myRecentCollections();
+		collectionsPayload.recentlyModified = recentCollections.map(collectionModelToInterfaceFn(favourites));
 	}
 
 	if (returnMyCollections) {

@@ -10,8 +10,8 @@ export class MutationsAR extends Model {
 			name: 'id',
 			primary: true,
 			taintable: false,
-			type: ColumnType.INT,
-			autoIncrement: true,
+			type: ColumnType.STRING,
+			autoIncrement: false,
 			nullable: false,
 			unique: true,
 		}, {

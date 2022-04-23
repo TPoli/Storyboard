@@ -1,11 +1,10 @@
 import {
 	CollectionAR,
 	AccountAR,
-	RecentCollectionsAR,
 	PermissionsAR
 } from './';
 
-export type ActiveRecords = AccountAR | CollectionAR | RecentCollectionsAR | PermissionsAR;
+export type ActiveRecords = AccountAR | CollectionAR | PermissionsAR;
 
 export const createModel = (modelName: string): ActiveRecords | null => {
 	let model: ActiveRecords | null = null;
@@ -15,9 +14,6 @@ export const createModel = (modelName: string): ActiveRecords | null => {
 			break;
 		case 'collections':
 			model = new CollectionAR();
-			break;
-		case 'recentCollections':
-			model = new RecentCollectionsAR();
 			break;
 		case 'permissions':
 			model = new PermissionsAR();

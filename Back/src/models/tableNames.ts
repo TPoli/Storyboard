@@ -4,7 +4,6 @@ enum TableNames {
 	PERMISSIONS = 'permissions',
 	MUTATIONS = 'mutations',
 	TRANSACTIONS = 'transactions',
-	RECENT_COLLECTIONS = 'recentCollections',
 	COLLECTIONS = 'collections',
 	ACCOUNT = 'account',
 }

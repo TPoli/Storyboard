@@ -7,10 +7,11 @@ import passport from 'passport';
 import verifyUser from './verifyUser';
 
 const createAccount = (req:any, username:any, password:any, done:any) => {
-    const account = new AccountAR();
-    account.username = username;
-    account.email = req?.body?.email ?? null;
-    account.mobile = req?.body?.mobile ?? null;
+    const account = new AccountAR({
+        username,
+        email: req?.body?.email,
+        mobile: req?.body?.mobile,
+    });
 
     const hashCallback = async (err?: Error, hash?: string) => {
         if (err || !hash) {

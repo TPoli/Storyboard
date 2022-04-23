@@ -1,38 +1,52 @@
 import {
-	IModelRelation,
 	Model,
 	CollectionAR,
-	RelationType,
-	RecentCollectionsAR,
 	PermissionsAR
 } from '../';
-import { TableNames } from '../tableNames';
-import { columns } from './columns';
-import peppers from './peppers';
+import { PermissionType } from '../../../../Core/types/Models/Permissions';
+import { AccountModel, AccountModelProps } from './accountModel';
+import peppers from './helpers/peppers';
 
 export const houseAccountId = 'houseaccount';
 
-export class AccountAR extends Model {
-	
-	// metadata
-	public version = 1;
-	public table = TableNames.ACCOUNT;
+export class AccountAR extends AccountModel {
 
-	// columns
-	public username = '';
-	public password = '';
-	public salt = '';
-	public pepper = '';
-	public mobile: string|null = null;
-	public email: string|null = null;
-	public columns = columns;
+	public static Peppers = peppers;
 
 	//relations
-	public myCollections: () => Promise<CollectionAR[]> = async () => [];
+
 	public myFavourites: () => Promise<CollectionAR[]> = async () => [];
-	public myPermissions: () => Promise<PermissionsAR[]> = async () => {
-		return Model.find<PermissionsAR>(PermissionsAR, { accountId: this.id, })
+
+	private collections: CollectionAR[]| null = null;
+	public myCollections: () => Promise<CollectionAR[]> = async () => {
+		if (this.collections === null) {
+			const permissions = await this.myCollectionPermissions();
+			const onlyMine = permissions.filter(p => p.permissionType === PermissionType.OWNER);
+			this.collections = await Promise.all<CollectionAR>(
+				onlyMine.map(p => p.myCollection() as unknown as CollectionAR)
+			);
+		}
+
+		return this.collections;
 	};
+
+	private permissions: PermissionsAR[] | null = null;
+	public myPermissions: () => Promise<PermissionsAR[]> = async () => {
+		if (this.permissions === null) {
+			this.permissions = await Model.find<PermissionsAR>(PermissionsAR, { accountId: this.id, });
+		}
+		return this.permissions;
+	};
+
+	private collectionPermissions: PermissionsAR[] | null = null;
+	public myCollectionPermissions: () => Promise<PermissionsAR[]> = async () => {
+		if (this.collectionPermissions === null) {
+			const allPermissions = await this.myPermissions();
+			this.collectionPermissions = allPermissions.filter(permissions => !!permissions.collectionId);
+		}
+		return this.collectionPermissions;
+	};
+
 	public availableCollections: () => Promise<CollectionAR[]> = async () => {
 		
 		const results: CollectionAR[] = [
@@ -42,42 +56,29 @@ export class AccountAR extends Model {
 
 		return results;
 	};
-	public recentCollections: () => Promise<RecentCollectionsAR|null> = async () => null;
 
-	public modelRelations: IModelRelation[] = [
-		{
-			table: 'collections',
-			join: 'left',
-			name: 'myCollections',
-			childColumn: 'account',
-			parentColumn: 'id',
-			relationType: RelationType.ONE_TO_MANY,
-		}, {
-			table: 'recentCollections',
-			join: 'left',
-			name: 'recentCollections',
-			childColumn: 'account',
-			parentColumn: 'id',
-			relationType: RelationType.ONE_TO_ONE,
-		},
-	];
+	private recentCollections: CollectionAR[]|null = null;
+	public myRecentCollections: () => Promise<CollectionAR[]> = async () => {
+		if (this.recentCollections === null) {
+			const permissions = await this.myPermissions();
+			console.log('permissions', permissions)
+			const sorted = permissions.sort((a,b) => {
+				return a.lastUpdated.getTime() - b.lastUpdated.getTime();
+			});
 
-	public static Peppers = peppers;
+			const trimmed = sorted.slice(0, 3);
 
-	constructor() {
-		super();
-	}
+			this.recentCollections = await Promise.all<CollectionAR>(
+				trimmed.map(async p => await p.myCollection() as CollectionAR)
+			);
+		}
+
+		return this.recentCollections;
+	};
 
 	public createDefaultEntries = async () => {
 		// account that acts as system user
 		const houseAccount = new AccountAR();
-		houseAccount.id=houseAccountId;
-		houseAccount.username=houseAccountId;
-		houseAccount.password=''; // empty string is a impossible input, cant be logged into
-		houseAccount.salt='';
-		houseAccount.pepper='';
-		houseAccount.mobile='';
-		houseAccount.email='';
 
 		await houseAccount.save(null, [
 			'id',
@@ -102,4 +103,8 @@ export class AccountAR extends Model {
 
 		return null;
 	};
+
+	constructor(props?: AccountModelProps) {
+		super(props);
+	}
 }

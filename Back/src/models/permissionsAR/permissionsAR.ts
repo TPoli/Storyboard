@@ -3,7 +3,6 @@ import {
 	CollectionAR
 } from '..';
 
-import { modelRelations } from './relations';
 import { columns } from './columns';
 import { IPermissions } from '../../../../Core/types/Models';
 import { PermissionType } from '../../../../Core/types/Models/Permissions';
@@ -26,8 +25,14 @@ export default class PermissionsAR extends Model implements IPermissions {
 	public accountId: string;
 
 	//relations
-	public collection: () => Promise<CollectionAR> = async () => new CollectionAR();
-	public modelRelations = modelRelations;
+	private collection: CollectionAR|null|undefined = undefined;
+	public myCollection: () => Promise<CollectionAR|null> = async () => {
+		if (this.collection === undefined) {
+			this.collection = await (new CollectionAR()).findOne<CollectionAR>({ id: this.collectionId, });
+		}
+
+		return this.collection;
+	};
 
 	constructor(params?: any) {
 		super();

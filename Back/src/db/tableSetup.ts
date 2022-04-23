@@ -1,6 +1,6 @@
 import { RowDataPacket } from 'mysql2/promise';
 import { CamelCase } from '../../../Core/Utils/Utils';
-import { AccountAR, CollectionAR, Column, MutationsAR, RecentCollectionsAR, TransactionsAR, VersionsAR, PermissionsAR } from '../models';
+import { AccountAR, CollectionAR, Column, MutationsAR, TransactionsAR, VersionsAR, PermissionsAR } from '../models';
 import { Schema } from '../models/schema';
 import { dbName } from './config';
 import { AdminConnection } from './db';
@@ -11,7 +11,6 @@ const schemas = [
 	AccountAR,
 	TransactionsAR,
 	CollectionAR,
-	RecentCollectionsAR,
 	PermissionsAR,
 ] as Schema[];
 

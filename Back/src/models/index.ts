@@ -4,7 +4,6 @@ import { Model, IModelRelation, Column, ColumnType, IIndexable } from './model';
 import { AccountAR } from './accountAR';
 
 import { CollectionAR } from './CollectionAR';
-import { RecentCollectionsAR } from './recentCollectionsAR';
 import { TransactionsAR } from './transactionsAR';
 
 import { MutationsAR } from './mutationsAR';
@@ -19,7 +18,6 @@ export {
 	Column,
 	ColumnType,
 	RelationType,
-	RecentCollectionsAR,
 	TransactionsAR,
 	MutationsAR,
 	VersionsAR,

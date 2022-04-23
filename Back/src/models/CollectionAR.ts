@@ -1,9 +1,7 @@
 import {
-	AccountAR,
 	Model,
 	Column,
-	ColumnType,
-	RecentCollectionsAR
+	ColumnType
 } from './';
 import { Collection } from '../../../Core/types/Collection';
 import { LoggedInRequest } from '../types/types';
@@ -39,7 +37,7 @@ export class CollectionAR extends Model implements Collection {
 			taintable: false,
 			type: ColumnType.STRING,
 			references: {
-				model: new AccountAR().table,
+				model: TableNames.ACCOUNT,
 				column: 'id',
 			},
 		}, {
@@ -61,7 +59,7 @@ export class CollectionAR extends Model implements Collection {
 			type: ColumnType.STRING,
 			nullable: true,
 			references: {
-				model: this.table,
+				model: TableNames.COLLECTIONS,
 				column: 'id',
 			},
 		}, {
@@ -115,37 +113,7 @@ export class CollectionAR extends Model implements Collection {
 			])
 		}
 
-		const recentCollectionsMap = await req?.user?.recentCollections() ?? new RecentCollectionsAR();
-
-		if (this.id === recentCollectionsMap.recentId1) {
-			// most recently modified this collection, nothing to update
-			return true;
-		}
-
-		const recentIds: string[] = [
-			this.id,
-		];
-		if (recentCollectionsMap.recentId1 && !recentIds.includes(recentCollectionsMap.recentId1)) {
-			recentIds.push(recentCollectionsMap.recentId1);
-		}
-		if (recentCollectionsMap.recentId2 && !recentIds.includes(recentCollectionsMap.recentId2)) {
-			recentIds.push(recentCollectionsMap.recentId2);
-		}
-		if (recentCollectionsMap.recentId3 && !recentIds.includes(recentCollectionsMap.recentId3)) {
-			recentIds.push(recentCollectionsMap.recentId3);
-		}
-
-		recentCollectionsMap.recentId1 = recentIds?.[0] ?? null;
-		recentCollectionsMap.recentId2 = recentIds?.[1] ?? null;
-		recentCollectionsMap.recentId3 = recentIds?.[2] ?? null;
-		recentCollectionsMap.account = req.user.id;
-
-		return await recentCollectionsMap.save(req, [
-			'account',
-			'recentId1',
-			'recentId2',
-			'recentId3',
-		]);
+		return true;
 	}
 
 	/**

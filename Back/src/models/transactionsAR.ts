@@ -3,8 +3,7 @@ import * as express from 'express';
 import {
 	Model,
 	Column,
-	ColumnType,
-	AccountAR
+	ColumnType
 } from './';
 import { IResponse } from '../../../Core/types/Response';
 import { LoggedInRequest } from '../types/types';
@@ -20,8 +19,8 @@ export class TransactionsAR extends Model {
 			name: 'id',
 			primary: true,
 			taintable: false,
-			type: ColumnType.INT,
-			autoIncrement: true,
+			type: ColumnType.STRING,
+			autoIncrement: false,
 			nullable: false,
 			unique: true,
 		}, {
@@ -30,7 +29,7 @@ export class TransactionsAR extends Model {
 			taintable: false,
 			type: ColumnType.STRING,
 			references: {
-				model: new AccountAR().table,
+				model: TableNames.ACCOUNT,
 				column: 'id',
 			},
 		}, {
