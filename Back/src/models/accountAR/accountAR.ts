@@ -15,68 +15,53 @@ export class AccountAR extends AccountModel {
 	public static Peppers = peppers;
 
 	//relations
-
-	public myFavourites: () => Promise<CollectionAR[]> = async () => {
+	public myFavourites = cachableFn<CollectionAR[]>(this, 'myFavouritesCache', async () => {
 		const collections = await this.myCollections();
 		const permissions = await this.myPermissions();
 		const favouritePermissions = permissions.filter(p => p.favourite);
 
 		return collections.filter(collection => !!favouritePermissions.find(p => p.collectionId === collection.id));
-	};
+	});
 
-	private collections: CollectionAR[]| null = null;
-	public myCollections: () => Promise<CollectionAR[]> = async () => {
-		if (this.collections === null) {
-			const permissions = await this.myCollectionPermissions();
-			const onlyMine = permissions.filter(p => p.permissionType === PermissionType.OWNER);
-			this.collections = await Promise.all<CollectionAR>(
-				onlyMine.map(p => p.myCollection() as unknown as CollectionAR)
-			);
-		}
+	public myCollections = cachableFn<CollectionAR[]>(this, 'myCollectionsCache', async () => {
+		const permissions = await this.myCollectionPermissions();
+		const onlyMine = permissions.filter(p => p.permissionType === PermissionType.OWNER);
 
-		return this.collections;
-	};
+		return Promise.all<CollectionAR>(
+			onlyMine.map(p => p.myCollection() as unknown as CollectionAR)
+		);
+	});
 
 	public myPermissions = cachableFn<PermissionsAR[]>(this, 'myPermissionsCache', async () => {
 		return Model.find<PermissionsAR>(PermissionsAR, { accountId: this.id, });
 	});
 
-	private collectionPermissions: PermissionsAR[] | null = null;
-	public myCollectionPermissions: () => Promise<PermissionsAR[]> = async () => {
-		if (this.collectionPermissions === null) {
-			const allPermissions = await this.myPermissions();
-			this.collectionPermissions = allPermissions.filter(permissions => !!permissions.collectionId);
-		}
-		return this.collectionPermissions;
-	};
+	public myCollectionPermissions = cachableFn<PermissionsAR[]>(this, 'myCollectionPermissionsCache', async () => {
+		const allPermissions = await this.myPermissions();
+		return allPermissions.filter(permissions => !!permissions.collectionId);
+	});
 
-	public availableCollections: () => Promise<CollectionAR[]> = async () => {
-		
+	public availableCollections = cachableFn<CollectionAR[]>(this, 'availableCollectionsCache', async () => {
 		const results: CollectionAR[] = [
 			...((await this.myCollections()) || []),
 			// list of all externally linked collections
 		];
 
 		return results;
-	};
+	});
 
-	private recentCollections: CollectionAR[]|null = null;
-	public myRecentCollections: () => Promise<CollectionAR[]> = async () => {
-		if (this.recentCollections === null) {
-			const permissions = await this.myPermissions();
-			const sorted = permissions.sort((a,b) => {
-				return a.lastUpdated.getTime() - b.lastUpdated.getTime();
-			});
+	public myRecentCollections = cachableFn<CollectionAR[]>(this, 'myRecentCollectionsCache', async () => {
+		const permissions = await this.myPermissions();
+		const sorted = permissions.sort((a,b) => {
+			return a.lastUpdated.getTime() - b.lastUpdated.getTime();
+		});
 
-			const trimmed = sorted.slice(0, 3);
+		const trimmed = sorted.slice(0, 3);
 
-			this.recentCollections = await Promise.all<CollectionAR>(
-				trimmed.map(async p => await p.myCollection() as CollectionAR)
-			);
-		}
-
-		return this.recentCollections;
-	};
+		return Promise.all<CollectionAR>(
+			trimmed.map(async p => await p.myCollection() as CollectionAR)
+		);
+	});
 
 	public createDefaultEntries = async () => {
 		// account that acts as system user
@@ -97,13 +82,7 @@ export class AccountAR extends AccountModel {
 	};
 
 	public getCollectionById = async (id: string): Promise<CollectionAR|null> => {
-		const availableCollection = (await this.availableCollections()).find(collection => collection.id === id);
-
-		if (availableCollection) {
-			return availableCollection;
-		}
-
-		return null;
+		return (await this.availableCollections()).find(collection => collection.id === id) ?? null;
 	};
 
 	constructor(props?: AccountModelProps) {

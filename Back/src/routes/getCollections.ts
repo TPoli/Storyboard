@@ -50,12 +50,7 @@ const getCollectionsFn: ExpressFinalCallback = async (req, res) => {
 	const returnChildCollections = !!(req.body.parentId ?? false);
 
 	const myCollections = await req.user.myCollections();
-	const userPermissions = await req.user.myPermissions();
-
-	const favourites: CollectionAR[] = myCollections.filter(collection => {
-		const findPermission = userPermissions.find(permissions => permissions.collectionId = collection.id);
-		return !!findPermission && findPermission.favourite;
-	});
+	const favourites: CollectionAR[] =await req.user.myFavourites();
 	
 	const available: CollectionAR[] = (
 		returnAvailableCollections || returnChildCollections
