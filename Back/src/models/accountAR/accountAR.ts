@@ -4,6 +4,7 @@ import {
 	PermissionsAR
 } from '../';
 import { PermissionType } from '../../../../Core/types/Models/Permissions';
+import { cachableFn } from '../model/cachableFn';
 import { AccountModel, AccountModelProps } from './accountModel';
 import peppers from './helpers/peppers';
 
@@ -15,7 +16,13 @@ export class AccountAR extends AccountModel {
 
 	//relations
 
-	public myFavourites: () => Promise<CollectionAR[]> = async () => [];
+	public myFavourites: () => Promise<CollectionAR[]> = async () => {
+		const collections = await this.myCollections();
+		const permissions = await this.myPermissions();
+		const favouritePermissions = permissions.filter(p => p.favourite);
+
+		return collections.filter(collection => !!favouritePermissions.find(p => p.collectionId === collection.id));
+	};
 
 	private collections: CollectionAR[]| null = null;
 	public myCollections: () => Promise<CollectionAR[]> = async () => {
@@ -30,13 +37,9 @@ export class AccountAR extends AccountModel {
 		return this.collections;
 	};
 
-	private permissions: PermissionsAR[] | null = null;
-	public myPermissions: () => Promise<PermissionsAR[]> = async () => {
-		if (this.permissions === null) {
-			this.permissions = await Model.find<PermissionsAR>(PermissionsAR, { accountId: this.id, });
-		}
-		return this.permissions;
-	};
+	public myPermissions = cachableFn<PermissionsAR[]>(this, 'myPermissionsCache', async () => {
+		return Model.find<PermissionsAR>(PermissionsAR, { accountId: this.id, });
+	});
 
 	private collectionPermissions: PermissionsAR[] | null = null;
 	public myCollectionPermissions: () => Promise<PermissionsAR[]> = async () => {
@@ -61,7 +64,6 @@ export class AccountAR extends AccountModel {
 	public myRecentCollections: () => Promise<CollectionAR[]> = async () => {
 		if (this.recentCollections === null) {
 			const permissions = await this.myPermissions();
-			console.log('permissions', permissions)
 			const sorted = permissions.sort((a,b) => {
 				return a.lastUpdated.getTime() - b.lastUpdated.getTime();
 			});
