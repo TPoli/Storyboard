@@ -9,7 +9,7 @@ export default async function findAllFn<Type extends Model>(schema: Schema, para
 	let sql = 'SELECT ';
 	const usedParameters: any[] = [];
 
-	const model = new schema();
+	const model = new schema({});
 	
 	const allowedColumns = model.columns.map((column) => {
 		return column.name;
@@ -42,7 +42,7 @@ export default async function findAllFn<Type extends Model>(schema: Schema, para
 			: dbResults;
 
 		return results.map(result => {
-			const newModel = new schema() as unknown as Type;
+			const newModel = new schema({}) as unknown as Type;
 			newModel.isNew = false;
 			Object.entries(result).forEach(([key, value,]) => {
 				(newModel as IIndexable)[key] = value;

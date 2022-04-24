@@ -1,19 +1,29 @@
 import { ICreateCollectionResponse, IFailResponse } from '../../../Core/types/Response'
 import { ExpressFinalCallback } from '../types/types';
 import { CollectionAR } from '../models';
+import { PermissionType } from '../../../Core/types/Models/Permissions';
 
 const createCollectionsFn: ExpressFinalCallback = async (req, res) => {
 
-	const collection = new CollectionAR();
-	collection.account = req.user.id;
+	const collection = new CollectionAR({
+		parentId: req.body.parentId,
+	});
 
 	if (req.body.parentId) {
 		const myCollections = await req.user.myCollections();
 		const availableCollections = await req.user.availableCollections();
+		const permissions = await req.user.myPermissions();
 		if (![...myCollections, ...availableCollections,].find((availableCollection) => {
-			return (availableCollection.account === req.user.id);
+			const permission = permissions.find(p => p.collectionId = availableCollection.id);
+
+			const allowedPermissions = [
+				PermissionType.FULL,
+				PermissionType.OWNER,
+			];
+
+			return permission && allowedPermissions.find(p => permission.permissionType);
 		})) {
-			// fail, cant set collections parent to invalid collection
+			// fail, cant set collections parent to collection user cant modify
 			const payload: IFailResponse = {
 				success: false,
 				message: `could not set parent to ${req.body.parentId}`,
@@ -22,17 +32,11 @@ const createCollectionsFn: ExpressFinalCallback = async (req, res) => {
 		}
 	}
 
-	collection.parent = req.body.parentId;
-	collection.data = {
-		content: '',
-	};
-
 	const success = await collection.save(req, [
 		'id',
-		'account',
 		'name',
 		'siblingOrder',
-		'parent',
+		'parentId',
 		'data',
 	]);
 

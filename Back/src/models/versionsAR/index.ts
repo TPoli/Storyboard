@@ -1,4 +1,4 @@
-import { VersionsAR } from './versions';
+import { VersionsAR } from './versionsAR';
 
 export {
 	VersionsAR

@@ -16,7 +16,7 @@ const schemas = [
 
 export const ensureTablesSetup = async () => {
 
-	const versions = new VersionsAR();
+	const versions = new VersionsAR({});
 	const versionsTableExists = await tableExists(versions.table);
 	if (!versionsTableExists) {
 		await createTable(VersionsAR);
@@ -35,7 +35,7 @@ const checkTheRestOfTheTables = async () => {
 	const newSchemas: Schema[] = [];
 
 	for (const schema of schemas) {
-		const model = new schema();
+		const model = new schema({});
 		const exists = await tableExists(model.table);
 
 		if (!exists) {
@@ -49,7 +49,7 @@ const checkTheRestOfTheTables = async () => {
 };
 
 const createTable = async (schema: Schema) => {
-	const model = new schema();
+	const model = new schema({});
 	console.log(`Creating table ${model.table}`);
 	let createQuery = `CREATE TABLE \`${dbName}\`.\`${model.table}\` (`;
 	const primaryKeys: string[] = [];
@@ -124,7 +124,7 @@ const ensureForeignKeysSet = async (newSchemas: Schema[]) => {
 const setForeignKeys = async (schema: Schema) => {
 	const foreignKeyColumns: Column[] = [];
 
-	const model = new schema();
+	const model = new schema({});
 
 	model.columns.forEach((column: Column) => {
 		if (column.references) {

@@ -1,10 +1,23 @@
 import { Model, Column, ColumnType } from '../model';
 import { TableNames } from '../tableNames';
 
-export class VersionsAR extends Model {
+type VersionsModelParams = {
+	id?: string;
+	tableName?: string;
+	tableVersion?: number;
+};
+
+class VersionsModel extends Model {
 	
+	// metadata
 	public version = 1;
 	public table = TableNames.VERSIONS;
+
+	// columns
+	public id;
+	public tableName;
+	public tableVersion;
+
 	public columns = [
 		{
 			name: 'id',
@@ -15,19 +28,27 @@ export class VersionsAR extends Model {
 			nullable: false,
 			unique: true,
 		}, {
-			name: 'table_name',
+			name: 'tableName',
 			primary: false,
 			taintable: false,
 			type: ColumnType.STRING,
 		}, {
-			name: 'version',
+			name: 'tableVersion',
 			primary: false,
 			taintable: false,
 			type: ColumnType.INT,
 		},
 	] as Column[];
 
-	constructor() {
+	constructor(params: VersionsModelParams) {
 		super();
+		this.id = params.id ?? '';
+		this.tableName = params.tableName ?? '';
+		this.tableVersion = params.tableVersion ?? 0;
 	}
+}
+
+export {
+	VersionsModel,
+	VersionsModelParams
 }

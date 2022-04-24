@@ -5,7 +5,7 @@ import { ExpressFinalCallback } from '../types/types';
 
 const getChildCollections = async (availableCollections: CollectionAR[], parentId: string): Promise<CollectionAR[]> => {
 	return availableCollections.filter((collection) => {
-		return collection.parent === parentId;
+		return collection.parentId === parentId;
 	});
 };
 
@@ -80,7 +80,7 @@ const getCollectionsFn: ExpressFinalCallback = async (req, res) => {
 	}
 
 	if (returnAvailableCollections) {
-		const unownedButAvailable = (await TopLevelOnly(available)).filter(collection => collection.account !== req.user.id);
+		const unownedButAvailable = await req.user.availableCollections();
 		collectionsPayload.availableCollections = unownedButAvailable.map(collectionModelToInterfaceFn(favourites));
 	}
 

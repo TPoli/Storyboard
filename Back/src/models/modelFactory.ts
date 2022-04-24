@@ -13,7 +13,7 @@ export const createModel = (modelName: string): ActiveRecords | null => {
 			model = new AccountAR();
 			break;
 		case 'collections':
-			model = new CollectionAR();
+			model = new CollectionAR({});
 			break;
 		case 'permissions':
 			model = new PermissionsAR();

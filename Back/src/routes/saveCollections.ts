@@ -32,8 +32,7 @@ const saveCollectionsFn: ExpressFinalCallback = async (req, res) => {
 			return req.transaction.sendResponse(res, req, response);
 		}
 	} else {
-		collection = new CollectionAR();
-		collection.account = req.user.id;
+		collection = new CollectionAR({});
 	}
 
 	if (req.body.parentId) {
@@ -48,7 +47,7 @@ const saveCollectionsFn: ExpressFinalCallback = async (req, res) => {
 			return req.transaction.sendResponse(res, req, payload);
 		}
 
-		collection.parent = req.body.parentId;
+		collection.parentId = req.body.parentId;
 	}
 
 	collection.data = {
@@ -58,10 +57,9 @@ const saveCollectionsFn: ExpressFinalCallback = async (req, res) => {
 
 	const success = await collection.save(req, [
 		'id',
-		'account',
 		'name',
 		'siblingOrder',
-		'parent',
+		'parentId',
 		'data',
 	]);
 

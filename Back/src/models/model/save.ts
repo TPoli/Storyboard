@@ -13,6 +13,7 @@ const parametise = (model: ModelBase, columns: string[]) => {
 			return col.name === column;
 		});
 		if(!colData) {
+			console.log(`couldn't find column for ${column}`);
 			return false;
 		}
 
@@ -66,6 +67,7 @@ const insert = async (model: ModelBase, columns: string[]): Promise<boolean> => 
 
 		try {
 			const dbResults = await query(sql, values);
+			
 			if (!dbResults) {
 				console.log('no dbResults');
 				return false;

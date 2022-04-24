@@ -3,7 +3,7 @@ import { RelationType } from './model/modelRelation';
 import { Model, IModelRelation, Column, ColumnType, IIndexable } from './model';
 import { AccountAR } from './accountAR';
 
-import { CollectionAR } from './CollectionAR';
+import { CollectionAR } from './collectionAR';
 import { TransactionsAR } from './transactionsAR';
 
 import { MutationsAR } from './mutationsAR';

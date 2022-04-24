@@ -6,7 +6,7 @@
 	id: string;
 	name: string;
 	siblingOrder: number;
-	parent: string|null;
+	parentId: string|null;
 	children: string[];
 };
 
