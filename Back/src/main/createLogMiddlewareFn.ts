@@ -6,17 +6,18 @@ import { ExpressCallback, LoggedInRequest } from '../types/types';
 
 const createLogMiddlewareFn = (endpoint: EndpointRoutes) => {
     const middleware: ExpressCallback = async (req, res, next) => {
-        const transaction = new TransactionsAR();
-        transaction.params = req.body;
-        transaction.response = {};
-        transaction.route = endpoint;
-        transaction.account = houseAccountId;
-        transaction.ipAddress = req.ip;
+        const transaction = new TransactionsAR({
+            params: req.body,
+            response: {},
+            route: endpoint,
+            accountId: houseAccountId,
+            ipAddress: req.ip,
+        });
         
         (req as LoggedInRequest).transaction = transaction;
         const success = await transaction.save((req as LoggedInRequest), [
             'id',
-            'account',
+            'accountId',
             'route',
             'params',
             'response',

@@ -22,7 +22,7 @@ export const ensureTablesSetup = async () => {
 		await createTable(VersionsAR);
 	}
 
-	const mutations = new MutationsAR();
+	const mutations = new MutationsAR({});
 	const mutationsTableExists = await tableExists(mutations.table);
 	if (!mutationsTableExists) {
 		await createTable(MutationsAR);
