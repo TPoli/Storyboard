@@ -1,4 +1,3 @@
-import { houseAccountId } from '.';
 import { Model } from '../';
 import { TableNames } from '../tableNames';
 import { AccountModelProps, ColumnDefinitions, columns } from './columns';
@@ -21,8 +20,8 @@ export class AccountModel extends Model implements ColumnDefinitions {
 	constructor(props?: AccountModelProps) {
 		super();
 
-		this.id = props?.id ?? houseAccountId;
-		this.username = props?.username ?? houseAccountId;
+		this.id = props?.id ?? '';
+		this.username = props?.username ?? '';
 		this.password = props?.password ?? ''; // empty string is a impossible input (UI), cant be logged into
 		this.salt = props?.salt ?? '';
 		this.pepper = props?.pepper ?? '';

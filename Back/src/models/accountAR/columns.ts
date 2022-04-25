@@ -9,17 +9,17 @@ interface ColumnDefinitions {
 	pepper?: string;
 	mobile?: string;
 	email?: string;
-};
+}
 
 type AccountModelProps = Partial<ColumnDefinitions>;
 
 type ColumnNames = keyof ColumnDefinitions;
 
-type PermissionsColumn = Column & {
+type AccountsColumn = Column & {
 	name: ColumnNames;
 };
 
-const columns: PermissionsColumn[] = [
+const columns: AccountsColumn[] = [
 	{
 		name: 'id',
 		primary: true,

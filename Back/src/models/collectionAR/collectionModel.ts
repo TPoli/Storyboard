@@ -5,7 +5,7 @@ import { LoggedInRequest } from '../../types/types';
 import { PermissionsAR } from '../permissionsAR';
 import { PermissionType } from '../../../../Core/types/Models/Permissions';
 import { TableNames } from '../tableNames';
-import { CollectionsModelParams, ColumnDefinitions, columns } from './columns';
+import { CollectionData, CollectionsModelParams, ColumnDefinitions, columns } from './columns';
 
 class CollectionModel extends Model implements ColumnDefinitions {
 
@@ -18,7 +18,7 @@ class CollectionModel extends Model implements ColumnDefinitions {
 	public name;
 	public siblingOrder;
 	public parentId;
-	public data;
+	public data: CollectionData;
 	public columns = columns;
 
 	public async afterSave(req: LoggedInRequest | null): Promise<boolean> {

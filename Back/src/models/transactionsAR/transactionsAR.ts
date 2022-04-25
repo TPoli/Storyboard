@@ -10,7 +10,7 @@ export class TransactionsAR extends TransactionsModel {
 	public sendResponse = (response: express.Response, req: LoggedInRequest|null, payload: IResponse) => {
 		response.send(payload); // dont wait for db to resolve to respond to user
 
-		this.response = payload;
+		this.response = payload || {};
 		this.save<TransactionsAR>(req, ['response',]);
 	}
 

@@ -69,4 +69,5 @@ export {
 	columns,
 	CollectionsModelParams,
 	ColumnDefinitions,
+	CollectionData,
 };

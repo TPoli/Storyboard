@@ -10,8 +10,8 @@ class MutationsModel extends Model implements ColumnDefinitions {
 	// columns
 	public id;
 	public tableName;
-	public originalValue;
-	public modifiedValue;
+	public originalValue: Object;
+	public modifiedValue: Object;
 	public columns = columns;
 
 	constructor(params: MutationsModelParams) {

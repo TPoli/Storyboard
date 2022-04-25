@@ -19,7 +19,7 @@ export default async function findAllFn<Type extends Model>(schema: Schema, para
 
 	let firstValidColumn = true;
 	for (const [key, value,] of Object.entries(params)) {
-		if (allowedColumns.includes(key)) {
+		if ((allowedColumns as string[]).includes(key)) {
 			if (!firstValidColumn) {
 				sql += ' AND';
 			}

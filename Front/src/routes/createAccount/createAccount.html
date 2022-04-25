@@ -5,7 +5,12 @@
 		</template>
 
 		<template v-slot:content>
-			<input v-model="username" placeholder="username">
+			<RequiredInput
+				v-model="username"
+				placeholder="username"
+				label="username"
+				:error=errors.username
+			/>
 			<br>
 			<input v-model="password" placeholder="password">
 			<br>

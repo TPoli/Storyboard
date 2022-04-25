@@ -1,4 +1,4 @@
-import { Column, ColumnType } from "../model";
+import { Column, ColumnType } from '../model';
 
 interface ColumnDefinitions {
 	id: string;

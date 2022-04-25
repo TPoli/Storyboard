@@ -1,0 +1,17 @@
+<div>
+
+	<span v-if='label'>
+		{{label}}:
+	</span>
+
+	<input
+		class="input"
+		type="text"
+		:placeholder="placeholder"
+		v-model="model"
+	/>
+
+	<span v-if='error'>
+		{{error}}:
+	</span>
+</div>

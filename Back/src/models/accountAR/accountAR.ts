@@ -9,9 +9,9 @@ import { AccountModel } from './accountModel';
 import { AccountModelProps } from './columns';
 import peppers from './helpers/peppers';
 
-export const houseAccountId = 'houseaccount';
+const houseAccountId = 'houseaccount';
 
-export class AccountAR extends AccountModel {
+class AccountAR extends AccountModel {
 
 	public static Peppers = peppers;
 
@@ -66,7 +66,10 @@ export class AccountAR extends AccountModel {
 
 	public createDefaultEntries = async () => {
 		// account that acts as system user
-		const houseAccount = new AccountAR();
+		const houseAccount = new AccountAR({
+			id: houseAccountId,
+			username: houseAccountId,
+		});
 
 		await houseAccount.save<AccountAR>(null, [
 			'id',
@@ -89,3 +92,8 @@ export class AccountAR extends AccountModel {
 		super(props);
 	}
 }
+
+export {
+	houseAccountId,
+	AccountAR
+};

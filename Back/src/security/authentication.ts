@@ -8,9 +8,10 @@ import verifyUser from './verifyUser';
 
 const createAccount = (req:any, username:any, password:any, done:any) => {
     const account = new AccountAR({
+        id: '',
         username,
-        email: req?.body?.email,
-        mobile: req?.body?.mobile,
+        email: req?.body?.email || null,
+        mobile: req?.body?.mobile || null,
     });
 
     const hashCallback = async (err?: Error, hash?: string) => {
@@ -24,13 +25,10 @@ const createAccount = (req:any, username:any, password:any, done:any) => {
             'password',
             'salt',
             'pepper',
+            'email',
+            'mobile',
         ];
-        if (account.email) {
-            columnsToSave.push('email');
-        }
-        if (account.mobile) {
-            columnsToSave.push('mobile');
-        }
+
         if (await account.save<AccountAR>(req, columnsToSave)) {
             await account.refresh();
             account.init();
