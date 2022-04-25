@@ -1,7 +1,6 @@
-import { OkPacket } from 'mysql2';
 import { query } from '../../db';
 import { ColumnType } from './columnType';
-import { ModelBase } from './model';
+import { Model, ModelBase } from './model';
 import { IIndexable } from './types';
 
 const parametise = (model: ModelBase, columns: string[]) => {
@@ -55,61 +54,50 @@ const parametise = (model: ModelBase, columns: string[]) => {
 };
 
 const insert = async (model: ModelBase, columns: string[]): Promise<boolean> => {
-	if (columns.length > 0) {
-		
-		const { keys, values, success, } = parametise(model, columns);
+	const { keys, values, success, } = parametise(model, columns);
 
-		if (!success) {
+	if (!success) {
+		return false;
+	}
+	
+	const sql = 'INSERT INTO ' + model.table + '(' + columns.join(',') + ') VALUES (' + keys.join(',') + ')';
+
+	try {
+		const dbResults = await query(sql, values);
+		
+		if (!dbResults) {
+			console.log('no dbResults');
 			return false;
 		}
-		
-		const sql = 'INSERT INTO ' + model.table + '(' + columns.join(',') + ') VALUES (' + keys.join(',') + ')';
+		model.isNew = false;
 
-		try {
-			const dbResults = await query(sql, values);
-			
-			if (!dbResults) {
-				console.log('no dbResults');
-				return false;
-			}
-			model.isNew = false;
-
-			return true;
-		} catch (error) {
-			console.log('Database ERROR: ', JSON.stringify(error), '\n');
-			return false;
-		}
-	} else {
-		console.log('INCOMPLETE');
+		return true;
+	} catch (error) {
+		console.log('Database ERROR: ', JSON.stringify(error), '\n');
 		return false;
 	}
 };
 
 const update = async (model: ModelBase, columns: string[]): Promise<boolean> => {
-	if (columns.length > 0) {
-		const { values, success, } = parametise(model, columns);
+	const { values, success, } = parametise(model, columns);
 
-		if (!success) {
-			console.log('failed to parametise');
+	if (!success) {
+		console.log('failed to parametise');
+		return false;
+	}
+
+	const sql = `UPDATE ${model.table} SET ${columns.join('= ?,')} = ? WHERE id = '${model.id}'`;
+
+	try {
+		const dbResults = await query(sql, values);
+		if (!dbResults) {
 			return false;
 		}
 
-		const sql = `UPDATE ${model.table} SET ${columns.join('= ?,')} = ? WHERE id = '${model.id}'`;
+		return true;
+	} catch (error) {
+		console.log(JSON.stringify(error));
 
-		try {
-			const dbResults = await query(sql, values);
-			if (!dbResults) {
-				return false;
-			}
-
-			return true;
-		} catch (error) {
-			console.log(JSON.stringify(error));
-
-			return false;
-		}
-	} else {
-		console.log('INCOMPLETE');
 		return false;
 	}
 };
@@ -120,11 +108,12 @@ const update = async (model: ModelBase, columns: string[]): Promise<boolean> => 
  * @param callback 
  * @param columns 
  */
-const saveModelFn = async (model: ModelBase, columns: string[] = []): Promise<boolean> => {
+const saveModelFn = async (model: Model, columns: string[] = []): Promise<boolean> => {
+	const columnsToUse = columns ? columns : model.getAllColumns();
 	if (model.isNew) {
-		return await insert(model, columns);
+		return await insert(model, columnsToUse);
 	} else {
-		return await update(model, columns);
+		return await update(model, columnsToUse);
 	}
 }
 

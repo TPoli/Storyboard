@@ -90,6 +90,10 @@ abstract class Model extends ModelBase {
 	public createDefaultEntries = async () => {
 		return;
 	};
+
+	public getAllColumns = () => {
+		return this.columns.map(c => c.name);
+	}
 }
 
 export { Model, ModelBase };
