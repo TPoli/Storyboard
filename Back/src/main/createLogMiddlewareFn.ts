@@ -15,7 +15,7 @@ const createLogMiddlewareFn = (endpoint: EndpointRoutes) => {
         });
         
         (req as LoggedInRequest).transaction = transaction;
-        const success = await transaction.save((req as LoggedInRequest), [
+        const success = await transaction.save<TransactionsAR>((req as LoggedInRequest), [
             'id',
             'accountId',
             'route',

@@ -1,10 +1,8 @@
-import {
-	CollectionAR
-} from '..';
-
+import { CollectionAR } from '..';
 import { IPermissions } from '../../../../Core/types/Models';
 import { cachableFn } from '../model/cachableFn';
-import { PermissionsModel, PermissionsModelProps } from './permissionsModel';
+import { PermissionsModelProps } from './columns';
+import { PermissionsModel } from './permissionsModel';
 
 export default class PermissionsAR extends PermissionsModel implements IPermissions {
 	//relations

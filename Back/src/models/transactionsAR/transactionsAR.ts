@@ -15,7 +15,7 @@ export class TransactionsAR extends TransactionsModel {
 		response.send(payload); // dont wait for db to resolve to respond to user
 
 		this.response = payload;
-		this.save(req, ['response',]);
+		this.save<TransactionsAR>(req, ['response',]);
 	}
 
 	constructor(params: TransactionsModelParams) {

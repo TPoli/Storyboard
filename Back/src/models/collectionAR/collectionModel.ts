@@ -52,7 +52,7 @@ class CollectionModel extends Model implements CollectionsModelParams {
 				permissionType: PermissionType.OWNER,
 				accountId: user.id,
 			});
-			const permissionsCreated = await newPermissions.save(req, [
+			const permissionsCreated = await newPermissions.save<PermissionsAR>(req, [
 				'id',
 				'favourite',
 				'lastUpdated',
@@ -66,7 +66,7 @@ class CollectionModel extends Model implements CollectionsModelParams {
 			}
 		} else {
 			existingPermissions.lastUpdated = new Date();
-			existingPermissions.save(req, [
+			existingPermissions.save<PermissionsAR>(req, [
 				'lastUpdated',
 			])
 		}

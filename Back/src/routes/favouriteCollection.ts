@@ -1,4 +1,5 @@
 import { IFailResponse, IFavouriteCollectionResponse } from '../../../Core/types/Response'
+import { PermissionsAR } from '../models';
 import { ExpressFinalCallback } from '../types/types';
 /**
  * Purpose:
@@ -39,7 +40,7 @@ const favouriteCollectionFn: ExpressFinalCallback = async (req, res) => {
 	}
 
 	relatedPermissions.favourite = req.body.favourite;
-	const success = await relatedPermissions.save(req, [
+	const success = await relatedPermissions.save<PermissionsAR>(req, [
 		'favourite',
 		'lastUpdated',
 	]);

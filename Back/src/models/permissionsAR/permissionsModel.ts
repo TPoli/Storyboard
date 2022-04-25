@@ -1,19 +1,11 @@
 import { Model } from '..';
 
-import { columns } from './columns';
+import { columns, PermissionsModelProps } from './columns';
 import { IPermissions } from '../../../../Core/types/Models';
 import { PermissionType } from '../../../../Core/types/Models/Permissions';
 import { LoggedInRequest } from '../../types/types';
 import { TableNames } from '../tableNames';
 
-export type PermissionsModelProps = {
-	id?: string;
-	favourite?: boolean;
-	lastUpdated?: Date;
-	permissionType?: PermissionType;
-	collectionId?: string;
-	accountId?: string;
-};
 
 class PermissionsModel extends Model implements IPermissions {
 	
@@ -34,7 +26,7 @@ class PermissionsModel extends Model implements IPermissions {
 		super();
 		this.id = params?.id ?? '';
 		this.favourite = params?.favourite ?? false;
-		this.lastUpdated = new Date();
+		this.lastUpdated =  params?.lastUpdated ?? new Date();
 		this.permissionType = params?.permissionType ?? PermissionType.READ_ONLY;
 		this.collectionId = params?.collectionId ?? '';
 		this.accountId = params?.accountId ?? '';

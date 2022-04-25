@@ -1,9 +1,26 @@
-import { AccountAR, CollectionAR } from '..';
+import { PermissionType } from '../../../../Core/types/Models/Permissions';
 import { Column } from '../model';
 import { ColumnType } from '../model/columnType';
 import { TableNames } from '../tableNames';
 
-const columns: Column[] = [
+interface ColumnDefinitions {
+	id: string;
+	favourite: boolean;
+	lastUpdated: Date;
+	permissionType: PermissionType;
+	collectionId: string;
+	accountId: string;
+}
+
+type PermissionsModelProps = Partial<ColumnDefinitions>;
+
+type ColumnNames = keyof ColumnDefinitions;
+
+type PermissionsColumn = Column & {
+	name: ColumnNames;
+}
+
+const columns: PermissionsColumn[] = [
 	{
 		name: 'id',
 		primary: true,
@@ -59,5 +76,8 @@ const columns: Column[] = [
 ];
 
 export {
-	columns
+	columns,
+	ColumnNames,
+	ColumnDefinitions,
+	PermissionsModelProps
 };

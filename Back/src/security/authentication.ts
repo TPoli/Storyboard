@@ -18,11 +18,10 @@ const createAccount = (req:any, username:any, password:any, done:any) => {
             return done(null, false, { message: 'login failed.', });
         }
         account.password = hash;
-        const columnsToSave = [
+        const columnsToSave: Extract<keyof AccountAR, string>[] = [
             'id',
             'username',
             'password',
-            'permissions',
             'salt',
             'pepper',
         ];
@@ -32,7 +31,7 @@ const createAccount = (req:any, username:any, password:any, done:any) => {
         if (account.mobile) {
             columnsToSave.push('mobile');
         }
-        if (await account.save(req, columnsToSave)) {
+        if (await account.save<AccountAR>(req, columnsToSave)) {
             await account.refresh();
             account.init();
             return done(null, account);

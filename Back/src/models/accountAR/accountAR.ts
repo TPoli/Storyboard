@@ -67,7 +67,7 @@ export class AccountAR extends AccountModel {
 		// account that acts as system user
 		const houseAccount = new AccountAR();
 
-		await houseAccount.save(null, [
+		await houseAccount.save<AccountAR>(null, [
 			'id',
 			'username',
 			'password',
@@ -75,7 +75,6 @@ export class AccountAR extends AccountModel {
 			'pepper',
 			'mobile',
 			'email',
-			'permissions',
 		]);
 
 		return;

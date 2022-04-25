@@ -32,7 +32,7 @@ const createCollectionsFn: ExpressFinalCallback = async (req, res) => {
 		}
 	}
 
-	const success = await collection.save(req, [
+	const success = await collection.save<CollectionAR>(req, [
 		'id',
 		'name',
 		'siblingOrder',

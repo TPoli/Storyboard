@@ -55,7 +55,7 @@ const saveCollectionsFn: ExpressFinalCallback = async (req, res) => {
 	};
 	collection.name = req.body.title ?? collection.name;
 
-	const success = await collection.save(req, [
+	const success = await collection.save<CollectionAR>(req, [
 		'id',
 		'name',
 		'siblingOrder',

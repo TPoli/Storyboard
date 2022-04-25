@@ -52,7 +52,7 @@ abstract class Model extends ModelBase {
 		return true;
 	}
 
-	public async save(req: LoggedInRequest|null, columns: string[] = []): Promise<boolean> {
+	public async save<Type>(req: LoggedInRequest|null, columns: Extract<keyof Type, string>[] = []): Promise<boolean> {
 		if(!await this.beforeSave(req)) {
 			return false;
 		}
