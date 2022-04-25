@@ -1,7 +1,25 @@
 import { Column } from '../model';
 import { ColumnType } from '../model/columnType';
 
-const columns: Column[] = [
+interface ColumnDefinitions {
+	id?: string;
+	username?: string;
+	password?: string;
+	salt?: string;
+	pepper?: string;
+	mobile?: string;
+	email?: string;
+};
+
+type AccountModelProps = Partial<ColumnDefinitions>;
+
+type ColumnNames = keyof ColumnDefinitions;
+
+type PermissionsColumn = Column & {
+	name: ColumnNames;
+};
+
+const columns: PermissionsColumn[] = [
 	{
 		name: 'id',
 		primary: true,
@@ -58,5 +76,7 @@ const columns: Column[] = [
 ];
 
 export {
-	columns
+	columns,
+	AccountModelProps,
+	ColumnDefinitions,
 };

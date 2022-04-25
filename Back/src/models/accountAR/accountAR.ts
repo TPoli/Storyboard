@@ -5,7 +5,8 @@ import {
 } from '../';
 import { PermissionType } from '../../../../Core/types/Models/Permissions';
 import { cachableFn } from '../model/cachableFn';
-import { AccountModel, AccountModelProps } from './accountModel';
+import { AccountModel } from './accountModel';
+import { AccountModelProps } from './columns';
 import peppers from './helpers/peppers';
 
 export const houseAccountId = 'houseaccount';

@@ -1,13 +1,8 @@
-import { Model, Column, ColumnType } from '../model';
+import { Model } from '../model';
 import { TableNames } from '../tableNames';
+import { ColumnDefinitions, columns, VersionsModelParams } from './columns';
 
-type VersionsModelParams = {
-	id?: string;
-	tableName?: string;
-	tableVersion?: number;
-};
-
-class VersionsModel extends Model {
+class VersionsModel extends Model implements ColumnDefinitions {
 	
 	// metadata
 	public version = 1;
@@ -18,27 +13,7 @@ class VersionsModel extends Model {
 	public tableName;
 	public tableVersion;
 
-	public columns = [
-		{
-			name: 'id',
-			primary: true,
-			taintable: false,
-			type: ColumnType.INT,
-			autoIncrement: true,
-			nullable: false,
-			unique: true,
-		}, {
-			name: 'tableName',
-			primary: false,
-			taintable: false,
-			type: ColumnType.STRING,
-		}, {
-			name: 'tableVersion',
-			primary: false,
-			taintable: false,
-			type: ColumnType.INT,
-		},
-	] as Column[];
+	public columns = columns;
 
 	constructor(params: VersionsModelParams) {
 		super();
@@ -50,5 +25,4 @@ class VersionsModel extends Model {
 
 export {
 	VersionsModel,
-	VersionsModelParams
-}
+};

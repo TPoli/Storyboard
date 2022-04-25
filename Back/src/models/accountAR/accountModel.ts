@@ -1,31 +1,21 @@
 import { houseAccountId } from '.';
 import { Model } from '../';
 import { TableNames } from '../tableNames';
-import { columns } from './columns';
+import { AccountModelProps, ColumnDefinitions, columns } from './columns';
 
-export type AccountModelProps = {
-	id?: string;
-	username?: string;
-	password?: string;
-	salt?: string;
-	pepper?: string;
-	mobile?: string;
-	email?: string;
-};
-
-export class AccountModel extends Model {
+export class AccountModel extends Model implements ColumnDefinitions {
 	
 	// metadata
 	public version = 1;
 	public table = TableNames.ACCOUNT;
 
 	// columns
-	public username = '';
-	public password = '';
-	public salt = '';
-	public pepper = '';
-	public mobile: string|null = null;
-	public email: string|null = null;
+	public username;
+	public password;
+	public salt;
+	public pepper;
+	public mobile;
+	public email;
 	public columns = columns;
 
 	constructor(props?: AccountModelProps) {

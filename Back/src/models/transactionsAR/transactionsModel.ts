@@ -3,18 +3,9 @@ import {
 } from '..';
 import { houseAccountId } from '../accountAR';
 import { TableNames } from '../tableNames';
-import { columns } from './columns';
+import { ColumnDefinitions, columns, TransactionsModelParams } from './columns';
 
-type TransactionsModelParams = {
-	id?: string;
-	accountId?: string;
-	route?: string;
-	ipAddress?: string;
-	params?: Object;
-	response?: Object;
-};
-
-class TransactionsModel extends Model implements TransactionsModelParams {
+class TransactionsModel extends Model implements ColumnDefinitions {
 	
 	// metaData
 	public version = 1;
@@ -43,5 +34,4 @@ class TransactionsModel extends Model implements TransactionsModelParams {
 
 export {
 	TransactionsModel,
-	TransactionsModelParams
 };

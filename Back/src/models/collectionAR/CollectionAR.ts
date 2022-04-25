@@ -1,5 +1,6 @@
 import { Collection } from '../../../../Core/types/Collection';
-import { CollectionModel, CollectionsModelParams } from './collectionModel';
+import { CollectionModel } from './collectionModel';
+import { CollectionsModelParams } from './columns';
 
 export class CollectionAR extends CollectionModel implements Collection {
 

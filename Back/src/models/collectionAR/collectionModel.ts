@@ -5,32 +5,20 @@ import { LoggedInRequest } from '../../types/types';
 import { PermissionsAR } from '../permissionsAR';
 import { PermissionType } from '../../../../Core/types/Models/Permissions';
 import { TableNames } from '../tableNames';
-import { columns } from './columns';
+import { CollectionsModelParams, ColumnDefinitions, columns } from './columns';
 
-type CollectionData = {
-	content: string;
-};
-
-type CollectionsModelParams = {
-	id?: string;
-	name?: string;
-	siblingOrder?: number;
-	parentId?: string|null;
-	data?: CollectionData;
-};
-
-class CollectionModel extends Model implements CollectionsModelParams {
+class CollectionModel extends Model implements ColumnDefinitions {
 
 	// metadata
 	public version = 1;
 	public table = TableNames.COLLECTIONS;
 
 	// columns
-	public id: string;
-	public name: string;
-	public siblingOrder: number;
-	public parentId: string|null;
-	public data: CollectionData;
+	public id;
+	public name;
+	public siblingOrder;
+	public parentId;
+	public data;
 	public columns = columns;
 
 	public async afterSave(req: LoggedInRequest | null): Promise<boolean> {
@@ -88,5 +76,4 @@ class CollectionModel extends Model implements CollectionsModelParams {
 
 export {
 	CollectionModel,
-	CollectionsModelParams
-}
+};

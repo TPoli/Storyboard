@@ -1,24 +1,17 @@
 import { Model } from '../model';
 import { TableNames } from '../tableNames';
-import { columns } from './columns';
+import { ColumnDefinitions, columns, MutationsModelParams } from './columns';
 
-type MutationsModelParams = {
-	id?: string;
-	tableName?: string;
-	originalValue?: Object;
-	modifiedValue?: Object;
-}
-
-class MutationsModel extends Model implements MutationsModelParams {
+class MutationsModel extends Model implements ColumnDefinitions {
 	// metaData
 	public version = 1;
 	public table = TableNames.MUTATIONS;
 
 	// columns
-	public id: string;
-	public tableName: string;
-	public originalValue: Object;
-	public modifiedValue: Object;
+	public id;
+	public tableName;
+	public originalValue;
+	public modifiedValue;
 	public columns = columns;
 
 	constructor(params: MutationsModelParams) {
@@ -32,5 +25,4 @@ class MutationsModel extends Model implements MutationsModelParams {
 
 export {
 	MutationsModel,
-	MutationsModelParams
 };

@@ -10,15 +10,15 @@ interface ColumnDefinitions {
 	permissionType: PermissionType;
 	collectionId: string;
 	accountId: string;
-}
+};
 
-type PermissionsModelProps = Partial<ColumnDefinitions>;
+type PermissionsModelParams = Partial<ColumnDefinitions>;
 
 type ColumnNames = keyof ColumnDefinitions;
 
 type PermissionsColumn = Column & {
 	name: ColumnNames;
-}
+};
 
 const columns: PermissionsColumn[] = [
 	{
@@ -79,5 +79,5 @@ export {
 	columns,
 	ColumnNames,
 	ColumnDefinitions,
-	PermissionsModelProps
+	PermissionsModelParams
 };

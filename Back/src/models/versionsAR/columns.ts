@@ -1,13 +1,12 @@
-import { Column, ColumnType } from '../model';
+import { Column, ColumnType } from "../model";
 
 interface ColumnDefinitions {
 	id: string;
 	tableName: string;
-	originalValue: Object;
-	modifiedValue: Object;
+	tableVersion: number;
 };
 
-type MutationsModelParams = Partial<ColumnDefinitions>;
+type VersionsModelParams = Partial<ColumnDefinitions>;
 
 type ColumnNames = keyof ColumnDefinitions;
 
@@ -28,28 +27,21 @@ const columns: PermissionsColumn[] = [
 		name: 'tableName',
 		primary: false,
 		taintable: false,
-		autoIncrement: false,
 		type: ColumnType.STRING,
+		autoIncrement: false,
 		nullable: false,
 	}, {
-		name: 'originalValue',
+		name: 'tableVersion',
 		primary: false,
-		taintable: true,
+		taintable: false,
+		type: ColumnType.INT,
 		autoIncrement: false,
-		type: ColumnType.JSON,
 		nullable: false,
-	}, {
-		name: 'modifiedValue',
-		primary: false,
-		taintable: true,
-		autoIncrement: false,
-		type: ColumnType.JSON,
-		nullable: false,
-	}, 
+	},
 ];
 
 export {
 	columns,
-	MutationsModelParams,
+	VersionsModelParams,
 	ColumnDefinitions,
 };

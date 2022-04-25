@@ -1,13 +1,9 @@
 import * as express from 'express';
 
-import {
-	Model,
-	Column,
-	ColumnType
-} from '..';
 import { IResponse } from '../../../../Core/types/Response';
 import { LoggedInRequest } from '../../types/types';
-import { TransactionsModel, TransactionsModelParams } from './transactionsModel';
+import { TransactionsModelParams } from './columns';
+import { TransactionsModel } from './transactionsModel';
 
 export class TransactionsAR extends TransactionsModel {
 

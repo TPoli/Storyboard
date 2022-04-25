@@ -1,13 +1,13 @@
 import { Model } from '..';
 
-import { columns, PermissionsModelProps } from './columns';
+import { ColumnDefinitions, columns, PermissionsModelParams } from './columns';
 import { IPermissions } from '../../../../Core/types/Models';
 import { PermissionType } from '../../../../Core/types/Models/Permissions';
 import { LoggedInRequest } from '../../types/types';
 import { TableNames } from '../tableNames';
 
 
-class PermissionsModel extends Model implements IPermissions {
+class PermissionsModel extends Model implements IPermissions, ColumnDefinitions {
 	
 	// metadata
 	public version = 1;
@@ -22,7 +22,7 @@ class PermissionsModel extends Model implements IPermissions {
 	public columns = columns;
 	public accountId: string;
 
-	constructor(params?: PermissionsModelProps) {
+	constructor(params?: PermissionsModelParams) {
 		super();
 		this.id = params?.id ?? '';
 		this.favourite = params?.favourite ?? false;
