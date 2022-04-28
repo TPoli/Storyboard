@@ -11,7 +11,7 @@ export default async function findAllFn<Type extends Model>(schema: Schema, para
 
 	const model = new schema({});
 	
-	const allowedColumns = model.columns.map((column) => {
+	const allowedColumns = model.getMetaData().map((column: any) => {
 		return column.name;
 	});
 

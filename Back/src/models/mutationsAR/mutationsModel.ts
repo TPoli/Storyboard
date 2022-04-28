@@ -1,20 +1,24 @@
-import { Model } from '../model';
+import { ColumnType, Model } from '../model';
+import { column } from '../model/column';
 import { TableNames } from '../tableNames';
-import { ColumnDefinitions, columns, MutationsModelParams } from './columns';
+import { Columns, MutationsParams } from './types';
 
-class MutationsModel extends Model implements ColumnDefinitions {
+class MutationsModel extends Model implements Columns {
 	// metaData
 	public version = 1;
 	public table = TableNames.MUTATIONS;
 
 	// columns
-	public id;
-	public tableName;
+	@column({ primary: true, unique: true, })
+	public id: string;
+	@column({})
+	public tableName: string;
+	@column({ taintable: true, type: ColumnType.JSON })
 	public originalValue: Object;
+	@column({ taintable: true, type: ColumnType.JSON })
 	public modifiedValue: Object;
-	public columns = columns;
 
-	constructor(params: MutationsModelParams) {
+	constructor(params: MutationsParams) {
 		super();
 		this.id = params.id ?? '';
 		this.tableName = params.tableName ?? '';

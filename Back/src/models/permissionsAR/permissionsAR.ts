@@ -1,7 +1,7 @@
 import { CollectionAR } from '..';
 import { IPermissions } from '../../../../Core/types/Models';
 import { cachableFn } from '../model/cachableFn';
-import { PermissionsModelParams } from './columns';
+import { PermissionsParams } from './types';
 import { PermissionsModel } from './permissionsModel';
 
 export default class PermissionsAR extends PermissionsModel implements IPermissions {
@@ -10,7 +10,7 @@ export default class PermissionsAR extends PermissionsModel implements IPermissi
 		return (new CollectionAR({})).findOne<CollectionAR>({ id: this.collectionId, });
 	});
 
-	constructor(params?: PermissionsModelParams) {
+	constructor(params?: PermissionsParams) {
 		super(params);
 	}
 }

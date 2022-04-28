@@ -1,26 +1,36 @@
 import {
+	ColumnType,
 	Model
 } from '..';
 import { houseAccountId } from '../accountAR';
+import { column } from '../model/column';
 import { TableNames } from '../tableNames';
-import { ColumnDefinitions, columns, TransactionsModelParams } from './columns';
+import { Columns, TransactionsParams } from './types';
 
-class TransactionsModel extends Model implements ColumnDefinitions {
+class TransactionsModel extends Model implements Columns {
 	
 	// metaData
 	public version = 1;
 	public table = TableNames.TRANSACTIONS;
 
 	// columns
+	@column({ primary: true, unique: true, })
 	public id: string;
-	public accountId = houseAccountId;
+	@column({ primary: true, references: {
+		model: TableNames.ACCOUNT,
+		column: 'id',
+	}})
+	public accountId: string = houseAccountId;
+	@column({ })
 	public route: string;
+	@column({ taintable: true, type: ColumnType.JSON })
 	public params: Object;
+	@column({ taintable: true, type: ColumnType.JSON })
 	public response: Object;
-	public ipAddress = '';
-	public columns = columns;
+	@column({ taintable: true })
+	public ipAddress: string;
 
-	constructor(params: TransactionsModelParams) {
+	constructor(params: TransactionsParams) {
 		super();
 
 		this.id = params.id ?? '';

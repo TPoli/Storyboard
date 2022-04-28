@@ -54,7 +54,8 @@ const createTable = async (schema: Schema) => {
 	let createQuery = `CREATE TABLE \`${dbName}\`.\`${model.table}\` (`;
 	const primaryKeys: string[] = [];
 	const uniqueKeys: string[] = [];
-	model.columns.forEach((column: Column) => {
+
+	model.getMetaData().forEach((column: Column) => {
 		createQuery += column.name + ' ' + column.type;
 		if (column.primary == true) {
 			primaryKeys.push(column.name);
@@ -81,7 +82,7 @@ const createTable = async (schema: Schema) => {
 		createQuery += `,\nUNIQUE INDEX ${key + '_UNIQUE'} (${key} ASC) VISIBLE`;
 	});
 
-	model.columns.forEach((column: Column) => {
+	model.getMetaData().forEach((column: Column) => {
 		if (column.references) {
 			createQuery += `,\nINDEX(${column.name})`;
 		}
@@ -126,7 +127,7 @@ const setForeignKeys = async (schema: Schema) => {
 
 	const model = new schema({});
 
-	model.columns.forEach((column: Column) => {
+	model.getMetaData().forEach((column: Column) => {
 		if (column.references) {
 			foreignKeyColumns.push(column);
 		}

@@ -1,21 +1,23 @@
 import { Model } from '../model';
+import { column } from '../model/column';
 import { TableNames } from '../tableNames';
-import { ColumnDefinitions, columns, VersionsModelParams } from './columns';
+import { Columns, VersionsParams } from './types';
 
-class VersionsModel extends Model implements ColumnDefinitions {
+class VersionsModel extends Model implements Columns {
 	
 	// metadata
 	public version = 1;
 	public table = TableNames.VERSIONS;
 
 	// columns
-	public id;
-	public tableName;
-	public tableVersion;
+	@column({ primary: true, unique: true, })
+	public id: string;
+	@column({})
+	public tableName: string;
+	@column({})
+	public tableVersion: number;
 
-	public columns = columns;
-
-	constructor(params: VersionsModelParams) {
+	constructor(params: VersionsParams) {
 		super();
 		this.id = params.id ?? '';
 		this.tableName = params.tableName ?? '';

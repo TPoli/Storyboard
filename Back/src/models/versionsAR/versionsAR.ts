@@ -1,9 +1,9 @@
-import { VersionsModelParams } from './columns';
+import { VersionsParams } from './types';
 import { VersionsModel } from './versionsModel';
 
 export class VersionsAR extends VersionsModel {
 
-	constructor(params: VersionsModelParams) {
+	constructor(params: VersionsParams) {
 		super(params);
 	}
-};
+}

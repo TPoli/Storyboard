@@ -9,15 +9,24 @@ import { deleteModelFn } from './delete';
 import { Schema } from '../schema';
 import { TableNames } from '../tableNames';
 import { randomUUID } from 'crypto';
+import { columnDataKey } from './column';
 
 abstract class ModelBase implements IIndexable {
 	public table: TableNames = TableNames.ABSTRACT;
 	public abstract version: number;
-	public columns: Column[] = [];
 	public isNew = true;
-	id = '';
+
+	id: string;
 
 	public modelRelations: IModelRelation[] = [];
+
+	public getMetaData(): Column[] {
+		return Reflect.getMetadata(columnDataKey, this);
+	}
+
+	constructor() {
+		this.id = '';
+	}
 }
 
 abstract class Model extends ModelBase {
@@ -92,7 +101,9 @@ abstract class Model extends ModelBase {
 	};
 
 	public getAllColumns = () => {
-		return this.columns.map(c => c.name);
+		return this.getMetaData().map(columnData => {
+			return columnData.name;
+		});
 	}
 }
 

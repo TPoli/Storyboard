@@ -1,6 +1,6 @@
 import { Collection } from '../../../../Core/types/Collection';
 import { CollectionModel } from './collectionModel';
-import { CollectionsModelParams } from './columns';
+import { CollectionsParams } from './types';
 
 export class CollectionAR extends CollectionModel implements Collection {
 
@@ -51,7 +51,7 @@ export class CollectionAR extends CollectionModel implements Collection {
 		};
 	}
 
-	constructor(params: CollectionsModelParams) {
+	constructor(params: CollectionsParams) {
 		super(params);
 	}
 }

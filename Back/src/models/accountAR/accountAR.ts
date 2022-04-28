@@ -6,7 +6,7 @@ import {
 import { PermissionType } from '../../../../Core/types/Models/Permissions';
 import { cachableFn } from '../model/cachableFn';
 import { AccountModel } from './accountModel';
-import { AccountModelProps } from './columns';
+import { AccountProps } from './types';
 import peppers from './helpers/peppers';
 
 const houseAccountId = 'houseaccount';
@@ -88,7 +88,7 @@ class AccountAR extends AccountModel {
 		return (await this.availableCollections()).find(collection => collection.id === id) ?? null;
 	};
 
-	constructor(props?: AccountModelProps) {
+	constructor(props?: AccountProps) {
 		super(props);
 	}
 }

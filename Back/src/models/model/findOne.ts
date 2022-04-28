@@ -8,7 +8,7 @@ export default async function findOneFn<Type extends Model>(model: Type, params:
 	let sql = 'SELECT ';
 	const usedParameters: any[] = [];
 	
-	const allowedColumns = model.columns.map((column) => {
+	const allowedColumns = model.getMetaData().map((column: any) => {
 		return column.name;
 	});
 

@@ -8,7 +8,7 @@ const parametise = (model: ModelBase, columns: string[]) => {
 	const values: any[] = [];
 
 	const success = columns.every((column: string): boolean => {
-		const colData = model.columns.find((col) => {
+		const colData = model.getMetaData().find((col: any) => {
 			return col.name === column;
 		});
 		if(!colData) {
@@ -41,6 +41,7 @@ const parametise = (model: ModelBase, columns: string[]) => {
 				values.push(value);
 				break;
 			default:
+				console.log(`couldn't resolve column type: ${colData.type}`)
 				return false;
 		}
 		return true;
