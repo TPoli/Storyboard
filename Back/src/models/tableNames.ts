@@ -9,5 +9,5 @@ enum TableNames {
 }
 
 export {
-	TableNames
+	TableNames,
 };

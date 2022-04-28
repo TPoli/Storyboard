@@ -41,12 +41,12 @@ abstract class Model extends ModelBase {
 		});
 	}
 
-	public static find<Type extends Model>(schema: Schema, params: Object): Promise<Type[]> {
+	public static async findAll<Type extends Model>(schema: Schema, params: Object): Promise<Type[]> {
 		return findAllFn(schema, params);
 	}
 
-	public async findOne<Type extends Model>(params: Object): Promise<Type|null> {
-		return await findOneFn(this as unknown as Type, params);
+	public static async findOne<Type extends Model>(schema: Schema, params: Object): Promise<Type|null> {
+		return await findOneFn(schema, params);
 	}
 
 	/**

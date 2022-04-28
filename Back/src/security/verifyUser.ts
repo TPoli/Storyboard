@@ -1,13 +1,13 @@
 import * as  bcrypt from 'bcrypt';
 
-import { AccountAR } from '../models';
+import { AccountAR, Model } from '../models';
 
 type VerifyError = { message: string };
 type VerifyDone = (placeholder: null,account: AccountAR|false, error?: VerifyError) => void;
 
 const verifyUser = async (username: string, password: string, done: VerifyDone): Promise<void> => {
 
-    const account = await (new AccountAR).findOne({username: username}) as AccountAR|null;
+    const account = await Model.findOne<AccountAR>(AccountAR, {username: username}) as AccountAR|null;
 
     if (!account) {
         return done(null, false, { message: 'login failed.' });

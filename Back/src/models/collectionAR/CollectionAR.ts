@@ -1,4 +1,5 @@
 import { Collection } from '../../../../Core/types/Collection';
+import { Model } from '../model';
 import { CollectionModel } from './collectionModel';
 import { CollectionsParams } from './types';
 
@@ -39,7 +40,7 @@ export class CollectionAR extends CollectionModel implements Collection {
 		});
 
 		if (!parent) {
-			parent = await (new CollectionAR({})).findOne({id: this.parentId,}) as CollectionAR|null;
+			parent = await Model.findOne<CollectionAR>(CollectionAR, {id: this.parentId}) as CollectionAR|null;
 			if (parent) {
 				allCollections.push(parent);
 			}

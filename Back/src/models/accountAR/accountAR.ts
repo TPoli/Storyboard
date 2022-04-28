@@ -34,7 +34,7 @@ class AccountAR extends AccountModel {
 	});
 
 	public myPermissions = cachableFn<PermissionsAR[]>(this, 'myPermissionsCache', async () => {
-		return Model.find<PermissionsAR>(PermissionsAR, { accountId: this.id, });
+		return Model.findAll<PermissionsAR>(PermissionsAR, { accountId: this.id });
 	});
 
 	public myCollectionPermissions = cachableFn<PermissionsAR[]>(this, 'myCollectionPermissionsCache', async () => {

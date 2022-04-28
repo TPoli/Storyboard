@@ -3,35 +3,14 @@ import { Model } from '.';
 
 import { query } from '../../db';
 import { Schema } from '../schema';
+import { generateQuery } from './find';
 import { IIndexable } from './types';
 
 export default async function findAllFn<Type extends Model>(schema: Schema, params: Object): Promise<Type[]> {
-	let sql = 'SELECT ';
-	const usedParameters: any[] = [];
-
-	const model = new schema({});
-	
-	const allowedColumns = model.getMetaData().map((column: any) => {
-		return column.name;
-	});
-
-	sql += allowedColumns.join(',') + ' FROM ' + model.table + ' WHERE ';
-
-	let firstValidColumn = true;
-	for (const [key, value,] of Object.entries(params)) {
-		if ((allowedColumns as string[]).includes(key)) {
-			if (!firstValidColumn) {
-				sql += ' AND';
-			}
-			firstValidColumn = false;
-			sql += key + ' = ? ';
-
-			usedParameters.push(value);
-		}
-	}
+	const { sql, queryParameters } = generateQuery(schema, params);
 
 	try {
-		const dbResults = await query(sql, usedParameters);
+		const dbResults = await query(sql, queryParameters);
 
 		if (!dbResults) {
 			return [];
@@ -47,6 +26,7 @@ export default async function findAllFn<Type extends Model>(schema: Schema, para
 			Object.entries(result).forEach(([key, value,]) => {
 				(newModel as IIndexable)[key] = value;
 			});
+
 			return newModel;
 		}) as Type[];
 	} catch (error) {
