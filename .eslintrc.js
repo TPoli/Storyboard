@@ -19,10 +19,10 @@ module.exports = {
     "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
     "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
     "comma-dangle": ["warn", {
-      "arrays": "always",
-      "objects": "always",
-      "imports": "never",
-      "exports": "never",
+      "arrays": "always-multiline",
+      "objects": "always-multiline",
+      "imports": "always-multiline",
+      "exports": "always-multiline",
       "functions": "never"
     }],
     "quotes": ["error", "single"],

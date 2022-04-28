@@ -10,7 +10,7 @@ class VersionsModel extends Model implements Columns {
 	public table = TableNames.VERSIONS;
 
 	// columns
-	@column({ primary: true, unique: true, })
+	@column({ primary: true, unique: true })
 	public id: string;
 	@column({})
 	public tableName: string;

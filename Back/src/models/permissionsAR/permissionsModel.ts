@@ -7,7 +7,6 @@ import { LoggedInRequest } from '../../types/types';
 import { TableNames } from '../tableNames';
 import { column } from '../model/column';
 
-
 class PermissionsModel extends Model implements IPermissions, Columns {
 	
 	// metadata
@@ -15,9 +14,9 @@ class PermissionsModel extends Model implements IPermissions, Columns {
 	public table = TableNames.PERMISSIONS;
 	
 	// columns
-	@column({ primary: true, unique: true, })
+	@column({ primary: true, unique: true })
 	public id: string;
-	@column({ taintable: true, })
+	@column({ taintable: true })
 	public favourite: boolean;
 	@column({ type: ColumnType.DATE_TIME })
 	public lastUpdated: Date;

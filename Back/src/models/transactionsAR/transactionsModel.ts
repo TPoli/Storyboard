@@ -1,6 +1,6 @@
 import {
 	ColumnType,
-	Model
+	Model,
 } from '..';
 import { houseAccountId } from '../accountAR';
 import { column } from '../model/column';
@@ -14,7 +14,7 @@ class TransactionsModel extends Model implements Columns {
 	public table = TableNames.TRANSACTIONS;
 
 	// columns
-	@column({ primary: true, unique: true, })
+	@column({ primary: true, unique: true })
 	public id: string;
 	@column({ primary: true, references: {
 		model: TableNames.ACCOUNT,

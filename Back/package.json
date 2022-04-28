@@ -12,7 +12,7 @@
     "watch-linux": "tsc-watch --onSuccess \"npm run dev-linux\"",
     "cleanup-linux": "rm -r dist\"",
     "cleanup-win": "rmdir /s /q dist",
-    "lint": "eslint --rulesdir ../ . --fix --ext .ts"
+    "lint": "eslint --rulesdir ../ . --ext .ts"
   },
   "author": "",
   "license": "ISC",
@@ -45,6 +45,7 @@
     "mysql2": "^2.3.0",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
-    "random": "^3.0.6"
+    "random": "^3.0.6",
+    "reflect-metadata": "^0.1.13"
   }
 }

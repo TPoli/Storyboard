@@ -14,10 +14,10 @@ const createAccountFn: ExpressFinalCallback = (req, res, next) => {
 			username: (req.user as AccountAR).username,
 		};
 		
-		return (req as any).transaction.sendResponse(res, response);
+		return req.transaction.sendResponse(res, req, response);
 	};
 
-	passport.authenticate('createAccount', {session: true,}, (err: Error, user: AccountAR) => {
+	passport.authenticate('createAccount', {session: true}, (err: Error, user: AccountAR) => {
 		if (err) {
 			return next?.(err); // will generate a 500 error
 		}

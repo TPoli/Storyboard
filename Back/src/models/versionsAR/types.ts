@@ -8,5 +8,5 @@ type VersionsParams = Partial<Columns>;
 
 export {
 	VersionsParams,
-	Columns
+	Columns,
 };

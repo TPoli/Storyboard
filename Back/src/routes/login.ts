@@ -1,6 +1,6 @@
 import {
 	AccountAR,
-	IIndexable
+	IIndexable,
 } from '../models';
 import { IAuthFailResponse, ILoginResponse } from '../../../Core/types/Response'
 import { ExpressFinalCallback } from '../types/types';
@@ -20,7 +20,7 @@ const loginFn: ExpressFinalCallback = (req, res, next) => {
 		return req.transaction.sendResponse(res, req, payload);
 	};
 
-	passport.authenticate('login', {session: true,}, (err: Error, user: AccountAR) => {
+	passport.authenticate('login', {session: true}, (err: Error, user: AccountAR) => {
 		if (err) {
 			return next?.(err); // will generate a 500 error
 		}

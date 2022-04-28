@@ -6,7 +6,7 @@ import { AccountAR } from '../models';
 import passport from 'passport';
 import verifyUser from './verifyUser';
 
-const createAccount = (req:any, username:any, password:any, done:any) => {
+const createAccount = (req:any, username:any, password: string, done:any) => {
     const account = new AccountAR({
         id: '',
         username,
@@ -16,7 +16,7 @@ const createAccount = (req:any, username:any, password:any, done:any) => {
 
     const hashCallback = async (err?: Error, hash?: string) => {
         if (err || !hash) {
-            return done(null, false, { message: 'login failed.', });
+            return done(null, false, { message: 'login failed.' });
         }
         account.password = hash;
         const columnsToSave: Extract<keyof AccountAR, string>[] = [
@@ -34,13 +34,13 @@ const createAccount = (req:any, username:any, password:any, done:any) => {
             account.init();
             return done(null, account);
         }
-        return done(null, false, { message: 'login failed.', });
+        return done(null, false, { message: 'login failed.' });
     };
 
     const saltRounds = 10;
     const saltCallback = (err?: Error, salt?: string) => {
         if (err || !salt) {
-            return done(null, false, { message: 'login failed.', });
+            return done(null, false, { message: 'login failed.' });
         }
         account.salt = salt;
         

@@ -4,7 +4,7 @@ import {
 	AccountAR,
 	VersionsAR,
 	MutationsAR,
-	PermissionsAR
+	PermissionsAR,
 } from './';
 
 export type Schema = typeof VersionsAR | typeof MutationsAR | typeof AccountAR | typeof TransactionsAR | typeof CollectionAR | typeof PermissionsAR;

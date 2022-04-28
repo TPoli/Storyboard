@@ -21,7 +21,7 @@ const createCollectionsFn: ExpressFinalCallback = async (req, res) => {
 				PermissionType.OWNER,
 			];
 
-			return permission && allowedPermissions.find(p => permission.permissionType);
+			return permission && allowedPermissions.find(p => p === permission.permissionType);
 		})) {
 			// fail, cant set collections parent to collection user cant modify
 			const payload: IFailResponse = {
