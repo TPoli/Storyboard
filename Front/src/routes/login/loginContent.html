@@ -1,7 +1,17 @@
 <div>
-	<input v-model="username" placeholder="username">
-	<br>
-	<input v-model="password" placeholder="password" v-on:keyup.enter="login">
+	<TextInput
+		v-model="username"
+		placeholder="username"
+		label="username"
+		:error=errors.username
+	/>
+	<TextInput
+		v-model="password"
+		placeholder="password"
+		label="password"
+		:error=errors.password
+		v-on:keyup.enter="login"
+	/>
 	<br>
 	<button v-on:click="login">Login</button>
 	<br>

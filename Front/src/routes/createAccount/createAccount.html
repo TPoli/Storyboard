@@ -5,14 +5,18 @@
 		</template>
 
 		<template v-slot:content>
-			<RequiredInput
+			<TextInput
 				v-model="username"
 				placeholder="username"
 				label="username"
 				:error=errors.username
 			/>
-			<br>
-			<input v-model="password" placeholder="password">
+			<TextInput
+				v-model="password"
+				placeholder="password"
+				label="password"
+				:error=errors.password
+			/>
 			<br>
 			<button v-on:click="createAccount">Create Account</button>
 			<br>

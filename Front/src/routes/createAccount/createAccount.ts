@@ -3,7 +3,7 @@ import { Endpoints } from '../../../../Core/Api/Api';
 import { Response, ILoginResponse } from '../../../../Core/types/Response';
 
 import Page from '../../components/Page/Page.vue';
-import RequiredInput from '../../components/Forms/RequiredInput/RequiredInput.vue';
+import TextInput from '../../components/Forms/TextInput/TextInput.vue';
 import { setState, StoreComponent } from '@/store';
 import { setRoute } from '@/router';
 
@@ -11,7 +11,7 @@ export default {
 	name: 'createAccount',
 	components: {
 		Page: Page,
-		RequiredInput: RequiredInput,
+		TextInput: TextInput,
 	},
 	data: () => ({
 		username: '',
@@ -40,15 +40,16 @@ export default {
 		validate() {
 			// check validation
 			const username = (this as any).username ? '' : 'Username is required';
-			console.log('username:', (this as any).username);
+			const password = (this as any).password ? '' : 'Password is required';
 
 			// save results
 			(this as any).errors = {
 				username,
+				password,
 			};
 
 			// return result (should all be falsey)
-			return !username;
+			return !username && !password;
 		},
 	},
 };
