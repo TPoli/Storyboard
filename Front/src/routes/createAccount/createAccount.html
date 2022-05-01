@@ -5,29 +5,66 @@
 		</template>
 
 		<template v-slot:content>
-			<TextInput
-				v-model="username"
-				placeholder="username"
-				label="username"
-				:error=errors.username
-			/>
-			<TextInput
-				v-model="password"
-				placeholder="password"
-				label="password"
-				:error=errors.password
-			/>
-			<br>
-			<button v-on:click="createAccount">Create Account</button>
-			<br>
+			<BaseForm :onSubmit="createAccount">
+				<template v-slot:username="{slotName, register}">
+					<TextInput
+						:name="slotName"
+						placeholder="username"
+						label="username"
+						:register="register"
+						required="Username is required"
+						:validation="[
+							validateUsername,
+						]"
+					/>
+				</template>
 
-			Optionally please fill in the below for additional account security features.
-			<br>
-			<input v-model="email" placeholder="email">
-			<br>
-			<input v-model="mobile" placeholder="mobile">
-			<br>
-			2 Factor Authentication (Coming Soon)
+				<template v-slot:password="{slotName, register}">
+					<TextInput
+						name="password"
+						placeholder="password"
+						label="password"
+						:register="register"
+						required="Password is required"
+						:validation="[
+							validatePassword,
+						]"
+					/>
+				</template>
+
+				<template v-slot:break>
+					<br>
+					<button type="submit">Create Account</button>
+					<br>
+					Optionally please fill in the below for additional account security features.
+				</template>
+
+				<template v-slot:email="{slotName, register}">
+					<TextInput
+						name="email"
+						placeholder="email"
+						label="email"
+						:register="register"
+						:validation="[
+							(value) => lengthCheck(value, 'email', 0, 35),
+						]"
+					/>
+				</template>
+
+				<template v-slot:mobile="{slotName, register}">
+					<TextInput
+						name="mobile"
+						placeholder="04..."
+						label="mobile"
+						:register="register"
+						:validation="[
+							(value) => lengthCheck(value, 'mobile', 0, 35),
+						]"
+					/>
+				</template>
+				
+				2 Factor Authentication (Coming Soon)
+			</BaseForm>
 		</template>
 	</Page>
 </div>

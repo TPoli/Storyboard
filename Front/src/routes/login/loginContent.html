@@ -1,19 +1,36 @@
 <div>
-	<TextInput
-		v-model="username"
-		placeholder="username"
-		label="username"
-		:error=errors.username
-	/>
-	<TextInput
-		v-model="password"
-		placeholder="password"
-		label="password"
-		:error=errors.password
-		v-on:keyup.enter="login"
-	/>
-	<br>
-	<button v-on:click="login">Login</button>
-	<br>
-	Need an account? <a href="/createaccount">Create Account</a>
+	<BaseForm :onSubmit="login">
+		<template v-slot:username="{slotName, register}">
+			<TextInput
+				:name="slotName"
+				placeholder="username"
+				label="username"
+				:register="register"
+				:default="username"
+				required="Username is required"
+				:validation="[
+					validateUsername,
+				]"
+			/>
+		</template>
+
+		<template v-slot:password="{slotName, register}">
+			<TextInput
+				name="password"
+				placeholder="password"
+				label="password"
+				:register="register"
+				required="Password is required"
+				:validation="[
+					validatePassword,
+				]"
+			/>
+		</template>
+
+		<br>
+		<button type="submit">Login</button>
+
+		<br>
+		Need an account? <a href="/createaccount">Create Account</a>
+	</BaseForm>
 </div>

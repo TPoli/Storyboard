@@ -4,6 +4,7 @@ import { Response, ILoginResponse } from '../../../../Core/types/Response';
 
 import Page from '../../components/Page/Page.vue';
 import TextInput from '../../components/Forms/TextInput/TextInput.vue';
+import BaseForm from '@/components/Forms/BaseForm/BaseForm.vue';
 import { setState, StoreComponent } from '@/store';
 import { setRoute } from '@/router';
 
@@ -12,44 +13,33 @@ export default {
 	components: {
 		Page: Page,
 		TextInput: TextInput,
+		BaseForm: BaseForm,
 	},
 	data: () => ({
-		username: '',
-		password: '',
-		email: null,
-		mobile: null,
-		errors: {},
+
 	}),
 	methods: {
-		createAccount() {
-			if (!this.validate()) {
-				return;
-			}
+		createAccount(params: { username: String, password: String, email: String, mobile: String}) {
 			const accountCreatedCallback = (response: Response): void => {
 				setState(this as unknown as StoreComponent).login((response as ILoginResponse).username);
 				setRoute(this, '/dashboard');
 			};
-			const params = {
-				un: (this as any).username,
-				pw: (this as any).password,
-				email: (this as any).email,
-				mobile: (this as any).mobile,
-			};
 			Network.Post(Endpoints.CREATE_ACCOUNT, params, accountCreatedCallback);
 		},
-		validate() {
-			// check validation
-			const username = (this as any).username ? '' : 'Username is required';
-			const password = (this as any).password ? '' : 'Password is required';
-
-			// save results
-			(this as any).errors = {
-				username,
-				password,
-			};
-
-			// return result (should all be falsey)
-			return !username && !password;
+		validateUsername(value: String) {
+			return this.lengthCheck(value, 'Username', 4, 35);
+		},
+		validatePassword(value: String) {
+			return this.lengthCheck(value, 'Password', 4, 35);
+		},
+		lengthCheck(value: String, fieldName: String, minLength: number, maxLength: number) {
+			if (value.length < minLength) {
+				return `${fieldName} must be at least ${minLength} characters.`;
+			}
+			if ( value.length > maxLength) {
+				return `${fieldName} cannot exceed ${maxLength} characters.`;
+			}
+			return '';
 		},
 	},
 };

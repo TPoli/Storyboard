@@ -1,0 +1,14 @@
+<div>
+	<form @submit.prevent="FormSubmit">
+		<template v-for="(index, name) in $slots">
+			<slot
+				v-if="name !== 'default'"
+				:name=name
+				:slotName="name"
+				:register="register"
+			/>
+		</template>
+
+		<slot name="default" />
+	</form>
+</div>

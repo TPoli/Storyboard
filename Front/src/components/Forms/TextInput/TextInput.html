@@ -1,5 +1,4 @@
 <div>
-
 	<span v-if='label'>
 		{{label}}:
 	</span>
@@ -8,10 +7,10 @@
 		class="input"
 		type="text"
 		:placeholder="placeholder"
-		v-model="model"
+		v-model="value"
 	/>
 
-	<span v-if='error'>
-		{{error}}:
+	<span v-if='errors.length > 0'>
+		{{errors}}:
 	</span>
 </div>

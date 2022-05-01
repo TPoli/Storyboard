@@ -3,25 +3,27 @@ import { Endpoints } from '../../../../Core/Api/Api';
 import { ILoginResponse, Response } from '../../../../Core/types/Response';
 import { getState, setState, StoreComponent } from '@/store';
 import { setRoute } from '@/router';
-import TextInput from '@/components/Forms/TextInput/TextInput';
+import TextInput from '@/components/Forms/TextInput/TextInput.vue';
+import BaseForm from '@/components/Forms/BaseForm/BaseForm.vue';
+
+type FormData = {
+	username: String,
+	password: String,
+};
 
 export default {
 	name: 'loginContent',
 	components: {
 		TextInput: TextInput,
+		BaseForm: BaseForm,
 	},
 	data: function () {
 		return {
 			username: getState(this as unknown as StoreComponent).username,
-			password: '',
-			errors: {},
 		};
 	},
 	methods: {
-		login() {
-			if (!this.validate()) {
-				return;
-			}
+		login(formData: FormData) {
 			const loginCallback = (response: Response): void => {
 				setState(this as unknown as StoreComponent).login((response as ILoginResponse).username);
 
@@ -32,21 +34,22 @@ export default {
 				}
 			
 			};
-			Network.Post(Endpoints.LOGIN, { un: (this as any).username, pw: (this as any).password,}, loginCallback);
+			Network.Post(Endpoints.LOGIN, { un: formData.username, pw: formData.password,}, loginCallback);
 		},
-		validate() {
-			// check validation
-			const username = (this as any).username ? '' : 'Username is required';
-			const password = (this as any).password ? '' : 'Password is required';
-
-			// save results
-			(this as any).errors = {
-				username,
-				password,
-			};
-
-			// return result (should all be falsey)
-			return !username && !password;
+		validateUsername(value: String) {
+			return this.lengthCheck(value, 'Username', 4, 35);
+		},
+		validatePassword(value: String) {
+			return this.lengthCheck(value, 'Password', 4, 35);
+		},
+		lengthCheck(value: String, fieldName: String, minLength: number, maxLength: number) {
+			if (value.length < minLength) {
+				return `${fieldName} must be at least ${minLength} characters.`;
+			}
+			if ( value.length > maxLength) {
+				return `${fieldName} cannot exceed ${maxLength} characters.`;
+			}
+			return '';
 		},
 	},
 };
