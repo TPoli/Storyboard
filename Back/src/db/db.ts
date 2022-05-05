@@ -16,7 +16,7 @@ export const AdminConnection = () => {
 
 export const UserConnection = () => {
 	if (!userConnection) {
-		throw new Error('admin database connection not established');
+		throw new Error('user database connection not established');
 	}
 	
 	return userConnection;

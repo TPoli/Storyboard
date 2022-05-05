@@ -1,7 +1,7 @@
 import {
 	Model,
 	CollectionAR,
-	PermissionsAR
+	PermissionsAR,
 } from '../';
 import { PermissionType } from '../../../../Core/types/Models/Permissions';
 import { cachableFn } from '../model/cachableFn';
@@ -64,7 +64,7 @@ class AccountAR extends AccountModel {
 		);
 	});
 
-	public createDefaultEntries = async () => {
+	public createDefaultEntries = async (): Promise<void> => {
 		// account that acts as system user
 		const houseAccount = new AccountAR({
 			id: houseAccountId,

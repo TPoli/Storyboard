@@ -58,7 +58,7 @@ const createAccount = (req:any, username:any, password: string, done:any) => {
     bcrypt.genSalt(saltRounds, saltCallback);
 };
 
-export default async (): Promise<void> => {
+const setupAuth = async (): Promise<void> => {
 	passport.use('login', new Strategy({
 		usernameField: 'un',
 		passwordField: 'pw',
@@ -71,4 +71,8 @@ export default async (): Promise<void> => {
         passReqToCallback: true,
 		session: true,
 	}, createAccount));
+};
+
+export {
+    setupAuth,
 };

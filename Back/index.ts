@@ -8,11 +8,12 @@ import {
     Model,
 } from './src/models';
 
-import setupAuth from './src/security/authentication';
+import { setupAuth } from './src/security/authentication';
 import { MinutesToMilliseconds } from '../Core/Utils/Utils';
 import { Config } from './src/Config';
 import passport from 'passport';
 import { setupRoutesFn } from './src/main';
+import { getSessionStore } from './src/main/sessionStore';
 
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
@@ -39,13 +40,14 @@ const setupExpress = () => {
     app.use(express.json());
 
     app.use(session({
-        secret: 'temp secret',
+        secret: 'temp secret', //TODO make this something better
         resave: false,
         saveUninitialized: false,
         cookie: {
             maxAge: MinutesToMilliseconds(60),
-            secure: false, // THIS NEEDS TO BE TRUE! only set to false for local testing
+            secure: false, // TODO THIS NEEDS TO BE TRUE! only set to false for local testing
         },
+        store: getSessionStore(session),
     }));
 
     app.use(cookieParser());
