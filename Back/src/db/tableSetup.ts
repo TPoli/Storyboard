@@ -1,8 +1,8 @@
 import { RowDataPacket } from 'mysql2/promise';
 import { CamelCase } from '../../../Core/Utils/Utils';
+import { getConfig } from '../main';
 import { AccountAR, CollectionAR, Column, MutationsAR, TransactionsAR, VersionsAR, PermissionsAR } from '../models';
 import { Schema } from '../models/schema';
-import { dbName } from './config';
 import { AdminConnection } from './db';
 
 const schemas = [
@@ -13,6 +13,8 @@ const schemas = [
 	CollectionAR,
 	PermissionsAR,
 ] as Schema[];
+
+const config = getConfig();
 
 export const ensureTablesSetup = async () => {
 
@@ -51,7 +53,7 @@ const checkTheRestOfTheTables = async () => {
 const createTable = async (schema: Schema) => {
 	const model = new schema({});
 	console.log(`Creating table ${model.table}`);
-	let createQuery = `CREATE TABLE \`${dbName}\`.\`${model.table}\` (`;
+	let createQuery = `CREATE TABLE \`${config.dbName}\`.\`${model.table}\` (`;
 	const primaryKeys: string[] = [];
 	const uniqueKeys: string[] = [];
 
@@ -107,7 +109,7 @@ const tableExists = async (tableName: string): Promise<boolean> => {
 	`;
 
 	try {
-		const results = await AdminConnection().query(existsQuery, [dbName, tableName,]) as RowDataPacket[][];
+		const results = await AdminConnection().query(existsQuery, [config.dbName, tableName,]) as RowDataPacket[][];
 		return !!(results[0]?.length ?? false);
 	} catch (error) {
 		throw error;
@@ -137,7 +139,7 @@ const setForeignKeys = async (schema: Schema) => {
 		return;
 	}
 
-	const tableName = `${dbName}.${model.table}`;
+	const tableName = `${config.dbName}.${model.table}`;
 
 	let sql = `ALTER TABLE ${tableName}`;
 	let first = true;
@@ -146,7 +148,7 @@ const setForeignKeys = async (schema: Schema) => {
 		if (!column.references) {
 			return;
 		}
-		const referencedTableName = `${dbName}.${column.references.model}`;
+		const referencedTableName = `${config.dbName}.${column.references.model}`;
 
 		const fkName = CamelCase([model.table, column.references.model, column.name, '_', column.references.column, 'Fk', ]);
 		sql += `${(first ? '' : ',')}\nADD CONSTRAINT ${fkName}\n`;

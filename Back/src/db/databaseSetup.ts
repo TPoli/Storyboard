@@ -1,6 +1,8 @@
 import * as mysqlPromise from 'mysql2/promise';
 import { OkPacket } from 'mysql2/promise';
-import { dbName, host, systemAdminPassword, systemAdminUser } from './config';
+import { getConfig } from '../main';
+
+const config = getConfig();
 
 type Connections = {
 	adminConnection: mysqlPromise.Connection,
@@ -9,9 +11,9 @@ type Connections = {
 
 export const ensureDbIsSetup = async (): Promise<Connections> => {
 	const connection = await mysqlPromise.createConnection({
-		host,
-		user: systemAdminUser,
-		password : systemAdminPassword,
+		host: config.dbHost,
+		user: config.dbRootUsername,
+		password: config.dbRootPassword,
 	});
 
 	const databaseQuery = `SELECT SCHEMA_NAME
@@ -20,7 +22,7 @@ export const ensureDbIsSetup = async (): Promise<Connections> => {
 	`;
 
 	try {
-		const results = await connection.query(databaseQuery, [dbName,]) as OkPacket[];
+		const results = await connection.query(databaseQuery, [config.dbName]) as OkPacket[];
 		if (!results || results.length === 0)
 		{
 			// create database
@@ -34,10 +36,10 @@ export const ensureDbIsSetup = async (): Promise<Connections> => {
 };
 
 const ensureUsersSetup = async (connection: mysqlPromise.Connection): Promise<Connections> => {
-	const userQuery = 'SELECT EXISTS(SELECT 1 FROM mysql.user WHERE user = "storyboard_admin");';
+	const userQuery = 'SELECT EXISTS(SELECT 1 FROM mysql.user WHERE user = ?);';
 	
 	try {
-		const results = await connection.query(userQuery);
+		const results = await connection.query(userQuery, [ config.dbAdminUsername ]);
 		
 		let foundAdmin = false;
 		if (results.length > 0) {
@@ -60,10 +62,10 @@ const ensureUsersSetup = async (connection: mysqlPromise.Connection): Promise<Co
 
 const setupConnection = async (): Promise<Connections> => {
 	const adminConnectionData = {
-		host,
-		user     : 'storyboard_admin',
-		password : 'storyboard_admin',
-		database : 'storyboard',
+		host: config.dbHost,
+		user: config.dbAdminUsername,
+		password: config.dbAdminPassword,
+		database: config.dbName,
 	};
 	const adminConnection = await mysqlPromise.createConnection(adminConnectionData);
 	const userConnection = await mysqlPromise.createConnection(adminConnectionData);
