@@ -41,11 +41,11 @@ abstract class Model extends ModelBase {
 		});
 	}
 
-	public static async findAll<Type extends Model>(schema: Schema, params: Object): Promise<Type[]> {
+	public static async findAll<Type extends Model>(schema: Schema, params: Record<string, unknown>): Promise<Type[]> {
 		return findAllFn(schema, params);
 	}
 
-	public static async findOne<Type extends Model>(schema: Schema, params: Object): Promise<Type|null> {
+	public static async findOne<Type extends Model>(schema: Schema, params: Record<string, unknown>): Promise<Type|null> {
 		return await findOneFn(schema, params);
 	}
 
@@ -96,11 +96,11 @@ abstract class Model extends ModelBase {
 		return; // not implemented yet
 	}
 
-	public createDefaultEntries = async () => {
+	public createDefaultEntries = async (): Promise<void> => {
 		return;
 	};
 
-	public getAllColumns = () => {
+	public getAllColumns = (): string[] => {
 		return this.getMetaData().map(columnData => {
 			return columnData.name;
 		});

@@ -4,7 +4,7 @@ import passport from 'passport';
 import { ExpressFinalCallback } from '../types/types';
 
 const createAccountFn: ExpressFinalCallback = (req, res, next) => {
-	const loginCallback = (loginErr: any) => {
+	const loginCallback = (loginErr: Error) => {
 		if (loginErr) {
 			console.log('error');
 			return next?.(loginErr);
@@ -26,7 +26,7 @@ const createAccountFn: ExpressFinalCallback = (req, res, next) => {
 				success: false,
 				message: 'account creation failed',
 			};
-			(req as any).transaction.sendResponse(res, payload);
+			req.transaction.sendResponse(res, req, payload);
 		}
 		req.login(user, loginCallback); // not called automatically due to custom callback
 	})(req, res, next);

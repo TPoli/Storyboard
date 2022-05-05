@@ -5,5 +5,10 @@ import { ColumnType } from './columnType';
 import { addRelationship } from './addRelationship';
 
 export {
-	Model, Column, ColumnType, IIndexable, IModelRelation, addRelationship
+	Model,
+	Column,
+	ColumnType,
+	IIndexable,
+	IModelRelation,
+	addRelationship,
 };

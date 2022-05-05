@@ -55,7 +55,7 @@ const parametise = (model: ModelBase, columns: string[]) => {
 };
 
 const insert = async (model: ModelBase, columns: string[]): Promise<boolean> => {
-	const { keys, values, success, } = parametise(model, columns);
+	const { keys, values, success } = parametise(model, columns);
 
 	if (!success) {
 		return false;
@@ -80,7 +80,7 @@ const insert = async (model: ModelBase, columns: string[]): Promise<boolean> => 
 };
 
 const update = async (model: ModelBase, columns: string[]): Promise<boolean> => {
-	const { values, success, } = parametise(model, columns);
+	const { values, success } = parametise(model, columns);
 
 	if (!success) {
 		console.log('failed to parametise');

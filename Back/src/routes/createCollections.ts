@@ -13,7 +13,7 @@ const createCollectionsFn: ExpressFinalCallback = async (req, res) => {
 		const myCollections = await req.user.myCollections();
 		const availableCollections = await req.user.availableCollections();
 		const permissions = await req.user.myPermissions();
-		if (![...myCollections, ...availableCollections,].find((availableCollection) => {
+		if (![...myCollections, ...availableCollections].find((availableCollection) => {
 			const permission = permissions.find(p => p.collectionId = availableCollection.id);
 
 			const allowedPermissions = [

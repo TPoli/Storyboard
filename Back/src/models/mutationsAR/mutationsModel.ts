@@ -14,9 +14,9 @@ class MutationsModel extends Model implements Columns {
 	@column({})
 	public tableName: string;
 	@column({ taintable: true, type: ColumnType.JSON })
-	public originalValue: Object;
+	public originalValue: Record<string, unknown>;
 	@column({ taintable: true, type: ColumnType.JSON })
-	public modifiedValue: Object;
+	public modifiedValue: Record<string, unknown>;
 
 	constructor(params: MutationsParams) {
 		super();
