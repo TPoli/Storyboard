@@ -5,7 +5,7 @@ import { Routes } from '../routes/router';
 import { ExpressCallback, LoggedInRequest } from '../types/types';
 
 const setupRoutesFn = (app: any) => {
-    Object.entries(Api.AllEndpoints).forEach(([, endpoint,]) => {
+    Object.entries(Api.AllEndpoints).forEach(([, endpoint]) => {
 
         // build middleware that validates parameters and calls any additional middleware
         const middleware: ExpressCallback = (req, res, next) => {

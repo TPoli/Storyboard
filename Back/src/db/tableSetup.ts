@@ -16,7 +16,7 @@ const schemas: Schema[] = [
 
 const config = getConfig();
 
-export const ensureTablesSetup = async () => {
+export const ensureTablesSetup: () => Promise<void> = async () => {
 
 	const versions = new VersionsAR({});
 	const versionsTableExists = await tableExists(versions.table);
@@ -109,7 +109,7 @@ const tableExists = async (tableName: string): Promise<boolean> => {
 	`;
 
 	try {
-		const results = await AdminConnection().query(existsQuery, [config.dbName, tableName,]) as RowDataPacket[][];
+		const results = await AdminConnection().query(existsQuery, [config.dbName, tableName]) as RowDataPacket[][];
 		return !!(results[0]?.length ?? false);
 	} catch (error) {
 		throw error;
@@ -150,7 +150,7 @@ const setForeignKeys = async (schema: Schema) => {
 		}
 		const referencedTableName = `${config.dbName}.${column.references.model}`;
 
-		const fkName = CamelCase([model.table, column.references.model, column.name, '_', column.references.column, 'Fk', ]);
+		const fkName = CamelCase([model.table, column.references.model, column.name, '_', column.references.column, 'Fk' ]);
 		sql += `${(first ? '' : ',')}\nADD CONSTRAINT ${fkName}\n`;
 		sql += `FOREIGN KEY (${column.name})\n`;
 		sql += `REFERENCES ${referencedTableName} (${column.references.column})\n`;

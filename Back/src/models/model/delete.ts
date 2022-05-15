@@ -8,7 +8,7 @@ import { query } from '../../db';
 	const sql = 'DELETE FROM ' + model.table + ' WHERE(`id` = ?)';
 
 	try {
-		const dbResults = await query(sql, [model.id,]);
+		const dbResults = await query(sql, [model.id]);
 		if (!dbResults) {
 			console.log('no dbResults');
 			return false;
