@@ -5,14 +5,14 @@ import { AccountAR, CollectionAR, Column, MutationsAR, TransactionsAR, VersionsA
 import { Schema } from '../models/schema';
 import { AdminConnection } from './db';
 
-const schemas = [
+const schemas: Schema[] = [
 	VersionsAR,
 	MutationsAR,
 	AccountAR,
 	TransactionsAR,
 	CollectionAR,
 	PermissionsAR,
-] as Schema[];
+];
 
 const config = getConfig();
 

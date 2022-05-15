@@ -1,6 +1,7 @@
 import * as mysqlPromise from 'mysql2/promise';
 import { OkPacket } from 'mysql2/promise';
 import { getConfig } from '../main';
+import { adminConnectionData } from './config';
 
 const config = getConfig();
 
@@ -61,12 +62,6 @@ const ensureUsersSetup = async (connection: mysqlPromise.Connection): Promise<Co
 };
 
 const setupConnection = async (): Promise<Connections> => {
-	const adminConnectionData = {
-		host: config.dbHost,
-		user: config.dbAdminUsername,
-		password: config.dbAdminPassword,
-		database: config.dbName,
-	};
 	const adminConnection = await mysqlPromise.createConnection(adminConnectionData);
 	const userConnection = await mysqlPromise.createConnection(adminConnectionData);
 	

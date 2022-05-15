@@ -1,7 +1,7 @@
 import {
 	CollectionAR,
 	AccountAR,
-	PermissionsAR
+	PermissionsAR,
 } from './';
 
 export type ActiveRecords = AccountAR | CollectionAR | PermissionsAR;

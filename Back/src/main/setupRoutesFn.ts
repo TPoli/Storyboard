@@ -74,15 +74,16 @@ const setupRoutesFn = (app: any) => {
 
         const logMiddleware = createLogMiddlewareFn(endpoint.route);
 
-        const checkAuthenticatedMiddleware: ExpressCallback = (req, res, next) => {
+        const checkAuthenticatedMiddleware: ExpressCallback = (req: LoggedInRequest, res, next) => {
+            const transaction = req.transaction;
             if (req.isAuthenticated()) {
-                return next()
+                return next();
             }
             const payload: IAuthFailResponse = {
                 success: false,
                 message: 'authentication failed',
             };
-            return (req as LoggedInRequest).transaction.sendResponse(res, (req as LoggedInRequest), payload);
+            return transaction.sendResponse(res, req, payload);
         }
 
         const middlewares = [

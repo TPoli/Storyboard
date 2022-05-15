@@ -6,6 +6,7 @@
   "scripts": {
     "test": "jest",
     "build": "tsc --project ./",
+    "migrate-up": "ts-node ./src/db/migrations/migrateUp.ts",
     "dev-win": "npm run lint && npm run cleanup-win && npm run build && node ./dist/Back/index.js",
     "dev-linux": "npm run lint && npm run cleanup-linux && npm run build && node ./dist/Back/index.js",
     "watch-win": "tsc-watch --onSuccess \"npm run dev-win\"",

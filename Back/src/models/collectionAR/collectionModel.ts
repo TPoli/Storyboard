@@ -16,11 +16,11 @@ class CollectionModel extends Model implements Columns {
 	public table = TableNames.COLLECTIONS;
 
 	// columns
-	@column({ primary: true, unique: true, })
+	@column({ primary: true, unique: true })
 	public id: string;
-	@column({ taintable: true, })
+	@column({ taintable: true })
 	public name: string;
-	@column({ taintable: true, })
+	@column({ taintable: true })
 	public siblingOrder: number;
 	@column({ taintable: true, nullable: true, type: ColumnType.STRING, references: {
 		model: TableNames.COLLECTIONS,

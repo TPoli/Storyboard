@@ -70,7 +70,11 @@
     "forceConsistentCasingInFileNames": true        /* Disallow inconsistently-cased references to the same file. */
   },
   "include": [
-    "../Core",
-    "./"
+    "../Core/*",
+    "./*"
+  ],
+  "exclude": [
+    "node_modules",
+    "./src/db/migrations/*"
   ]
 }

@@ -13,9 +13,11 @@ const createLogMiddlewareFn = (endpoint: EndpointRoutes) => {
             accountId: houseAccountId,
             ipAddress: req.ip,
         });
+
+        const loggedInReq = req as LoggedInRequest;
         
-        (req as LoggedInRequest).transaction = transaction;
-        const success = await transaction.save<TransactionsAR>((req as LoggedInRequest), [
+        loggedInReq.transaction = transaction;
+        const success = await transaction.save<TransactionsAR>(loggedInReq, [
             'id',
             'accountId',
             'route',

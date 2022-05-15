@@ -22,5 +22,5 @@ export {
 	MutationsAR,
 	VersionsAR,
 	IIndexable,
-	PermissionsAR
+	PermissionsAR,
 };
