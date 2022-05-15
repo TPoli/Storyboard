@@ -23,7 +23,7 @@ export default async function findAllFn<Type extends Model>(schema: Schema, para
 		return results.map(result => {
 			const newModel = new schema({}) as unknown as Type;
 			newModel.isNew = false;
-			Object.entries(result).forEach(([key, value,]) => {
+			Object.entries(result).forEach(([key, value]) => {
 				(newModel as IIndexable)[key] = value;
 			});
 

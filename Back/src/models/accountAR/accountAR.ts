@@ -95,5 +95,5 @@ class AccountAR extends AccountModel {
 
 export {
 	houseAccountId,
-	AccountAR
+	AccountAR,
 };

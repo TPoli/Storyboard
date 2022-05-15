@@ -10,19 +10,19 @@ export class AccountModel extends Model implements Columns {
 	public table = TableNames.ACCOUNT;
 
 	// columns
-	@column({ primary: true, unique: true, })
+	@column({ primary: true, unique: true })
 	public id: string;
-	@column({ primary: true, taintable: true, })
+	@column({ primary: true, taintable: true })
 	public username: string;
-	@column({ taintable: true, type: ColumnType.TINY_TEXT, })
+	@column({ taintable: true, type: ColumnType.TINY_TEXT })
 	public password: string;
 	@column({})
 	public salt: string;
 	@column({})
 	public pepper: string;
-	@column({ taintable: true, nullable: true, default: 'NULL', })
+	@column({ taintable: true, nullable: true, default: 'NULL' })
 	public mobile: string;
-	@column({ taintable: true, nullable: true, default: 'NULL', })
+	@column({ taintable: true, nullable: true, default: 'NULL' })
 	public email: string;
 
 	constructor(props?: AccountProps) {

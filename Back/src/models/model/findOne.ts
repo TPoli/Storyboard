@@ -22,7 +22,7 @@ export default async function findOneFn<Type extends Model>(schema: Schema, para
 
 		const model = new schema({}) as unknown as Type;
 		
-		Object.entries(result).forEach(([key, value,]) => {
+		Object.entries(result).forEach(([key, value]) => {
 			(model as IIndexable)[key] = value;
 		});
 		model.isNew = false;

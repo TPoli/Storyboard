@@ -15,5 +15,5 @@ type CollectionsParams = Partial<Columns>;
 export {
 	CollectionsParams,
 	Columns,
-	CollectionData
+	CollectionData,
 };
