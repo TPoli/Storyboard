@@ -1,4 +1,4 @@
-import PermissionsAR from './permissionsAR';
+import { PermissionsAR } from './permissionsAR';
 
 export {
 	PermissionsAR,

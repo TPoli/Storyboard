@@ -1,0 +1,51 @@
+[
+    {
+        "name": "id",
+        "type": "VARCHAR(45)",
+        "primary": true,
+        "taintable": false,
+        "autoIncrement": false,
+        "nullable": false,
+        "unique": true
+    },
+    {
+        "name": "name",
+        "type": "VARCHAR(45)",
+        "primary": false,
+        "taintable": true,
+        "autoIncrement": false,
+        "nullable": false,
+        "unique": false
+    },
+    {
+        "name": "siblingOrder",
+        "type": "INT",
+        "primary": false,
+        "taintable": true,
+        "autoIncrement": false,
+        "nullable": false,
+        "unique": false
+    },
+    {
+        "name": "parentId",
+        "type": "VARCHAR(45)",
+        "primary": false,
+        "taintable": true,
+        "autoIncrement": false,
+        "nullable": true,
+        "unique": false,
+        "references": {
+            "model": "collections",
+            "column": "id"
+        }
+    },
+    {
+        "name": "data",
+        "type": "JSON",
+        "primary": false,
+        "taintable": true,
+        "autoIncrement": false,
+        "nullable": false,
+        "unique": false
+    }
+]

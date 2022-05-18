@@ -2,7 +2,6 @@ import * as mysqlPromise from 'mysql2/promise';
 import { adminConnectionData } from '../config';
 import { runDirectoryMigrations } from './helpers/runDirectoryMigrations';
 
-
 const migrateUp = async () => {
 	console.log('beginning migration');
 	const connection = await mysqlPromise.createConnection(adminConnectionData);

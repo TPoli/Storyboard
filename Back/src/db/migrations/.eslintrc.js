@@ -1,10 +1,8 @@
 module.exports = {
-  root: true,
+  root: false,
   env: {
     node: true,
   },
-  // extends: ["plugin:vue/vue3-essential", "eslint:recommended", "@vue/prettier"],
-  // extends: ["plugin:vue/vue3-essential", '@vue/typescript'],
   extends: [
     "plugin:@typescript-eslint/recommended" // Uses the recommended rules from the @typescript-eslint/eslint-plugin
   ],

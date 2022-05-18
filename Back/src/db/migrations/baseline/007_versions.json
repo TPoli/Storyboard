@@ -1,0 +1,29 @@
+[
+    {
+        "name": "id",
+        "type": "VARCHAR(45)",
+        "primary": true,
+        "taintable": false,
+        "autoIncrement": false,
+        "nullable": false,
+        "unique": true
+    },
+    {
+        "name": "tableName",
+        "type": "VARCHAR(45)",
+        "primary": false,
+        "taintable": false,
+        "autoIncrement": false,
+        "nullable": false,
+        "unique": false
+    },
+    {
+        "name": "tableVersion",
+        "type": "INT",
+        "primary": false,
+        "taintable": false,
+        "autoIncrement": false,
+        "nullable": false,
+        "unique": false
+    }
+]

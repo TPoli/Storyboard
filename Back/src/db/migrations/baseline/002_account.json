@@ -1,0 +1,67 @@
+[
+    {
+        "name": "id",
+        "type": "VARCHAR(45)",
+        "primary": true,
+        "taintable": false,
+        "autoIncrement": false,
+        "nullable": false,
+        "unique": true
+    },
+    {
+        "name": "username",
+        "type": "VARCHAR(45)",
+        "primary": true,
+        "taintable": true,
+        "autoIncrement": false,
+        "nullable": false,
+        "unique": false
+    },
+    {
+        "name": "password",
+        "type": "TINYTEXT",
+        "primary": false,
+        "taintable": true,
+        "autoIncrement": false,
+        "nullable": false,
+        "unique": false
+    },
+    {
+        "name": "salt",
+        "type": "VARCHAR(45)",
+        "primary": false,
+        "taintable": false,
+        "autoIncrement": false,
+        "nullable": false,
+        "unique": false
+    },
+    {
+        "name": "pepper",
+        "type": "VARCHAR(45)",
+        "primary": false,
+        "taintable": false,
+        "autoIncrement": false,
+        "nullable": false,
+        "unique": false
+    },
+    {
+        "name": "mobile",
+        "type": "VARCHAR(45)",
+        "primary": false,
+        "taintable": true,
+        "autoIncrement": false,
+        "nullable": true,
+        "unique": false,
+        "default": "NULL"
+    },
+    {
+        "name": "email",
+        "type": "VARCHAR(45)",
+        "primary": false,
+        "taintable": true,
+        "autoIncrement": false,
+        "nullable": true,
+        "unique": false,
+        "default": "NULL"
+    }
+]

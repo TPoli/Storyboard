@@ -4,7 +4,7 @@ import { cachableFn } from '../model/cachableFn';
 import { PermissionsParams } from './types';
 import { PermissionsModel } from './permissionsModel';
 
-export default class PermissionsAR extends PermissionsModel implements IPermissions {
+class PermissionsAR extends PermissionsModel implements IPermissions {
 	//relations
 	public myCollection = cachableFn<CollectionAR|null>(this, 'myCollectionCache', async () => {
 		return Model.findOne<CollectionAR>(CollectionAR, { id: this.collectionId });
@@ -13,4 +13,8 @@ export default class PermissionsAR extends PermissionsModel implements IPermissi
 	constructor(params?: PermissionsParams) {
 		super(params);
 	}
+}
+
+export {
+	PermissionsAR,
 }

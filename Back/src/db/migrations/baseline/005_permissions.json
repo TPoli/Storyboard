@@ -1,0 +1,64 @@
+[
+    {
+        "name": "id",
+        "type": "VARCHAR(45)",
+        "primary": true,
+        "taintable": false,
+        "autoIncrement": false,
+        "nullable": false,
+        "unique": true
+    },
+    {
+        "name": "favourite",
+        "type": "BOOLEAN",
+        "primary": false,
+        "taintable": true,
+        "autoIncrement": false,
+        "nullable": false,
+        "unique": false
+    },
+    {
+        "name": "lastUpdated",
+        "type": "DATETIME",
+        "primary": false,
+        "taintable": false,
+        "autoIncrement": false,
+        "nullable": false,
+        "unique": false
+    },
+    {
+        "name": "permissionType",
+        "type": "VARCHAR(45)",
+        "primary": false,
+        "taintable": true,
+        "autoIncrement": false,
+        "nullable": false,
+        "unique": false
+    },
+    {
+        "name": "collectionId",
+        "type": "VARCHAR(45)",
+        "primary": true,
+        "taintable": true,
+        "autoIncrement": false,
+        "nullable": false,
+        "unique": false,
+        "references": {
+            "model": "collections",
+            "column": "id"
+        }
+    },
+    {
+        "name": "accountId",
+        "type": "VARCHAR(45)",
+        "primary": true,
+        "taintable": true,
+        "autoIncrement": false,
+        "nullable": false,
+        "unique": false,
+        "references": {
+            "model": "account",
+            "column": "id"
+        }
+    }
+]

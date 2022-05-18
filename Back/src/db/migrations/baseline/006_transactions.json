@@ -1,0 +1,60 @@
+[
+    {
+        "name": "id",
+        "type": "VARCHAR(45)",
+        "primary": true,
+        "taintable": false,
+        "autoIncrement": false,
+        "nullable": false,
+        "unique": true
+    },
+    {
+        "name": "accountId",
+        "type": "VARCHAR(45)",
+        "primary": true,
+        "taintable": false,
+        "autoIncrement": false,
+        "nullable": false,
+        "unique": false,
+        "references": {
+            "model": "account",
+            "column": "id"
+        }
+    },
+    {
+        "name": "route",
+        "type": "VARCHAR(45)",
+        "primary": false,
+        "taintable": false,
+        "autoIncrement": false,
+        "nullable": false,
+        "unique": false
+    },
+    {
+        "name": "params",
+        "type": "JSON",
+        "primary": false,
+        "taintable": true,
+        "autoIncrement": false,
+        "nullable": false,
+        "unique": false
+    },
+    {
+        "name": "response",
+        "type": "JSON",
+        "primary": false,
+        "taintable": true,
+        "autoIncrement": false,
+        "nullable": false,
+        "unique": false
+    },
+    {
+        "name": "ipAddress",
+        "type": "VARCHAR(45)",
+        "primary": false,
+        "taintable": true,
+        "autoIncrement": false,
+        "nullable": false,
+        "unique": false
+    }
+]

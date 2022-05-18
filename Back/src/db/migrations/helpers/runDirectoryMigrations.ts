@@ -1,5 +1,4 @@
 const fs = require('fs');
-const path = require('path');
 
 import * as mysqlPromise from 'mysql2/promise';
 import { loadMigrationFile } from './loadMigrationFile';
@@ -11,6 +10,9 @@ const runDirectoryMigrations = async (directory: MigrationDirectory, connection:
         const fileNames: string[] = await fs.promises.readdir(basePath);
 
         for (const fileName of fileNames) {
+            if (!fileName.endsWith('.ts')) {
+                continue;
+            }
 			const migration = await loadMigrationFile(directory, fileName, connection);
 			await migration.up(); // TODO add support for down
         }

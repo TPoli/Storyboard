@@ -1,0 +1,19 @@
+[
+    {
+        "name": "migration",
+        "primary": true,
+        "taintable": false,
+        "autoIncrement": false,
+        "nullable": false,
+        "unique": true,
+        "type": "VARCHAR(45)"
+    },
+    {
+        "name": "completed",
+        "autoIncrement": false,
+        "nullable": false,
+        "primary": false,
+        "taintable": false,
+        "type": "DATETIME"
+    }
+]
