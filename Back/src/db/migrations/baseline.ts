@@ -1,8 +1,5 @@
-import * as mysqlPromise from 'mysql2/promise';
 import { Column } from '../../models';
 import { ColumnType } from '../../models/model/columnType';
-import { adminConnectionData } from '../config';
-import { createTable } from './helpers/createTable';
 import { loadAllModels } from './helpers/loadModels';
 import { ColumnRelation } from './helpers/types';
 
@@ -52,7 +49,6 @@ const createBaselineForeignKeys = (index: number, data: ColumnRelation[]) => {
 
 const baseline = async () => {
 	console.log('beginning baseline');
-	const connection = await mysqlPromise.createConnection(adminConnectionData);
 
 	const models = await loadAllModels();
 
@@ -93,7 +89,6 @@ const baseline = async () => {
 			type: ColumnType.DATE_TIME,
 		}
 	];
-	await createTable('migrations', migrationColumns, connection);
 
 	let migrationId = 1;
 	createBaselineMigration(migrationId++, 'migrations', migrationColumns);
@@ -105,7 +100,6 @@ const baseline = async () => {
 	createBaselineForeignKeys(migrationId++, relations);
 
 	console.log('baseline successful');
-	connection.end();
 };
 
 baseline();

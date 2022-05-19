@@ -4,11 +4,14 @@ import { Migration } from '../migration';
 import tableData from './005_permissions.json';
 
 class PermissionsTableMigration extends Migration {
-	up: () => Promise<void|boolean> = async () => {
+	
+	protected _alwaysRun = true;
+
+	_up: () => Promise<void|boolean> = async () => {
 		console.log('upping permissions table Migration')
 		await createTable('permissions', tableData as Column[], this.connection);
 	};
-	down: () => Promise<void|boolean> = async () => {
+	_down: () => Promise<void|boolean> = async () => {
 		return true;
 	};
 }

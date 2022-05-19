@@ -4,11 +4,14 @@ import { Migration } from '../migration';
 import tableData from './003_collections.json';
 
 class CollectionsTableMigration extends Migration {
-	up: () => Promise<void|boolean> = async () => {
+	
+	protected _alwaysRun = true;
+
+	_up: () => Promise<void|boolean> = async () => {
 		console.log('upping collections table Migration')
 		await createTable('collections', tableData as Column[], this.connection);
 	};
-	down: () => Promise<void|boolean> = async () => {
+	_down: () => Promise<void|boolean> = async () => {
 		return true;
 	};
 }

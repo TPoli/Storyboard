@@ -3,7 +3,7 @@ import { Migration } from '../migration';
 // TODO do not create test account this way in prod environments
 
 class MigrationsTableMigration extends Migration {
-	up: () => Promise<void|boolean> = async () => {
+	_up: () => Promise<void|boolean> = async () => {
 		await this.connection.execute(`
 			INSERT INTO storyboard.account (
 				id, username, password, salt, pepper
@@ -26,7 +26,7 @@ class MigrationsTableMigration extends Migration {
 				username = 'houseaccount';
 		`);
 	};
-	down: () => Promise<void|boolean> = async () => {
+	_down: () => Promise<void|boolean> = async () => {
 		return true;
 	};
 }
