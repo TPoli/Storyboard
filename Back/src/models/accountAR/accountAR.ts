@@ -54,7 +54,7 @@ class AccountAR extends AccountModel {
 	public myRecentCollections = cachableFn<CollectionAR[]>(this, 'myRecentCollectionsCache', async () => {
 		const permissions = await this.myPermissions();
 		const sorted = permissions.sort((a,b) => {
-			return a.lastUpdated.getTime() - b.lastUpdated.getTime();
+			return b.lastUpdated.getTime() - a.lastUpdated.getTime();
 		});
 
 		const trimmed = sorted.slice(0, 3);

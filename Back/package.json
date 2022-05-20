@@ -14,7 +14,7 @@
     "watch-win": "tsc-watch --onSuccess \"npm run dev-win\"",
     "watch-linux": "tsc-watch --onSuccess \"npm run dev-linux\"",
     "cleanup-linux": "rm -r dist\"",
-    "cleanup-win": "rmdir /s /q dist",
+    "cleanup-win": "if exist dist rmdir /s /q dist",
     "lint": "eslint --rulesdir ../ . --ext .ts"
   },
   "author": "",
