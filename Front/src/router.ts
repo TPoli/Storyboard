@@ -28,7 +28,7 @@ const router = createRouter({
 
 const setRoute = (component: any, path: paths) => {
 	const componentRouter = component.$router as Router;
-	componentRouter.push({path,});
+	componentRouter.push({path});
 }
 
 export {

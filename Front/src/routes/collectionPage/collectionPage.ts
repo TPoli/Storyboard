@@ -25,6 +25,16 @@ const cloneCollection = (collection: ICollection | null): ICollection | null => 
 	return {...collection,};
 }
 
+const childCollections = ref([] as ICollection[]);
+
+const getCollectionsCallback: Network.Callback = (response) => {
+	const collections = (response as IGetCollectionsResponse).collections;
+
+	if (collections.childCollections) {
+		childCollections.value = collections.childCollections;
+	}
+};
+
 const CollectionPage = defineComponent({
 	name: 'collectionPage',
 	components: {
@@ -33,16 +43,6 @@ const CollectionPage = defineComponent({
 		Card: Card,
 	},
 	setup(props: any, context: any) {
-		const childCollections = ref([] as ICollection[]);
-
-		const getCollectionsCallback: Network.Callback = (response) => {
-			const collections = (response as IGetCollectionsResponse).collections;
-
-			if (collections.childCollections) {
-				childCollections.value = collections.childCollections;
-			}
-		};
-
 		Network.Post(Endpoints.GET_COLLECTIONS, { parentId: context.attrs?.id ?? ''}, getCollectionsCallback);
 
 		return {
@@ -119,6 +119,9 @@ const CollectionPage = defineComponent({
 			}
 			setState(this as unknown as StoreComponent).openCollection(collection);
 			setRoute(this, '/collection/' + collection.uuid as unknown as paths);
+			Network.Post(Endpoints.GET_COLLECTIONS, { parentId: collection.uuid}, getCollectionsCallback);
+			this.collection = cloneCollection(getState(this as unknown as StoreComponent).currentCollection);
+			this.originalCollection = cloneCollection(this.collection);
 		},
 		toggleFavourite() {
 			if (!this.collection) {
