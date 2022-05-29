@@ -18,13 +18,30 @@
         "unique": false
     },
     {
-        "name": "siblingOrder",
-        "type": "INT",
+        "name": "before",
+        "type": "VARCHAR(45)",
         "primary": false,
         "taintable": true,
         "autoIncrement": false,
-        "nullable": false,
-        "unique": false
+        "nullable": true,
+        "unique": false,
+        "references": {
+            "model": "collections",
+            "column": "id"
+        }
+    },
+    {
+        "name": "after",
+        "type": "VARCHAR(45)",
+        "primary": false,
+        "taintable": true,
+        "autoIncrement": false,
+        "nullable": true,
+        "unique": false,
+        "references": {
+            "model": "collections",
+            "column": "id"
+        }
     },
     {
         "name": "parentId",

@@ -20,8 +20,16 @@ class CollectionModel extends Model implements Columns {
 	public id: string;
 	@column({ taintable: true })
 	public name: string;
-	@column({ taintable: true })
-	public siblingOrder: number;
+	@column({ taintable: true, nullable: true, type: ColumnType.STRING, references: {
+		model: TableNames.COLLECTIONS,
+		column: 'id',
+	}})
+	public before: string | null;
+	@column({ taintable: true, nullable: true, type: ColumnType.STRING, references: {
+		model: TableNames.COLLECTIONS,
+		column: 'id',
+	}})
+	public after: string | null;
 	@column({ taintable: true, nullable: true, type: ColumnType.STRING, references: {
 		model: TableNames.COLLECTIONS,
 		column: 'id',
@@ -77,7 +85,8 @@ class CollectionModel extends Model implements Columns {
 		super();
 		this.id = params.id ?? '';
 		this.name = params.name ?? 'New Collection';
-		this.siblingOrder = params.siblingOrder ?? 0;
+		this.before = params.before ?? null;
+		this.after = params.after ?? null;
 		this.parentId = params.parentId ?? null;
 		this.data = {
 			content: params.data?.content ?? '',

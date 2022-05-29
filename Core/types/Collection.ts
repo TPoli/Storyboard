@@ -5,7 +5,8 @@
  interface Collection {
 	id: string;
 	name: string;
-	siblingOrder: number;
+	before: string;
+	after: string;
 	parentId: string|null;
 	children: string[];
 };

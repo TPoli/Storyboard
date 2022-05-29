@@ -5,6 +5,18 @@ import { Migration } from '../migration';
 const tableData = [
     {
         "sourceTable": "collections",
+        "sourceColumn": "before",
+        "referencedTable": "collections",
+        "referencedColumn": "id"
+    },
+    {
+        "sourceTable": "collections",
+        "sourceColumn": "after",
+        "referencedTable": "collections",
+        "referencedColumn": "id"
+    },
+    {
+        "sourceTable": "collections",
         "sourceColumn": "parentId",
         "referencedTable": "collections",
         "referencedColumn": "id"
