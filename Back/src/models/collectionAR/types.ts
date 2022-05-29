@@ -1,5 +1,6 @@
 type CollectionData = {
 	content: string;
+	description: string;
 };
 
 interface Columns {

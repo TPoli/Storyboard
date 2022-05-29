@@ -52,6 +52,7 @@ const saveCollectionsFn: ExpressFinalCallback = async (req, res) => {
 
 	collection.data = {
 		content: req.body.content ?? '',
+		description: req.body.description ?? '',
 	};
 	collection.name = req.body.title ?? collection.name;
 

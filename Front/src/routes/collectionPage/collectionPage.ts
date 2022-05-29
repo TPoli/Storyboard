@@ -11,11 +11,12 @@ import { ICreateCollectionResponse, IFavouriteCollectionResponse, IGetCollection
 import Page from '@/components/Page/Page.vue';
 import Panel from '@/components/Panel/Panel.vue';
 import Card from '@/components/Card/Card.vue';
-
+import CreateCollectionModal from '@/components/Modals/CreateCollectionModal/createCollectionModal.vue';
 
 type CollectionPageData = {
 	collection: ICollection | null;
 	originalCollection: ICollection | null;
+	createNewCollectionModalOpen: Boolean;
 };
 
 const cloneCollection = (collection: ICollection | null): ICollection | null => {
@@ -41,6 +42,7 @@ const CollectionPage = defineComponent({
 		Page: Page,
 		Panel: Panel,
 		Card: Card,
+		CreateCollectionModal: CreateCollectionModal,
 	},
 	setup(props: any, context: any) {
 		Network.Post(Endpoints.GET_COLLECTIONS, { parentId: context.attrs?.id ?? ''}, getCollectionsCallback);
@@ -53,6 +55,7 @@ const CollectionPage = defineComponent({
 		return {
 			collection: cloneCollection(getState(this as unknown as StoreComponent).currentCollection),
 			originalCollection: cloneCollection(getState(this as unknown as StoreComponent).currentCollection),
+			createNewCollectionModalOpen: false,
 		};
 	},
 	methods: {
@@ -101,14 +104,16 @@ const CollectionPage = defineComponent({
 
 			asyncSave((this as unknown as CollectionPageData).collection ?? {});
 		},
-		createNewCollection(): void {
-			const createCollectionCallback: Network.Callback = (response) => {
-				const newCollection = (response as ICreateCollectionResponse).newCollection;
-				this.childCollections.push(newCollection);
-			};
-			Network.Post(Endpoints.CREATE_COLLECTION, {
-				parentId: this.collection?.uuid,
-			}, createCollectionCallback);
+		openCreateCollectionModal(): void {
+			this.createNewCollectionModalOpen = true;
+		},
+		closeCreateCollectionModal(): void {
+			this.createNewCollectionModalOpen = false;
+		},
+		createCollectionCallback(response: ICreateCollectionResponse) {
+			const newCollection = response.newCollection;
+			this.childCollections.push(newCollection);
+			this.createNewCollectionModalOpen = false;
 		},
 		openCollection(collectionId: string): void {
 			const collection = this.childCollections.find(((collection) => {

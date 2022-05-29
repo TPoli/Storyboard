@@ -20,7 +20,7 @@
 					title="Children"
 					subHeading="created by you"
 					buttonContent="Create new collection"
-					v-bind:buttonCallback="createNewCollection"
+					v-bind:buttonCallback="openCreateCollectionModal"
 				>
 					<template v-slot:cards>
 						<card
@@ -40,4 +40,10 @@
 			</button>
 		</template>
 	</Page>
+	<CreateCollectionModal
+		v-if="createNewCollectionModalOpen"
+		:onClose="closeCreateCollectionModal"
+		:createCollectionCallback="createCollectionCallback"
+		:parentId="collection?.uuid"
+	/>
 </div>

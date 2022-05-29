@@ -79,8 +79,9 @@ class CollectionModel extends Model implements Columns {
 		this.name = params.name ?? 'New Collection';
 		this.siblingOrder = params.siblingOrder ?? 0;
 		this.parentId = params.parentId ?? null;
-		this.data = params.data ?? {
-			content: '',
+		this.data = {
+			content: params.data?.content ?? '',
+			description: params.data?.description ?? '',
 		};
 	}
 }

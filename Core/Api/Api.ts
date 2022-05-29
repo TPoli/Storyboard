@@ -123,7 +123,16 @@ namespace Api {
 			{
 				name: 'parentId',
 				validator: uuidValidation,
-			},
+			}, {
+				name: 'name',
+				validator: stringValidation,
+			}, {
+				name: 'description',
+				validator: stringValidation,
+			}, {
+				name: 'after',
+				validator: uuidValidation,
+			}
 		],
 		response: [],
 		methods: [ 'POST', ],
@@ -137,7 +146,7 @@ namespace Api {
 				validator: uuidValidation,
 			},
 			{
-				name: 'parentId',
+				name: 'parentId', // sync with create collection / create a shared object
 				validator: uuidValidation,
 			},
 			{
@@ -147,6 +156,12 @@ namespace Api {
 			{
 				name: 'content',
 				validator: stringValidation,
+			}, {
+				name: 'description',
+				validator: stringValidation,
+			}, {
+				name: 'after',
+				validator: uuidValidation,
 			},
 		],
 		response: [],

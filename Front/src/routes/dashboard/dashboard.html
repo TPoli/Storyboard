@@ -40,7 +40,7 @@
 					title="My Collections"
 					subHeading="created by you"
 					buttonContent="Create new collection"
-					v-bind:buttonCallback="createNewCollection"
+					v-bind:buttonCallback="openCreateCollectionModal"
 				>
 					<template v-slot:cards>
 						<card
@@ -72,4 +72,9 @@
 			</div>
         </template>
 	</page>
+	<CreateCollectionModal
+		v-if="createNewCollectionModalOpen"
+		:onClose="closeCreateCollectionModal"
+		:createCollectionCallback="createCollectionCallback"
+	/>
 </div>

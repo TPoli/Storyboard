@@ -9,7 +9,7 @@
           class="modal-header"
           id="modalTitle"
         >
-          <slot name="header">
+          <slot  v-if="displayHeader" name="header">
             This is the default tile!
           </slot>
           <button
@@ -25,13 +25,14 @@
         <section
           class="modal-body"
           id="modalDescription"
+          v-if="displayBody"
         >
           <slot name="body">
             This is the default body!
           </slot>
         </section>
 
-        <footer class="modal-footer">
+        <footer  v-if="displayFooter" class="modal-footer">
           <slot name="footer">
             This is the default footer!
           </slot>

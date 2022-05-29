@@ -12,6 +12,7 @@ import { ICollection } from '../../../../Core/types/Collection';
 import { ICreateCollectionResponse, IGetCollectionsResponse } from '../../../../Core/types/Response';
 import { getState, setState, StoreComponent } from '@/store';
 import { paths, setRoute } from '@/router';
+import CreateCollectionModal from '@/components/Modals/CreateCollectionModal/createCollectionModal.vue';
 
 const Dashboard = defineComponent({
 	name: 'dashboard',
@@ -21,6 +22,7 @@ const Dashboard = defineComponent({
 		Card,
 		Page,
 		Panel,
+		CreateCollectionModal,
 	},
 	setup(props: any, context: any) {
 		// 3 most recently modified collections (can be low level collections)
@@ -63,18 +65,24 @@ const Dashboard = defineComponent({
 			favourites,
 			myCollections,
 			availableCollections,
+			createNewCollectionModalOpen: ref(false),
 		};
 	},
 	methods: {
 		getUsersName(): string {
 			return getState(this as unknown as StoreComponent).username;
 		},
-		createNewCollection(): void {
-			const createCollectionCallback: Network.Callback = (response) => {
-				const newCollection = (response as ICreateCollectionResponse).newCollection;
-				this.myCollections.push(newCollection);
-			};
-			Network.Post(Endpoints.CREATE_COLLECTION, {}, createCollectionCallback);
+		createCollectionCallback(response: ICreateCollectionResponse) {
+			const newCollection = response.newCollection;
+			this.myCollections.push(newCollection);
+			this.createNewCollectionModalOpen = false;
+		},
+		openCreateCollectionModal(): void {
+			this.createNewCollectionModalOpen = true;
+		},
+		closeCreateCollectionModal(): void {
+			console.log('closeCreateCollectionModal')
+			this.createNewCollectionModalOpen = false;
 		},
 		openCollection(collectionId: string): void {
 			const collection = [

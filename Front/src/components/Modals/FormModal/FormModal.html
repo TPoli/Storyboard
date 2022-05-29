@@ -1,0 +1,27 @@
+
+<div>
+    <modal
+        @close="onClose"
+        :displayFooter="false"
+    >
+        <template v-slot:header>{{title}}</template>
+        <template v-slot:body>
+            <BaseForm :onSubmit="onSubmit">
+                <template v-for="field in formFields" v-slot:[field.name]="{slotName, register}">
+                        <TextInput
+                            v-if="field.type === 'text'"
+                            :name="slotName"
+                            :placeholder="field.placeholder ?? ''"
+                            :label="field.name"
+                            :register="register"
+                            :default="field.default ?? ''"
+                            :required="field.required"
+                            :validation="field.validation ?? []"
+                        />
+                </template>
+                <br>
+                <button type="submit">{{submitLabel}}</button>
+            </BaseForm>
+        </template>
+    </modal>
+</div>
