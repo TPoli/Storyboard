@@ -2,7 +2,7 @@ import { Component } from 'vue';
 import { createStore, Store, StoreOptions } from 'vuex';
 import createPersistedState from 'vuex-persistedstate';
 import { IIndexable } from '../../Back/src/models';
-import { ICollection } from '../../Core/types/Collection';
+import { ICollection } from 'core';
 
 export type StoreComponent = Component & {
 	$store: Store<State>;

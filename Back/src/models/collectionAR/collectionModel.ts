@@ -24,12 +24,12 @@ class CollectionModel extends Model implements Columns {
 		model: TableNames.COLLECTIONS,
 		column: 'id',
 	}})
-	public before: string | null;
+	public beforeCollection: string | null;
 	@column({ taintable: true, nullable: true, type: ColumnType.STRING, references: {
 		model: TableNames.COLLECTIONS,
 		column: 'id',
 	}})
-	public after: string | null;
+	public afterCollection: string | null;
 	@column({ taintable: true, nullable: true, type: ColumnType.STRING, references: {
 		model: TableNames.COLLECTIONS,
 		column: 'id',
@@ -85,8 +85,8 @@ class CollectionModel extends Model implements Columns {
 		super();
 		this.id = params.id ?? '';
 		this.name = params.name ?? 'New Collection';
-		this.before = params.before ?? null;
-		this.after = params.after ?? null;
+		this.beforeCollection = params.beforeCollection ?? null;
+		this.afterCollection = params.afterCollection ?? null;
 		this.parentId = params.parentId ?? null;
 		this.data = {
 			content: params.data?.content ?? '',

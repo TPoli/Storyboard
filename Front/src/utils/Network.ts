@@ -1,6 +1,4 @@
-import { EndpointRoutes, Api } from '../../../Core/Api/Api';
-import { Response, IAuthFailResponse } from '../../../Core/types/Response';
-import {Config} from '../../../Core/Config/config';
+import { EndpointRoutes, Api, Response, IAuthFailResponse, Config } from 'core';
 
 import { store } from '../store';
 

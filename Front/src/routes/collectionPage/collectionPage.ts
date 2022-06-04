@@ -4,9 +4,7 @@ import { getState, setState, StoreComponent } from '@/store';
 import { paths, setRoute } from '@/router';
 import { Network } from '@/utils/Network';
 
-import { Endpoints } from '@/../../Core/Api/Api';
-import { ICollection } from '@/../../Core/types/Collection';
-import { ICreateCollectionResponse, IFavouriteCollectionResponse, IGetCollectionsResponse } from '@/../../Core/types/Response';
+import { Endpoints, ICollection, ICreateCollectionResponse, IFavouriteCollectionResponse, IGetCollectionsResponse } from 'core';
 
 import Page from '@/components/Page/Page.vue';
 import Panel from '@/components/Panel/Panel.vue';

@@ -1,5 +1,7 @@
 {
+  "extends": "../tsconfig.base.json",
   "compilerOptions": {
+    "composite": false,
     "target": "esnext",
     "module": "esnext",
     "strict": true,
@@ -35,5 +37,8 @@
     "tests/**/*.tsx"
   ],
   "exclude": ["node_modules", "types"],
-  "typeRoots": [ "./types", "./node_modules/@types"]
+  "typeRoots": [ "./types", "./node_modules/@types"],
+  "references": [
+    { "path": "../packages/core" }
+  ]
 }

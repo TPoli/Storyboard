@@ -33,4 +33,5 @@ module.exports = {
     "@typescript-eslint/ban-types": 1,
     "@typescript-eslint/no-namespace": 1,
   },
+  "ignorePatterns": ["**/dist/*"],
 };

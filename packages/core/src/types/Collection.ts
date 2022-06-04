@@ -5,11 +5,11 @@
  interface Collection {
 	id: string;
 	name: string;
-	before: string;
-	after: string;
+	beforeCollection: string;
+	afterCollection: string;
 	parentId: string|null;
 	children: string[];
-};
+}
 
 interface ICollection {
 	uuid: string,

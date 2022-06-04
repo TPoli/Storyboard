@@ -7,9 +7,7 @@ import Page from '../../components/Page/Page.vue';
 
 import { defineComponent, ref } from 'vue';
 import { Network } from '@/utils/Network';
-import { Endpoints } from '../../../../Core/Api/Api';
-import { ICollection } from '../../../../Core/types/Collection';
-import { ICreateCollectionResponse, IGetCollectionsResponse } from '../../../../Core/types/Response';
+import { Endpoints, ICollection, ICreateCollectionResponse, IGetCollectionsResponse } from 'core';
 import { getState, setState, StoreComponent } from '@/store';
 import { paths, setRoute } from '@/router';
 import CreateCollectionModal from '@/components/Modals/CreateCollectionModal/createCollectionModal.vue';

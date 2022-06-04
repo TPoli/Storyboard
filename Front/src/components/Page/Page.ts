@@ -1,7 +1,5 @@
-import { Entity } from '../../../../Core/types/Entity';
-import { Endpoints } from '../../../../Core/Api/Api';
+import { Entity, Endpoints, IResponse } from 'core';
 import { Network } from '../../utils/Network';
-import { IResponse } from '../../../../Core/types/Response';
 import LoginModal from '../Modals/LoginModal/LoginModal.vue';
 import { getState, setState, StoreComponent } from '@/store';
 import { setRoute } from '@/router';

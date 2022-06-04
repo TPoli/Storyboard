@@ -1,6 +1,5 @@
-import { Endpoints } from '../../../../../Core/Api/Api';
+import { Endpoints, IResponse } from 'core';
 import { Network } from '../../../utils/Network';
-import { IResponse } from '../../../../../Core/types/Response';
 import Modal from '../Modal/Modal.vue';
 
 import loginContent from '../../../routes/login/loginContent.vue';

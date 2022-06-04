@@ -1,7 +1,7 @@
 import FormModal from '@/components/Modals/FormModal/FormModal.vue';
 
 import { Network } from '@/utils/Network';
-import { Endpoints } from '../../../../../Core/Api/Api';
+import { Endpoints } from 'core';
 
 export default {
 name: 'CreateCollectionModal',

@@ -1,6 +1,5 @@
 import { Network } from '../../utils/Network';
-import { Endpoints } from '../../../../Core/Api/Api';
-import { Response, ILoginResponse } from '../../../../Core/types/Response';
+import { Endpoints, Response, ILoginResponse } from 'core';
 
 import Page from '../../components/Page/Page.vue';
 import TextInput from '../../components/Forms/TextInput/TextInput.vue';

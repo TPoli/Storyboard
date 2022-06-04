@@ -6,8 +6,8 @@ type CollectionData = {
 interface Columns {
 	id: string;
 	name: string;
-	before: string|null;
-	after: string|null;
+	beforeCollection: string|null;
+	afterCollection: string|null;
 	parentId: string|null;
 	data: CollectionData;
 }

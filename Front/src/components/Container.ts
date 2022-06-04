@@ -1,6 +1,5 @@
-import { Endpoints } from '../../../Core/Api/Api';
+import { Endpoints, IResponse } from 'core';
 import { Network } from '../utils/Network';
-import { IResponse } from '../../../Core/types/Response';
 
 export default {
 name: 'Container',
