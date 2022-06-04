@@ -44,7 +44,7 @@ const ensureUsersSetup = async (connection: mysqlPromise.Connection): Promise<Co
 		
 		let foundAdmin = false;
 		if (results.length > 0) {
-			Object.entries(results[0]).forEach(([, result,]) => {
+			Object.entries(results[0]).forEach(([, result]) => {
 				foundAdmin = 0 !== result;
 			});
 		}

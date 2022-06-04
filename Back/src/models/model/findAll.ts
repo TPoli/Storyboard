@@ -1,3 +1,4 @@
+import { GenericObject } from 'core';
 import { RowDataPacket } from 'mysql2';
 import { Model } from '.';
 
@@ -6,7 +7,7 @@ import { Schema } from '../schema';
 import { generateQuery } from './find';
 import { IIndexable } from './types';
 
-export default async function findAllFn<Type extends Model>(schema: Schema, params: Object): Promise<Type[]> {
+export default async function findAllFn<Type extends Model>(schema: Schema, params: GenericObject): Promise<Type[]> {
 	const { sql, queryParameters } = generateQuery(schema, params);
 
 	try {

@@ -1,6 +1,7 @@
+import { GenericObject } from 'core';
 import { Schema } from '../schema';
 
-const generateQuery = (schema: Schema, params: Object) => {
+const generateQuery = (schema: Schema, params: GenericObject) => {
 	const model = new schema({});
 
 	let sql = 'SELECT ';

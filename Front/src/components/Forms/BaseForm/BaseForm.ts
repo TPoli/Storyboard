@@ -1,3 +1,4 @@
+import { GenericObject } from 'core';
 import { defineComponent } from 'vue';
 
 interface IIndexable {
@@ -40,7 +41,7 @@ const BaseForm = defineComponent({
 				return;
 			}
 
-			const data: Object = {};
+			const data: GenericObject = {};
 
 			this.registeredInputs.map(registered => {
 				(data as IIndexable)[registered.fieldName as string] = registered.value();

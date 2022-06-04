@@ -1,3 +1,4 @@
+import { GenericObject } from 'core';
 import {
 	ColumnType,
 	Model,
@@ -24,9 +25,9 @@ class TransactionsModel extends Model implements Columns {
 	@column({ })
 	public route: string;
 	@column({ taintable: true, type: ColumnType.JSON })
-	public params: Object;
+	public params: GenericObject;
 	@column({ taintable: true, type: ColumnType.JSON })
-	public response: Object;
+	public response: GenericObject;
 	@column({ taintable: true })
 	public ipAddress: string;
 

@@ -1,10 +1,12 @@
+import { GenericObject } from 'core';
+
 interface Columns {
 	id: string;
 	accountId: string;
 	route: string;
 	ipAddress: string;
-	params: Object;
-	response: Object;
+	params: GenericObject;
+	response: GenericObject;
 }
 
 type TransactionsParams = Partial<Columns>;

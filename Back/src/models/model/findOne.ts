@@ -1,3 +1,4 @@
+import { GenericObject } from 'core';
 import { RowDataPacket } from 'mysql2';
 
 import { query } from '../../db';
@@ -6,7 +7,7 @@ import { generateQuery } from './find';
 import { Model } from './model';
 import { IIndexable } from './types';
 
-export default async function findOneFn<Type extends Model>(schema: Schema, params: Object): Promise<Type|null> {
+export default async function findOneFn<Type extends Model>(schema: Schema, params: GenericObject): Promise<Type|null> {
 	const { sql, queryParameters } = generateQuery(schema, params);
 
 	try {

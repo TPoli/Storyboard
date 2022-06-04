@@ -5,7 +5,7 @@ import { ColumnRelation } from './helpers/types';
 
 const fs = require('fs');
 
-const modifyBaselineMigration = (migrationName: String, fileName: String) => {
+const modifyBaselineMigration = (migrationName: string, fileName: string) => {
 	const fileContents = fs.readFileSync(fileName, 'utf-8');
 
 	const splitPath = fileName.split('/');
@@ -19,7 +19,7 @@ const modifyBaselineMigration = (migrationName: String, fileName: String) => {
 	fs.writeFileSync(fileName, updatedContents, 'utf-8');
 }
 
-const createBaselineMigration = (index: number, name: String, data: Column[]) => {
+const createBaselineMigration = (index: number, name: string, data: Column[]) => {
 	const createTableTemplate = 'src/db/migrations/templates/createTable.ts';
 	const baselineDirectory = 'src/db/migrations/baseline';
 
@@ -30,7 +30,7 @@ const createBaselineMigration = (index: number, name: String, data: Column[]) =>
 	modifyBaselineMigration(name, outputFileName);
 };
 
-const modifyBaselineForeignKeyMigration = (fileName: String, data: ColumnRelation[]) => {
+const modifyBaselineForeignKeyMigration = (fileName: string, data: ColumnRelation[]) => {
 	const fileContents = fs.readFileSync(fileName, 'utf-8');
 	const updatedContents = fileContents.replace(/\['DATA'\]/gim, JSON.stringify(data, null, 4));
 	fs.writeFileSync(fileName, updatedContents, 'utf-8');

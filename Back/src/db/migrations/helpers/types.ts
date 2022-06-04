@@ -1,10 +1,10 @@
 type MigrationDirectory = 'baseline' | 'data' | 'migrations';
 
 type ColumnRelation = {
-	sourceTable: String; 
-	sourceColumn: String;
-	referencedTable: String;
-	referencedColumn: String;
+	sourceTable: string; 
+	sourceColumn: string;
+	referencedTable: string;
+	referencedColumn: string;
 }
 
 export {

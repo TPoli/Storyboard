@@ -14,5 +14,5 @@ const Config = createConfig();
 
 export {
 	ServerConfig,
-	Config
+	Config,
 };
