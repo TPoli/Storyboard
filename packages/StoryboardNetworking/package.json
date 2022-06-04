@@ -1,0 +1,16 @@
+{
+  "name": "storyboardnetworking",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build-dry": "tsc -b --verbose --dry",
+    "build": "tsc -b"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^4.7.2"
+  }
+}

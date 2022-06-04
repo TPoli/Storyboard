@@ -18,4 +18,7 @@ interface ICollection {
 	favourite: boolean,
 }
 
-export { Collection, ICollection, };
+export {
+	Collection,
+	ICollection,
+};

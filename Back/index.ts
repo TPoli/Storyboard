@@ -9,11 +9,15 @@ import {
 } from './src/models';
 
 import { setupAuth } from './src/security/authentication';
-import { MinutesToMilliseconds } from '../Core/Utils/Utils';
+// import { MinutesToMilliseconds } from '../Core/Utils/Utils';
+import { MinutesToMilliseconds } from 'core';
 import { Config } from './src/Config';
 import passport from 'passport';
 import { setupRoutesFn } from './src/main';
 import { getSessionStore } from './src/main/sessionStore';
+
+import { testFunc } from 'storyboardnetworking';
+// import { testFunc } from 'storyboardnetworking/dist';
 
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
@@ -93,3 +97,5 @@ const main = async () => {
 };
 
 main();
+
+testFunc();

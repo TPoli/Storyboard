@@ -1,0 +1,13 @@
+{
+	"compilerOptions": {
+		"baseUrl": ".",
+		"composite": true,
+		"declaration": true,
+		"declarationMap": true,
+		"paths": {
+			"core": ["packages/core"],
+			"networking": ["packages/StoryboardNetworking"]
+		}
+	},
+	"files": []
+}

@@ -1,5 +1,6 @@
-import { ExpressCallback, LoggedInRequest } from '../../Back/src/types/types';
+// import { ExpressCallback, LoggedInRequest } from '../../Back/src/types/types';
 import { IAuthFailResponse } from '../types/Response';
+import { ExpressCallback, LoggedInRequest } from './types';
 import { booleanValidation, passwordValidation, stringValidation, usernameValidation, uuidValidation, ValidationCallback } from './Validation';
 
 export type RequestMethods = 'POST' | 'GET';
@@ -29,7 +30,7 @@ type Endpoint = {
 	params: Parameter[];
 	response: Parameter[];
 	methods: RequestMethods[];
-	middleware?:ExpressCallback
+	middleware?: ExpressCallback;
 };
 
 type EndpointCollection = {
@@ -119,7 +120,7 @@ namespace Api {
 
 	export const createCollection: Endpoint = {
 		route: Endpoints.CREATE_COLLECTION,
-		params: [
+		params: [// improve
 			{
 				name: 'parentId',
 				validator: uuidValidation,

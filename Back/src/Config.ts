@@ -1,4 +1,4 @@
-import {Config as baseConfig, StoryboardConfig} from '../../Core/Config/config';
+import {Config as baseConfig, StoryboardConfig} from 'core';
 
 type ServerConfig = StoryboardConfig & {
 

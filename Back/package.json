@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "build": "tsc --project ./",
+    "build-dry": "tsc -b --verbose --dry ./",
+    "build": "tsc -b ./",
     "migrate-up": "ts-node ./src/db/migrations/migrateUp.ts",
     "update-tables": "echo no-op",
     "baseline": "ts-node ./src/db/migrations/baseline.ts",
@@ -51,6 +52,8 @@
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "random": "^3.0.6",
-    "reflect-metadata": "^0.1.13"
+    "reflect-metadata": "^0.1.13",
+    "storyboardnetworking": "file:../packages/StoryboardNetworking",
+    "core": "file:../packages/core"
   }
 }
