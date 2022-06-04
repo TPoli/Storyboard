@@ -1,6 +1,6 @@
 import * as express from 'express';
 
-import { IResponse } from '../../../../Core/types/Response';
+import { IResponse } from 'core';
 import { LoggedInRequest } from '../../types/types';
 import { TransactionsParams } from './types';
 import { TransactionsModel } from './transactionsModel';

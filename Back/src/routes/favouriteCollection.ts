@@ -1,4 +1,4 @@
-import { IFailResponse, IFavouriteCollectionResponse } from '../../../Core/types/Response'
+import { IFailResponse, IFavouriteCollectionResponse } from 'core'
 import { PermissionsAR } from '../models';
 import { ExpressFinalCallback } from '../types/types';
 /**

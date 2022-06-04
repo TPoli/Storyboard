@@ -4,7 +4,7 @@ import {
 } from '..';
 import { LoggedInRequest } from '../../types/types';
 import { PermissionsAR } from '../permissionsAR';
-import { PermissionType } from '../../../../Core/types/Models/Permissions';
+import { PermissionType } from 'core';
 import { TableNames } from '../tableNames';
 import { CollectionData, CollectionsParams, Columns } from './types';
 import { column } from '../model/column';

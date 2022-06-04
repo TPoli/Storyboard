@@ -2,7 +2,7 @@ import {
 	AccountAR,
 	IIndexable,
 } from '../models';
-import { IAuthFailResponse, ILoginResponse } from '../../../Core/types/Response'
+import { IAuthFailResponse, ILoginResponse } from 'core'
 import { ExpressFinalCallback } from '../types/types';
 import passport from 'passport';
 

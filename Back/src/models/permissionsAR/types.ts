@@ -1,4 +1,4 @@
-import { PermissionType } from '../../../../Core/types/Models/Permissions';
+import { PermissionType } from 'core';
 
 interface Columns {
 	id: string;

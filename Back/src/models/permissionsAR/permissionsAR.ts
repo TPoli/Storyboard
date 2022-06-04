@@ -1,5 +1,5 @@
 import { CollectionAR, Model } from '..';
-import { IPermissions } from '../../../../Core/types/Models';
+import { IPermissions } from 'core';
 import { cachableFn } from '../model/cachableFn';
 import { PermissionsParams } from './types';
 import { PermissionsModel } from './permissionsModel';

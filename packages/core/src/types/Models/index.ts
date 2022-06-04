@@ -1,5 +1,6 @@
-import { IPermissions } from './Permissions';
+import { IPermissions, PermissionType } from './Permissions';
 
 export {
 	IPermissions,
+	PermissionType,
 }

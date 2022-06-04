@@ -11,6 +11,9 @@ import {
 	Config,
 } from './src/Config';
 
+export * from './src/types';
+export * from './src/Api';
+
 export {
 	CamelCase,
 	MillisecondsToSeconds,

@@ -1,6 +1,5 @@
 import { createLogMiddlewareFn } from '.';
-import { Api, Parameter } from '../../../Core/Api/Api';
-import { IFailResponse, IAuthFailResponse } from '../../../Core/types/Response';
+import { IFailResponse, IAuthFailResponse, Api, Parameter } from 'core';
 import { Routes } from '../routes/router';
 import { ExpressCallback, LoggedInRequest } from '../types/types';
 

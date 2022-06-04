@@ -10,8 +10,8 @@
     "migrate-up": "ts-node ./src/db/migrations/migrateUp.ts",
     "update-tables": "echo no-op",
     "baseline": "ts-node ./src/db/migrations/baseline.ts",
-    "dev-win": "npm run lint && npm run cleanup-win && npm run build && node ./dist/Back/index.js",
-    "dev-linux": "npm run lint && npm run cleanup-linux && npm run build && node ./dist/Back/index.js",
+    "dev-win": "npm run lint && ts-node ./index.ts",
+    "dev-linux": "npm run lint && npm run cleanup-linux && npm run build && node ./dist/backend.js",
     "watch-win": "tsc-watch --onSuccess \"npm run dev-win\"",
     "watch-linux": "tsc-watch --onSuccess \"npm run dev-linux\"",
     "cleanup-linux": "rm -r dist\"",
@@ -41,6 +41,7 @@
     "bcrypt": "^5.0.1",
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.5",
+    "core": "file:../packages/core",
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",
     "eslint-loader": "^3.0.2",
@@ -53,7 +54,6 @@
     "passport-local": "^1.0.0",
     "random": "^3.0.6",
     "reflect-metadata": "^0.1.13",
-    "storyboardnetworking": "file:../packages/StoryboardNetworking",
-    "core": "file:../packages/core"
+    "storyboardnetworking": "file:../packages/StoryboardNetworking"
   }
 }

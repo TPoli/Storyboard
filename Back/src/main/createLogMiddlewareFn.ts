@@ -1,5 +1,4 @@
-import { EndpointRoutes } from '../../../Core/Api/Api';
-import { IFailResponse } from '../../../Core/types/Response';
+import { IFailResponse, EndpointRoutes } from 'core';
 import { TransactionsAR } from '../models';
 import { houseAccountId } from '../models/accountAR';
 import { ExpressCallback, LoggedInRequest } from '../types/types';

@@ -1,4 +1,4 @@
-import { Parameter } from '../../../Core/Api/Api';
+import { Parameter } from '../../../packages/core/src/Api/Api';
 import { ExpressFinalCallback } from '../types/types';
 
 export type Route = {

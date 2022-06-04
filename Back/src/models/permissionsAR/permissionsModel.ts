@@ -1,8 +1,7 @@
 import { ColumnType, Model } from '..';
 
 import { Columns, PermissionsParams } from './types';
-import { IPermissions } from '../../../../Core/types/Models';
-import { PermissionType } from '../../../../Core/types/Models/Permissions';
+import { IPermissions, PermissionType } from 'core';
 import { LoggedInRequest } from '../../types/types';
 import { TableNames } from '../tableNames';
 import { column } from '../model/column';

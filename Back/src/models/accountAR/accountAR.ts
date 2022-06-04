@@ -3,7 +3,7 @@ import {
 	CollectionAR,
 	PermissionsAR,
 } from '../';
-import { PermissionType } from '../../../../Core/types/Models/Permissions';
+import { PermissionType } from 'core';
 import { cachableFn } from '../model/cachableFn';
 import { AccountModel } from './accountModel';
 import { AccountProps } from './types';

@@ -1,5 +1,4 @@
-import { EndpointRoutes, Api } from '../../../Core/Api/Api';
-import { ISuccessResponse } from '../../../Core/types/Response';
+import { ISuccessResponse, EndpointRoutes, Api } from 'core';
 import createAccount from './createAccount';
 import createCollectionsFn from './createCollections';
 import saveCollectionsFn from './saveCollections';

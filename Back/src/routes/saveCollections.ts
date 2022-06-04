@@ -1,4 +1,4 @@
-import { IFailResponse, ISaveCollectionResponse } from '../../../Core/types/Response'
+import { IFailResponse, ISaveCollectionResponse } from 'core'
 import { ExpressFinalCallback } from '../types/types';
 import { AccountAR, CollectionAR } from '../models';
 

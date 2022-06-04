@@ -1,5 +1,4 @@
-import { ICollection } from '../../../Core/types/Collection';
-import { IGetCollectionsPayload, IGetCollectionsResponse } from '../../../Core/types/Response'
+import { ICollection, IGetCollectionsPayload, IGetCollectionsResponse } from 'core';
 import { CollectionAR } from '../models';
 import { ExpressFinalCallback } from '../types/types';
 

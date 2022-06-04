@@ -1,4 +1,4 @@
-import { Collection } from '../../../../Core/types/Collection';
+import { Collection } from 'core';
 import { Model } from '../model';
 import { CollectionModel } from './collectionModel';
 import { CollectionsParams } from './types';

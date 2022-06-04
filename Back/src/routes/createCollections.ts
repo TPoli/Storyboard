@@ -1,7 +1,6 @@
-import { ICreateCollectionResponse, IFailResponse } from '../../../Core/types/Response'
 import { ExpressFinalCallback } from '../types/types';
 import { CollectionAR } from '../models';
-import { PermissionType } from '../../../Core/types/Models/Permissions';
+import { PermissionType, ICreateCollectionResponse, IFailResponse } from 'core';
 
 const createCollectionsFn: ExpressFinalCallback = async (req, res) => {
 

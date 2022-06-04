@@ -1,4 +1,4 @@
-import { MinutesToMilliseconds } from '../../../Core/Utils/Utils';
+import { MinutesToMilliseconds } from 'core';
 import { getConfig } from './config';
 const expressMysqlSession = require('express-mysql-session');
 

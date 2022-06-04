@@ -1,5 +1,5 @@
 import { AccountAR } from '../models';
-import { IAccountFailResponse, ILoginResponse } from '../../../Core/types/Response';
+import { IAccountFailResponse, ILoginResponse } from 'core';
 import passport from 'passport';
 import { ExpressFinalCallback } from '../types/types';
 
