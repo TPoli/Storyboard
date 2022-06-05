@@ -1,6 +1,6 @@
 <template src='./Card.html' />
 
-<style scoped src='./Card.css' > </style>
+<style lang="scss" scoped src='./Card.scss'> </style>
 
 <script lang='TS'>
 

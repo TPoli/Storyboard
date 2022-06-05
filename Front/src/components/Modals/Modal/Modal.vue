@@ -1,6 +1,6 @@
 <template src='./Modal.html' />
 
-<style scoped src='./Modal.css' > </style>
+<style lang="scss" scoped src='./Modal.scss'> </style>
 
 <script lang='TS'>
 

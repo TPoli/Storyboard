@@ -7,13 +7,14 @@
   justify-content: space-between;
   align-items: center;
   flex-direction: column;
+  background-color: $parchment;
 }
 
 .header {
   display: flex;
   width: 100%;
-  background-color: #F1F1F1;
-  color: white;
+  background-color: $parchment;
+  color: $black;
   justify-content: center;
   align-items: center;
   height: 40px;
@@ -35,7 +36,7 @@
   margin: 0;
   padding: 0;
   width: 200px;
-  background-color: $menuBackground;
+  background-color: $parchment;
   height: 100%;
   overflow: auto;
 }
@@ -43,21 +44,21 @@
 /* Sidebar links */
 .sidebar a {
   display: block;
-  color: black;
+  color: $black;
   padding: 16px;
   text-decoration: none;
 }
 
 /* Active/current link */
 .sidebar a.active {
-  background-color: $menuSelectedBackground;
-  color: $menuSelectedText;
+  background-color: $parchment-lighter;
+  color: $black-lighter;
 }
 
 /* Links on mouse-over */
 .sidebar a:hover:not(.active) {
-  background-color: $menuHoverBackground;
-  color: $menuHoverText;
+  background-color: $parchment-lightest;
+  color: $black-lightest;
 }
 
 .content {
@@ -67,15 +68,14 @@
   height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
-  background-color: #FFFFFF;
-  color: #000000;
+  background-color: $parchment-darker;
 }
 
 .footer {
   display: flex;
   width: 100%;
-  background-color: red;
-  color: white;
+  background-color: $parchment;
+  color: $black;
   justify-content: center;
   align-items: center;
   height: 40px;
