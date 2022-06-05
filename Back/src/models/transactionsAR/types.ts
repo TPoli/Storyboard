@@ -1,4 +1,4 @@
-import { GenericObject } from 'core';
+import { GenericObject, IResponse } from 'core';
 
 interface Columns {
 	id: string;
@@ -6,7 +6,7 @@ interface Columns {
 	route: string;
 	ipAddress: string;
 	params: GenericObject;
-	response: GenericObject;
+	response: IResponse;
 }
 
 type TransactionsParams = Partial<Columns>;

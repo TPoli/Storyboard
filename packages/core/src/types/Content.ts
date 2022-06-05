@@ -9,10 +9,10 @@ interface Content {
 	siblingOrder: number;
 	parent: Collection|null;
 	data: ContentData;
-};
+}
 
 interface ContentData {
-
+	description?: string;
 }
 
 export { Content, ContentData };

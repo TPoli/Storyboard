@@ -7,7 +7,7 @@ const createLogMiddlewareFn = (endpoint: EndpointRoutes) => {
     const middleware: ExpressCallback = async (req, res, next) => {
         const transaction = new TransactionsAR({
             params: req.body,
-            response: {},
+            response: { success: false },
             route: endpoint,
             accountId: houseAccountId,
             ipAddress: req.ip,

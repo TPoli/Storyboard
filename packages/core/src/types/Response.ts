@@ -2,6 +2,7 @@ import { ICollection } from "./Collection";
 
 export interface IResponse {
 	success: boolean;
+	[keys: string]: any;
 }
 
 export interface IFailResponse extends IResponse {

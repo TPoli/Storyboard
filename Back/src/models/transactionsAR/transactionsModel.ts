@@ -1,4 +1,4 @@
-import { GenericObject } from 'core';
+import { GenericObject, IResponse } from 'core';
 import {
 	ColumnType,
 	Model,
@@ -27,7 +27,7 @@ class TransactionsModel extends Model implements Columns {
 	@column({ taintable: true, type: ColumnType.JSON })
 	public params: GenericObject;
 	@column({ taintable: true, type: ColumnType.JSON })
-	public response: GenericObject;
+	public response: IResponse;
 	@column({ taintable: true })
 	public ipAddress: string;
 
@@ -38,7 +38,7 @@ class TransactionsModel extends Model implements Columns {
 		this.accountId = params.accountId ?? houseAccountId;
 		this.route = params.route ?? '';
 		this.params = params.params ?? {};
-		this.response = params.response ?? {};
+		this.response = params.response ?? { success: false };
 		this.ipAddress = params.ipAddress ?? '';
 	}
 }
