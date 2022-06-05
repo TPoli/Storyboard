@@ -1,4 +1,3 @@
-import Container from '../../components/Container.vue';
 import Collection from '../../components/Collection/Collection.vue';
 import Card from '../../components/Card/Card.vue';
 import Panel from '../../components/Panel/Panel.vue';
@@ -15,7 +14,6 @@ import CreateCollectionModal from '@/components/Modals/CreateCollectionModal/cre
 const Dashboard = defineComponent({
 	name: 'dashboard',
 	components: {
-		Container,
 	  	Collection,
 		Card,
 		Page,

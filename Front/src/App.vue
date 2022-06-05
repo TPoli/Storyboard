@@ -4,11 +4,10 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
-import Container from './components/Container.vue';
 
 @Options({
   components: {
-    Container,
+
   },
 })
 
