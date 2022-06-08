@@ -1,0 +1,115 @@
+@import "../../branding/colours.scss";
+
+.tooltip {
+	position: relative;
+	display: inline-block;
+	overflow-x: visible;
+}
+
+$defaultBackground: $black-lighter;
+
+.tooltip .tooltip-content {
+	background-color: $defaultBackground;
+	color: $parchment-lightest;
+}
+
+.tooltip .tooltip-content-bottom::after {
+	border-color: transparent transparent $defaultBackground transparent;
+}
+
+.tooltip .tooltip-content-top::after {
+	border-color: $defaultBackground transparent transparent transparent;
+}
+
+.tooltip .tooltip-content-left::after {
+	border-color: transparent transparent transparent $defaultBackground;
+}
+
+.tooltip .tooltip-content-right::after {
+	border-color: transparent $defaultBackground transparent transparent;
+}
+  
+.tooltip .tooltip-content {
+	visibility: hidden;
+	width: max-content;
+	max-width: 200px;
+	text-align: center;
+	border-radius: 6px;
+	padding: 5px;
+}
+
+.tooltip .tooltip-content-bottom {
+	position: absolute;
+	margin: 5px 0;
+	z-index: 1;
+	top:100%;
+	left: 50%;
+	transform:translate(-50%);
+}
+
+.tooltip .tooltip-content-bottom::after {
+	content: "";
+	position: fixed;
+	bottom: 100%;
+	left: 50%;
+	margin-left: -5px;
+	border-width: 5px;
+	border-style: solid;
+}
+
+.tooltip .tooltip-content-top {
+	position: absolute;
+	margin: 0 0 5px;
+	z-index: 1;
+	bottom:100%;
+	left: 50%;
+	transform:translate(-50%);
+}
+
+.tooltip .tooltip-content-top::after {
+	content: "";
+	position: absolute;
+	top: 100%;
+	left: 50%;
+	margin-left: -5px;
+	border-width: 5px;
+	border-style: solid;
+}
+
+.tooltip .tooltip-content-left {
+	position: absolute;
+	margin-right: 5px;
+	z-index: 1;
+	right: 100%;
+}
+
+.tooltip .tooltip-content-left::after {
+	content: "";
+	position: absolute;
+	top: 50%;
+	left: 100%;
+	margin-top: -5px;
+	border-width: 5px;
+	border-style: solid;
+}
+
+.tooltip .tooltip-content-right {
+	position: absolute;
+	margin-left: 5px;
+	z-index: 1;
+	left: 100%;
+}
+
+.tooltip .tooltip-content-right::after {
+	content: "";
+	position: absolute;
+	top: 50%;
+	right: 100%;
+	margin-top: -5px;
+	border-width: 5px;
+	border-style: solid;
+}
+
+.tooltip:hover .tooltip-content {
+	visibility: visible;
+}

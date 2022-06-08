@@ -1,12 +1,15 @@
 <div>
 	<Page>
 		<template v-slot:header>
-			<!-- TODO add breadcrumbs here -->
 		</template>
 		<template v-slot:content>
-			<!-- TODO make the below two fields toggle between each other based on selection -->
 			<h1>{{collection.title}}</h1>
-			<button v-on:click="toggleFavourite">{{ collection.favourite ? 'Unfavourite' : 'Favourite'}}</button>
+			<heart
+				tooltipSide="top"
+				:colour="collection.favourite ? 'pink' : 'grey'"
+				:onClick="toggleFavourite"
+				:tooltip="collection.favourite ? 'Unfavourite' : 'Favourite'"
+			/>
 			<input v-model="collection.title" :placeholder="collection.title">
 
 			<br>

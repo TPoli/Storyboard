@@ -10,6 +10,7 @@ import Page from '@/components/Page/Page.vue';
 import Panel from '@/components/Panel/Panel.vue';
 import Card from '@/components/Card/Card.vue';
 import CreateCollectionModal from '@/components/Modals/CreateCollectionModal/createCollectionModal.vue';
+import Heart from '@/branding/icons/heart/heart.vue';
 
 type CollectionPageData = {
 	collection: ICollection | null;
@@ -41,6 +42,7 @@ const CollectionPage = defineComponent({
 		Panel: Panel,
 		Card: Card,
 		CreateCollectionModal: CreateCollectionModal,
+		Heart: Heart,
 	},
 	setup(props: any, context: any) {
 		Network.Post(Endpoints.GET_COLLECTIONS, { parentId: context.attrs?.id ?? ''}, getCollectionsCallback);
