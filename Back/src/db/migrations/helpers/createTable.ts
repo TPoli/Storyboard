@@ -32,8 +32,12 @@ const getColumnFragment = (column: Column) => {
 }
 
 // create table statically using provided data
-const createTable = async (tableName: String, columns: Column[], connection: mysqlPromise.Connection) => {
+const createTable = async (tableName: string, columns: Column[], connection: mysqlPromise.Connection) => {
 	console.log(`Creating table ${tableName}`);
+
+	if (!config) {
+		throw new Error('missing database config');
+	}
 
 	const primaryKeys = getPrimaryKeys(columns);
 	const uniqueKeys = getUniqueKeys(columns);

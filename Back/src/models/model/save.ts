@@ -5,10 +5,11 @@ import { IIndexable } from './types';
 
 const parametise = (model: ModelBase, columns: string[]) => {
 	const keys: string[] = [];
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const values: any[] = [];
 
 	const success = columns.every((column: string): boolean => {
-		const colData = model.getMetaData().find((col: any) => {
+		const colData = model.getMetaData().find((col) => {
 			return col.name === column;
 		});
 		if(!colData) {

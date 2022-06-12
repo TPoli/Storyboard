@@ -1,13 +1,20 @@
 import { GenericObject } from 'core';
 import { Schema } from '../schema';
 
-const generateQuery = (schema: Schema, params: GenericObject) => {
+type Query = {
+	sql: string;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	queryParameters: any[];
+};
+
+const generateQuery = (schema: Schema, params: GenericObject): Query => {
 	const model = new schema({});
 
 	let sql = 'SELECT ';
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const queryParameters: any[] = [];
 	
-	const allowedColumns = model.getMetaData().map((column: any) => {
+	const allowedColumns = model.getMetaData().map((column) => {
 		return column.name;
 	});
 

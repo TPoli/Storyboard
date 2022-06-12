@@ -1,4 +1,3 @@
-const express = require('express');
 import cors from 'cors';
 
 import { InitDb } from './src/db';
@@ -16,6 +15,8 @@ import { setupRoutesFn } from './src/main';
 import { getSessionStore } from './src/main/sessionStore';
 
 import { testFunc } from 'storyboardnetworking';
+
+const express = require('express');
 
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');

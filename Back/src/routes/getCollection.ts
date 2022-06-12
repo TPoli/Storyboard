@@ -36,5 +36,5 @@ const getCollectionFn: ExpressFinalCallback = async (req, res) => {
 };
 
 export {
-	getCollectionFn
+	getCollectionFn,
 }

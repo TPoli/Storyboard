@@ -2,7 +2,7 @@ import * as mysqlPromise from 'mysql2/promise';
 import { Migration } from '../migration';
 import { MigrationDirectory } from './types';
 
-const loadMigrationFile = async (directory: MigrationDirectory, fileName: string, connection: mysqlPromise.Connection) => {
+const loadMigrationFile = async (directory: MigrationDirectory, fileName: string, connection: mysqlPromise.Connection): Promise<Migration> => {
 	const migrationFile = await import(`../${directory}/${fileName}`);
 
 	const migrationName = Object.keys(migrationFile.default)[0];

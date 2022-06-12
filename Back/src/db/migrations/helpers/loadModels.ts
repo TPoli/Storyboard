@@ -2,7 +2,7 @@ import { Model } from '../../../models';
 
 const fs = require('fs');
 
-const loadModel = async (modelName) => {
+const loadModel = async (modelName: string) => {
 	const modelFile = await import(`../../../models/${modelName}/${modelName}`);
 
 	// capitalize first letter as filename may start with lower case

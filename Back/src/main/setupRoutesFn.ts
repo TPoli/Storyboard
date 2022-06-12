@@ -1,5 +1,5 @@
 import { createLogMiddlewareFn } from '.';
-import { IFailResponse, IAuthFailResponse, Api, Parameter } from 'core';
+import { IFailResponse, IAuthFailResponse, Api, Parameter, GenericObject } from 'core';
 import { Routes } from '../routes/router';
 import { ExpressCallback, LoggedInRequest } from '../types/types';
 
@@ -8,7 +8,7 @@ const setupRoutesFn = (app: any) => {
 
         // build middleware that validates parameters and calls any additional middleware
         const middleware: ExpressCallback = (req, res, next) => {
-            const validatedBody: any = {};
+            const validatedBody: GenericObject = {};
             endpoint.params.forEach((param: Parameter) => {
                 const value = req?.body[param.name] ?? null;
 

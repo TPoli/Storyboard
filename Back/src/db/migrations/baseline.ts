@@ -87,7 +87,7 @@ const baseline = async () => {
 			primary: false,
 			taintable: false,
 			type: ColumnType.DATE_TIME,
-		}
+		},
 	];
 
 	let migrationId = 1;
