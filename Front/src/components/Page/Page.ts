@@ -4,12 +4,16 @@ import LoginModal from '../Modals/LoginModal/LoginModal.vue';
 import { getState, setState, StoreComponent } from '@/store';
 import { setRoute } from '@/router';
 import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs.vue';
+import Silhouette from '@/branding/icons/silhouette/silhouette.vue';
+import Dropdown from '@/components/Dropdown/Dropdown.vue';
 
 export default {
 name: 'Page',
 	components: {
 		'login-modal': LoginModal,
 		Breadcrumbs,
+		Silhouette,
+		Dropdown,
 	},
 	data: function () {
 		return {

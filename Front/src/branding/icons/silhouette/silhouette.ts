@@ -2,7 +2,7 @@ import { defineComponent } from 'vue';
 import { supportedIconColours } from '..';
 
 const Silhouette = defineComponent({
-	name: 'silhouette',
+	name: 'Silhouette',
 	props: {
 		colour: {
 			type: String,

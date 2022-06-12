@@ -2,16 +2,24 @@
 	class='page'
 >
 	<div id='header' class="header">
-		<div v-if='loggedIn()'>
-			<button v-on:click="logout">Logout</button>
-		</div>
-		<div v-else>
-			<button v-on:click="navigateToLogin">Login</button>
-		</div>
 		<slot name="header">
 		
 		</slot>
 		<img :src="require(`@/assets/logo.png`)" />
+
+		<span v-if="loggedIn()">
+			<Dropdown>
+				<template v-slot:button>
+					<Silhouette  />
+				</template>
+				<template v-slot:options>
+					<p>Account (N/A)</p>
+					<p>Notifications  (N/A)</p>
+					<hr>
+					<a class="dropdown-link" v-on:click="logout">Logout</a>
+				</template>
+			</Dropdown>
+		</span>
 	</div>
 
 	<div class='core'>

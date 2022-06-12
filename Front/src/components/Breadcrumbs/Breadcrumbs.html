@@ -4,7 +4,7 @@
 		:tooltip="breadcrumb.title"
 		:tooltipSide="getTooltipSide(breadcrumb.title, index)"
 	>
-		<Home v-if="breadcrumb.type === 'Dashboard'" :colour="isCurrentBreadcrumb(index) ? 'blue' : 'black'" @click="breadcrumbClicked(breadcrumb)" />
-		<Bookmark v-if="breadcrumb.type === 'Collection'" :colour="isCurrentBreadcrumb(index) ? 'blue' : 'red'" @click="breadcrumbClicked(breadcrumb)" />
+		<Home class="breadcrumb" v-if="breadcrumb.type === 'Dashboard'" :colour="isCurrentBreadcrumb(index) ? 'blue' : 'black'" @click="breadcrumbClicked(breadcrumb)" />
+		<Bookmark class="breadcrumb" v-if="breadcrumb.type === 'Collection'" :colour="isCurrentBreadcrumb(index) ? 'blue' : 'red'" @click="breadcrumbClicked(breadcrumb)" />
 	</Tooltip>
 </div>
