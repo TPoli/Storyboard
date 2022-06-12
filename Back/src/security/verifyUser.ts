@@ -23,7 +23,6 @@ const verifyUser = async (username: string, password: string, done: VerifyDone):
         }
         
         if (account.password === hash) {
-            account.init();
             return done(null, account);
         } else {
             return done(null, false, { message: 'login failed.' });

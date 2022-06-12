@@ -1,9 +1,7 @@
 import findAllFn from './findAll';
 import findOneFn from './findOne';
-import { IModelRelation } from './modelRelation';
 import { saveModelFn } from './save';
 import { Column, IIndexable } from './types';
-import { addRelationship } from './index';
 import { LoggedInRequest } from '../../types/types';
 import { deleteModelFn } from './delete';
 import { Schema } from '../schema';
@@ -18,8 +16,6 @@ abstract class ModelBase implements IIndexable {
 
 	id: string;
 
-	public modelRelations: IModelRelation[] = [];
-
 	public getMetaData(): Column[] {
 		return Reflect.getMetadata(columnDataKey, this);
 	}
@@ -33,12 +29,6 @@ abstract class Model extends ModelBase {
 
 	constructor() {
 		super();
-	}
-
-	public init = () => {
-		this.modelRelations.forEach(relation => {
-			addRelationship(this, relation);
-		});
 	}
 
 	public static async findAll<Type extends Model>(schema: Schema, params: Record<string, unknown>): Promise<Type[]> {

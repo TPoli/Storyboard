@@ -31,7 +31,6 @@ const createAccount = (req:any, username:any, password: string, done:any) => {
 
         if (await account.save<AccountAR>(req, columnsToSave)) {
             await account.refresh();
-            account.init();
             return done(null, account);
         }
         return done(null, false, { message: 'login failed.' });
