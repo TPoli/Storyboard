@@ -3,8 +3,10 @@ import BaseForm from '@/components/Forms/BaseForm/BaseForm.vue';
 
 import TextInput from '@/components/Forms/TextInput/TextInput.vue';
 
-export default {
-name: 'FormModal',
+import { defineComponent } from 'vue';
+
+const FormModal = defineComponent({
+	name: 'FormModal',
 	components: {
 		'modal': Modal,
 		TextInput: TextInput,
@@ -32,9 +34,14 @@ name: 'FormModal',
 			required: true,
 		},
 	},
+	setup() {
+
+	},
 	methods: {
 		onClose() {
 			(this as any).handleClose();
 		},
 	},
-};
+});
+
+export default FormModal;

@@ -13,7 +13,7 @@ type Config = {
 
 let configInstance: Config | null = null;
 
-const getConfig = () => {
+const getConfig = (): Config => {
 	if (configInstance === null) {
 		configInstance = {
 			dbHost: process.env.STORYBOARD_DB_HOST,

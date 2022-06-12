@@ -11,7 +11,7 @@ function getCallerFile()
 
     (Error as any).prepareStackTrace = prepareStackTraceOrg;
 
-	const fileName: String = (stack as any)[2].getFileName();
+	const fileName: string = (stack as any)[2].getFileName();
 
 	const separatedFileName = fileName.split(/\\|\//);
 
@@ -22,7 +22,7 @@ abstract class Migration {
 	protected _up: () => Promise<void|boolean>;
 	protected _down: () => Promise<void|boolean>;
 
-	private _fileName: String;
+	private _fileName: string;
 
 	connection: mysqlPromise.Connection;
 	protected _alwaysRun = false;

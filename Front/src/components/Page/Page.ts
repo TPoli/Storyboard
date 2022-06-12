@@ -6,25 +6,26 @@ import { setRoute } from '@/router';
 import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs.vue';
 import Silhouette from '@/branding/icons/silhouette/silhouette.vue';
 import Dropdown from '@/components/Dropdown/Dropdown.vue';
+import { defineComponent } from 'vue';
 
-export default {
-name: 'Page',
+const Page = defineComponent({
+	name: 'Page',
 	components: {
 		'login-modal': LoginModal,
 		Breadcrumbs,
 		Silhouette,
 		Dropdown,
 	},
-	data: function () {
-		return {
-			
-		};
-	},
 	props: {
 		hideBreadcrumbs: {
 			type: Boolean,
 			default: false,
 		}
+	},
+	setup() {
+		return {
+			
+		};
 	},
 	methods: {
 		navigateToLogin() {
@@ -66,4 +67,6 @@ name: 'Page',
 			return route === (this as any).$route.fullPath;
 		},
 	},
-};
+});
+
+export default Page;

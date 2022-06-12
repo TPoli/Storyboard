@@ -4,19 +4,20 @@ import { getState, setState, StoreComponent } from '@/store';
 import { setRoute } from '@/router';
 import TextInput from '@/components/Forms/TextInput/TextInput.vue';
 import BaseForm from '@/components/Forms/BaseForm/BaseForm.vue';
+import { defineComponent } from 'vue';
 
 type FormData = {
 	username: String,
 	password: String,
 };
 
-export default {
+const LoginContent = defineComponent({
 	name: 'loginContent',
 	components: {
 		TextInput: TextInput,
 		BaseForm: BaseForm,
 	},
-	data: function () {
+	setup() {
 		return {
 			username: getState(this as unknown as StoreComponent).username,
 		};
@@ -51,4 +52,6 @@ export default {
 			return '';
 		},
 	},
-};
+});
+
+export default LoginContent;

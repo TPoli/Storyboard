@@ -2,13 +2,15 @@ import { setRoute } from '@/router';
 import Page from '../../components/Page/Page.vue';
 import loginContent from './loginContent.vue';
 
-export default {
+import { defineComponent } from 'vue';
+
+const LoginPage = defineComponent({
 	name: 'loginPage',
 	components: {
 		Page: Page,
 		'login-content': loginContent,
 	},
-	data: function () {
+	setup() {
 		return {
 			username: '',
 			password: '',
@@ -22,4 +24,6 @@ export default {
 			setRoute(this, '/dashboard');
 		},
 	},
-};
+});
+
+export default LoginPage;

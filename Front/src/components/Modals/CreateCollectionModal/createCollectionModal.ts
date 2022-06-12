@@ -3,23 +3,12 @@ import FormModal from '@/components/Modals/FormModal/FormModal.vue';
 import { Network } from '@/utils/Network';
 import { Endpoints } from 'core';
 
-export default {
-name: 'CreateCollectionModal',
+import { defineComponent } from 'vue';
+
+const CreateCollectionModal = defineComponent({
+	name: 'CreateCollectionModal',
 	components: {
 		FormModal: FormModal,
-	},
-	data: function (): any {
-		return {
-			formFields: [
-				{
-					name: 'Title',
-					type: 'text',
-				}, {
-					name: 'Description',
-					type: 'text',
-				},
-			],
-		};
 	},
 	props: {
 		onClose: {
@@ -34,6 +23,19 @@ name: 'CreateCollectionModal',
 			type: String,
 		},
 	},
+	setup() {
+		return {
+			formFields: [
+				{
+					name: 'Title',
+					type: 'text',
+				}, {
+					name: 'Description',
+					type: 'text',
+				},
+			],
+		};
+	},
 	methods: {
 		createNewCollection(formData: any): void {
 			Network.Post(Endpoints.CREATE_COLLECTION, {
@@ -43,4 +45,6 @@ name: 'CreateCollectionModal',
 			}, (this as any).createCollectionCallback);
 		},
 	},
-};
+});
+
+export default CreateCollectionModal;

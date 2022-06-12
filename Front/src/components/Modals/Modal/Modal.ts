@@ -1,7 +1,8 @@
+import { defineComponent } from 'vue';
 
-export default {
-    name: 'Modal',
-    props: {
+const Modal = defineComponent({
+	name: 'Modal',
+	props: {
 		displayHeader: {
 			type: Boolean,
 			default: true,
@@ -15,9 +16,11 @@ export default {
 			default: true,
 		},
 	},
-    methods: {
-        close() {
+	methods: {
+		close() {
             (this as any).$emit('close');
         },
-    },
-};
+	},
+});
+
+export default Modal;

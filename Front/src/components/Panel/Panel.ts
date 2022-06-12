@@ -1,6 +1,7 @@
+import { defineComponent } from 'vue';
 
-export default {
-name: 'panel',
+const Panel = defineComponent({
+	name: 'panel',
 	props: {
 		title: String,
 		subHeading: String,
@@ -8,17 +9,16 @@ name: 'panel',
 		buttonContent: String,
 		buttonCallback: Function,
 	},
-	data: function () {
+	setup() {
 		return {
 			selected: null,
 		};
-	},
-	methods: {
-		
 	},
 	computed: {
 		hasSubHeading() {
 			return !!(this as any).subHeading;
 		},
 	},
-};
+});
+
+export default Panel;
