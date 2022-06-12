@@ -5,13 +5,14 @@ import { booleanValidation, passwordValidation, stringValidation, usernameValida
 
 export type RequestMethods = 'POST' | 'GET';
 
-export type EndpointRoutes = 'test' | 'login' | 'logout' | 'createAccount' | 'getCollections' | 'createCollection' | 'saveCollection' | 'favouriteCollection';
+export type EndpointRoutes = 'test' | 'login' | 'logout' | 'createAccount' | 'getCollection' | 'getCollections' | 'createCollection' | 'saveCollection' | 'favouriteCollection';
 type EndpointMap = {[name: string]: EndpointRoutes};
 export const Endpoints: EndpointMap = {
 	TEST: 'test',
 	LOGIN: 'login',
 	LOGOUT: 'logout',
 	CREATE_ACCOUNT: 'createAccount',
+	GET_COLLECTION: 'getCollection',
 	GET_COLLECTIONS: 'getCollections',
 	CREATE_COLLECTION: 'createCollection',
 	SAVE_COLLECTION: 'saveCollection',
@@ -95,6 +96,18 @@ namespace Api {
 				name: 'pw',
 				validator: passwordValidation,
 				required: true,
+			},
+		],
+		response: [],
+		methods: [ 'POST', ],
+	};
+
+	export const getCollection: Endpoint = {
+		route: Endpoints.GET_COLLECTION,
+		params: [
+			{
+				name: 'collectionId',
+				validator: uuidValidation,
 			},
 		],
 		response: [],
@@ -190,6 +203,7 @@ namespace Api {
 		createAccount: createAccount,
 		login: login,
 		logout: logout,
+		getCollection,
 		getCollections,
 		createCollection,
 		saveCollection,

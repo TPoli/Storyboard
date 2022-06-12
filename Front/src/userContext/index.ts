@@ -1,34 +1,35 @@
-import { Collection } from "core"
+type Breadcrumb = {
+	title: string,
+	id: string;
+	type: 'Dashboard' | 'Collection',
+};
+interface IUserContext {
+	currentIndex: number;
+	history: Breadcrumb[];
+}
 
-class UserContext {
-	private _collections: Collection[] = [];
-	private _stack: any[] = [];
-	private _selectedIndex: number = -1;
+class UserContext implements IUserContext {
+	currentIndex: number;
+	history: Breadcrumb[];
 
-	constructor() {
-
+	constructor(data: IUserContext) {
+		this.currentIndex = data?.currentIndex ?? 0;
+		this.history = data?.history ?? [];
 	}
 
-	private async updateCollections(): Promise<void> {
-		// TODO : if memory usage gets high, drop some collections that are not in _stack or referenced by its contents
-	}
-
-	public openCollection(collection: Collection): void {
-		this._selectedIndex += 1;
-		if (this._selectedIndex <= 0) {
-			this._stack = [collection];
+	public openCollection(breadcrumb: Breadcrumb) {
+		const breadcrumbIndex = this.history.findIndex(b => b.id === breadcrumb.id);
+		if (breadcrumbIndex === -1) {
+			this.history.splice(this.currentIndex, this.history.length - this.currentIndex, breadcrumb);
+			this.currentIndex = this.history.length;
 		} else {
-			this._stack.splice(this._selectedIndex, this._stack.length, collection);
+			this.currentIndex = breadcrumbIndex + 1; // offset to account for dashboard
 		}
-
-		if(!this._collections.find(c => c.id === collection.id)) {
-			this._collections.push(collection);
-		}
-
-		this.updateCollections();
 	}
 }
 
 export {
+	Breadcrumb,
+	IUserContext,
 	UserContext,
 }

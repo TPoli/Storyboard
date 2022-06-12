@@ -32,35 +32,6 @@
   justify-content: space-between;
 }
 
-.sidebar {
-  margin: 0;
-  padding: 0;
-  width: 200px;
-  background-color: $parchment;
-  height: 100%;
-  overflow: auto;
-}
-
-/* Sidebar links */
-.sidebar a {
-  display: block;
-  color: $black;
-  padding: 16px;
-  text-decoration: none;
-}
-
-/* Active/current link */
-.sidebar a.active {
-  background-color: $parchment-lighter;
-  color: $black-lighter;
-}
-
-/* Links on mouse-over */
-.sidebar a:hover:not(.active) {
-  background-color: $parchment-lightest;
-  color: $black-lightest;
-}
-
 .content {
   width: 100%;
   margin: 0;

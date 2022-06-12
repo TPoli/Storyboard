@@ -3,12 +3,13 @@ import { Network } from '../../utils/Network';
 import LoginModal from '../Modals/LoginModal/LoginModal.vue';
 import { getState, setState, StoreComponent } from '@/store';
 import { setRoute } from '@/router';
-
+import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs.vue';
 
 export default {
 name: 'Page',
 	components: {
 		'login-modal': LoginModal,
+		Breadcrumbs,
 	},
 	data: function () {
 		return {
@@ -16,10 +17,10 @@ name: 'Page',
 		};
 	},
 	props: {
-		displaySidebar: {
-			default: true,
-			type: Boolean
-		},
+		hideBreadcrumbs: {
+			type: Boolean,
+			default: false,
+		}
 	},
 	methods: {
 		navigateToLogin() {

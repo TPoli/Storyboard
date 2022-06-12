@@ -3,19 +3,19 @@
 		<template v-slot:header>
 		</template>
 		<template v-slot:content>
-			<h1>{{collection.title}}</h1>
+			<h1>{{collection?.title ?? 'Loading'}}</h1>
 			<heart
 				tooltipSide="top"
-				:colour="collection.favourite ? 'pink' : 'grey'"
+				:colour="collection?.favourite ? 'pink' : 'grey'"
 				:onClick="toggleFavourite"
-				:tooltip="collection.favourite ? 'Unfavourite' : 'Favourite'"
+				:tooltip="collection?.favourite ? 'Unfavourite' : 'Favourite'"
 			/>
-			<input v-model="collection.title" :placeholder="collection.title">
+			<input v-if="collection" v-model="collection.title" :placeholder="collection.title">
 
 			<br>
-			{{collection.content}}
+			{{collection?.content}}
 			<br>
-			<textarea v-model="collection.content" :placeholder="collection.content"> </textarea>
+			<textarea v-if="collection" v-model="collection.content" :placeholder="collection.content"> </textarea>
 			
 			<br>
 

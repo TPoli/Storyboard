@@ -15,14 +15,8 @@
 	</div>
 
 	<div class='core'>
-		<div v-if="displaySidebar" id='sidebar' class='sidebar'>
-			<slot name="sidebar"></slot>
-
-			<a v-bind:class="{active : isActiveRoute('/dashboard')}" href="/dashboard">Dashboard</a>
-			<a href="/unused">Unused</a>
-
-		</div>
 		<div id='content' class='content'>
+			<Breadcrumbs v-if="!hideBreadcrumbs" />
 			<slot name="content"></slot>
 
 		</div>

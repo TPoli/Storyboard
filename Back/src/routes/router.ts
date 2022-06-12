@@ -2,6 +2,7 @@ import { ISuccessResponse, EndpointRoutes, Api } from 'core';
 import createAccount from './createAccount';
 import createCollectionsFn from './createCollections';
 import saveCollectionsFn from './saveCollections';
+import { getCollectionFn } from './getCollection';
 import getCollectionsFn from './getCollections';
 import loginFn from './login';
 import { Route } from './route';
@@ -43,6 +44,11 @@ export const Routes: RouteMap = {
 			req.transaction.sendResponse(res, req, payload);
 		},
 		params: Api.AllEndpoints['test'].params,
+		authenticatedUserRequired: true,
+	},
+	getCollection: {
+		callback: getCollectionFn,
+		params: Api.AllEndpoints['getCollection'].params,
 		authenticatedUserRequired: true,
 	},
 	getCollections: {

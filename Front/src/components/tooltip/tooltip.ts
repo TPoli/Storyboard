@@ -5,10 +5,6 @@ const tooltipSides = ['top', 'left', 'right', 'bottom'];
 const Tooltip = defineComponent({
 	name: 'tooltip',
 	props: {
-		onClick: {
-			type: Function,
-			required: true,
-		},
 		tooltipSide: {
 			type: String,
 			required: true,

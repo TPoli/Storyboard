@@ -32,6 +32,10 @@ export interface ILoginResponse extends ISuccessResponse {
 export interface IGetCollectionsPayload {
 	[keys: string]: ICollection[]
 }
+export interface IGetCollectionResponse extends ISuccessResponse {
+	collection: ICollection;
+}
+
 export interface IGetCollectionsResponse extends ISuccessResponse {
 	collections: IGetCollectionsPayload;
 }

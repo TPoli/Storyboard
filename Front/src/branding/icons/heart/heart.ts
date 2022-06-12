@@ -2,8 +2,7 @@ import { defineComponent } from 'vue';
 
 import Tooltip from '@/components/tooltip/tooltip.vue';
 import { tooltipSides } from '@/components/tooltip/tooltip';
-
-const heartColour = ['pink', 'grey'];
+import { supportedIconColours } from '..';
 
 const Heart = defineComponent({
 	name: 'heart',
@@ -26,7 +25,7 @@ const Heart = defineComponent({
 			type: String,
 			required: true,
 			validator(value: string) {
-				return heartColour.includes(value)
+				return supportedIconColours.includes(value)
 			}
 		},
 		tooltip: {

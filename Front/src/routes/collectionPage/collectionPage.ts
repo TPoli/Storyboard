@@ -4,7 +4,7 @@ import { getState, setState, StoreComponent } from '@/store';
 import { paths, setRoute } from '@/router';
 import { Network } from '@/utils/Network';
 
-import { Endpoints, ICollection, ICreateCollectionResponse, IFavouriteCollectionResponse, IGetCollectionsResponse } from 'core';
+import { Endpoints, ICollection, ICreateCollectionResponse, IFavouriteCollectionResponse, IGetCollectionResponse, IGetCollectionsResponse } from 'core';
 
 import Page from '@/components/Page/Page.vue';
 import Panel from '@/components/Panel/Panel.vue';
@@ -53,8 +53,8 @@ const CollectionPage = defineComponent({
 	},
 	data: function (): CollectionPageData {
 		return {
-			collection: cloneCollection(getState(this as unknown as StoreComponent).currentCollection),
-			originalCollection: cloneCollection(getState(this as unknown as StoreComponent).currentCollection),
+			collection: null,
+			originalCollection: null,
 			createNewCollectionModalOpen: false,
 		};
 	},
@@ -125,8 +125,9 @@ const CollectionPage = defineComponent({
 			setState(this as unknown as StoreComponent).openCollection(collection);
 			setRoute(this, '/collection/' + collection.uuid as unknown as paths);
 			Network.Post(Endpoints.GET_COLLECTIONS, { parentId: collection.uuid}, getCollectionsCallback);
-			this.collection = cloneCollection(getState(this as unknown as StoreComponent).currentCollection);
-			this.originalCollection = cloneCollection(this.collection);
+
+			this.collection = {...collection};
+			this.originalCollection = {...collection};
 		},
 		toggleFavourite() {
 			if (!this.collection) {
@@ -146,13 +147,52 @@ const CollectionPage = defineComponent({
 				uuid: this.collection.uuid,
 				favourite: !this.collection.favourite,
 			}, createCollectionCallback);
-		}
+		},
+		async loadCollectionBase() {
+			const state = getState(this as unknown as StoreComponent);
+
+			const collection = state.collectionCache.find(collection => collection.uuid === state.currentCollection);
+			if (collection) {
+				this.collection = {...collection};
+				this.originalCollection = {...collection};
+
+				return;
+			}
+			
+			const getCollectionCallback: Network.Callback = (response) => {
+				const loadedCollection = (response as IGetCollectionResponse).collection;
+
+				this.collection = {...loadedCollection};
+				this.originalCollection = {...loadedCollection};
+				setState(this as unknown as StoreComponent).openCollection({...loadedCollection});
+			};
+
+			Network.Post(Endpoints.GET_COLLECTION, { collectionId: state.currentCollection }, getCollectionCallback);
+		},
+		async loadCollection() {
+			const state = getState(this as unknown as StoreComponent);
+			const paramsId = this.$route.params.id as string;
+			if (state.currentCollection !== paramsId) {
+				setState(this as unknown as StoreComponent).setCurrentCollection(paramsId);
+				return;
+			}
+			
+			this.loadCollectionBase();
+		},
 	},
 	computed: {
 		allowSave() {
 			return (this as any).valid() && (this as any).modified();
 		},
 	},
+	beforeMount(){
+		this.loadCollection();
+	},
+	watch: {
+		'$store.state.currentCollection': function() {
+			this.loadCollectionBase();
+		}
+	  }
 });
 
 export default CollectionPage;

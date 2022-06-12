@@ -92,6 +92,7 @@ const Dashboard = defineComponent({
 			if (!collection) {
 				return;
 			}
+
 			setState(this as unknown as StoreComponent).openCollection(collection);
 			setRoute(this, '/collection/' + collectionId  as unknown as paths);
 		},

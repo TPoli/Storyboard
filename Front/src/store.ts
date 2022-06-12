@@ -1,8 +1,8 @@
 import { Component } from 'vue';
 import { createStore, Store, StoreOptions } from 'vuex';
 import createPersistedState from 'vuex-persistedstate';
-import { IIndexable } from '../../Back/src/models';
 import { ICollection } from 'core';
+import { IUserContext, UserContext } from './userContext';
 
 export type StoreComponent = Component & {
 	$store: Store<State>;
@@ -11,13 +11,17 @@ export type StoreComponent = Component & {
 export interface State {
 	username: string,
 	loggedIn: boolean,
-	currentCollection: ICollection|null,
+	currentCollection: string,
+	userContext: IUserContext;
+	collectionCache: ICollection[];
 }
 
 export interface IStateMutations {
 	login: (state: State, username: string) => void;
 	logOut: (state: State) => void;
 	openCollection: (state: State, collection: ICollection) => void;
+	updateUserContext: (state: State, userContext: IUserContext) => void;
+	setCurrentCollection: (state: State, collectionId: string) => void;
 }
 
 interface StateObject {
@@ -29,7 +33,12 @@ interface StateObject {
 const defaultState: State = {
 	username: '',
 	loggedIn: false,
-	currentCollection: null,
+	currentCollection: '',
+	collectionCache: [],
+	userContext: {
+		currentIndex: 0,
+		history: [],
+	},
 };
 
 const stateObject: StateObject = {
@@ -40,16 +49,37 @@ const stateObject: StateObject = {
 			state.loggedIn = true;
 		},
 		logOut (state) {
-			const newState = {
-				...defaultState,
-				username: state.username,
-			}
-			for (const key in Object.keys(newState)) {
-				(state as IIndexable)[key] = (newState as IIndexable)[key]
-			}
+			// state.username = state.username; // helper to log back in quickly
+			state.loggedIn = defaultState.loggedIn;
+			state.currentCollection = defaultState.currentCollection;
+			state.userContext = defaultState.userContext;
+			state.collectionCache = defaultState.collectionCache;
 		},
 		openCollection (state, collection) {
-			state.currentCollection = collection;
+			const userContext = new UserContext(state.userContext);
+
+			userContext.openCollection({
+				id: collection.uuid,
+				title: collection.title,
+				type: 'Collection',
+			});
+
+			state.userContext = {
+				currentIndex: userContext.currentIndex,
+				history: userContext.history,
+			};
+
+			if (!state.collectionCache.find(c => c.uuid === collection.uuid)) {
+				state.collectionCache.push(collection);
+			}
+			
+			state.currentCollection = collection.uuid;
+		},
+		updateUserContext (state, userContext) {
+			state.userContext = userContext;
+		},
+		setCurrentCollection (state, collectionId) {
+			state.currentCollection = collectionId;
 		},
 	},
 	plugins: [
@@ -76,6 +106,12 @@ export const setState = (component: StoreComponent) => {
 		},
 		openCollection: (collection: ICollection) => {
 			store.commit('openCollection', collection)
+		},
+		updateUserContext: (userContext: IUserContext) => {
+			store.commit('updateUserContext', userContext)
+		},
+		setCurrentCollection: (collectionId: string) => {
+			store.commit('setCurrentCollection', collectionId)
 		},
 	}
 }
