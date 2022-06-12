@@ -1,10 +1,12 @@
+import { defineComponent } from 'vue';
+import { useStore } from 'vuex';
+
 import { Network } from '../../utils/Network';
 import { Endpoints, ILoginResponse, Response } from 'core';
-import { getState, setState, StoreComponent } from '@/store';
+import { getState, setState, State, StoreComponent } from '@/store';
 import { setRoute } from '@/router';
 import TextInput from '@/components/Forms/TextInput/TextInput.vue';
 import BaseForm from '@/components/Forms/BaseForm/BaseForm.vue';
-import { defineComponent } from 'vue';
 
 type FormData = {
 	username: String,
@@ -18,8 +20,10 @@ const LoginContent = defineComponent({
 		BaseForm: BaseForm,
 	},
 	setup() {
+		const store = useStore<State>().state;
+
 		return {
-			username: getState(this as unknown as StoreComponent).username,
+			username: store.username,
 		};
 	},
 	methods: {

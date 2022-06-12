@@ -94,7 +94,6 @@ export const getState = (component: StoreComponent): State => {
 }
 
 export const setState = (component: StoreComponent) => {
-	
 	const store = component.$store;
 
 	return {
