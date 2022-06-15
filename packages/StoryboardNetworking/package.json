@@ -1,8 +1,8 @@
 {
-  "name": "storyboardnetworking",
+  "name": "storyboard-networking",
   "version": "1.0.0",
   "description": "",
-  "main": "index.ts",
+  "main": "src/index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build-dry": "tsc -b --verbose --dry",

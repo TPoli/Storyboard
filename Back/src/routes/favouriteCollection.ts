@@ -1,13 +1,15 @@
-import { IFailResponse, IFavouriteCollectionResponse } from 'core'
+import { FavouriteCollection, IFailResponse } from 'storyboard-networking';
 import { PermissionsAR } from '../models';
 import { ExpressFinalCallback } from '../types/types';
+
 /**
  * Purpose:
  * to set the favourite status of a collection for the current user
  */
-const favouriteCollectionFn: ExpressFinalCallback = async (req, res) => {
+const favouriteCollection: ExpressFinalCallback<FavouriteCollection.Body> = async (req, res) => {
 
-	const uuid = req.body.uuid;
+	const body = req.body as FavouriteCollection.Body;
+	const uuid = body.uuid;
 
 	const collection = (await req.user.getCollectionById(uuid));
 
@@ -30,8 +32,8 @@ const favouriteCollectionFn: ExpressFinalCallback = async (req, res) => {
 	}
 
 	// no change required
-	if (req.body.favourite === relatedPermissions.favourite) {
-		const payload: IFavouriteCollectionResponse = {
+	if (body.favourite === relatedPermissions.favourite) {
+		const payload: FavouriteCollection.Response = {
 			success: true,
 			collectionId: uuid,
 			favourite: false,
@@ -39,14 +41,14 @@ const favouriteCollectionFn: ExpressFinalCallback = async (req, res) => {
 		return req.transaction.sendResponse(res, req, payload);
 	}
 
-	relatedPermissions.favourite = req.body.favourite;
+	relatedPermissions.favourite = body.favourite;
 	const success = await relatedPermissions.save<PermissionsAR>(req, [
 		'favourite',
 		'lastUpdated',
 	]);
 
 	if (success) {
-		const payload: IFavouriteCollectionResponse = {
+		const payload: FavouriteCollection.Response = {
 			success: true,
 			collectionId: uuid,
 			favourite: relatedPermissions.favourite,
@@ -60,4 +62,6 @@ const favouriteCollectionFn: ExpressFinalCallback = async (req, res) => {
 	return req.transaction.sendResponse(res, req, payload);
 };
 
-export default favouriteCollectionFn;
+export {
+	favouriteCollection,
+}

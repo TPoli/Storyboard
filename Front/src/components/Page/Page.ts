@@ -1,4 +1,3 @@
-import { Entity, Endpoints, IResponse } from 'core';
 import { Network } from '../../utils/Network';
 import LoginModal from '../Modals/LoginModal/LoginModal.vue';
 import { getState, setState, StoreComponent } from '@/store';
@@ -7,6 +6,7 @@ import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs.vue';
 import Silhouette from '@/branding/icons/silhouette/silhouette.vue';
 import Dropdown from '@/components/Dropdown/Dropdown.vue';
 import { defineComponent } from 'vue';
+import { IResponse } from 'storyboard-networking';
 
 const Page = defineComponent({
 	name: 'Page',
@@ -31,26 +31,12 @@ const Page = defineComponent({
 		navigateToLogin() {
 			setRoute(this, '/login');
 		},
-		test() {
-			const entity = new Entity('Location');
-			entity.move(7);
-			Network.Post(Endpoints.TEST, {}, (response: IResponse) => {
-				
-			});
-			return 'test';
-		},
-		login() {
-			const loginCallback = (response: IResponse) => {
-
-			};
-			Network.Post(Endpoints.LOGIN, {un: 'bob', pw: 'bob',}, loginCallback);
-		},
 		logout() {
 			const logoutCallback = (response: IResponse) => {
 				setState(this as unknown as StoreComponent).logOut();
 				setRoute(this, '/login');
 			};
-			Network.Post(Endpoints.LOGOUT, {}, logoutCallback);
+			Network.Post('logout', {}, logoutCallback);
 		},
 		loggedIn() {
 			return getState(this as unknown as StoreComponent).loggedIn;

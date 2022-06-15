@@ -5,10 +5,11 @@ import Page from '../../components/Page/Page.vue';
 
 import { defineComponent, ref } from 'vue';
 import { Network } from '@/utils/Network';
-import { Endpoints, ICollection, ICreateCollectionResponse, IGetCollectionsResponse } from 'core';
+import { ICollection } from 'core';
 import { getState, setState, StoreComponent } from '@/store';
 import { paths, setRoute } from '@/router';
 import CreateCollectionModal from '@/components/Modals/CreateCollectionModal/createCollectionModal.vue';
+import { CreateCollection, GetCollections } from 'storyboard-networking';
 
 const Dashboard = defineComponent({
 	name: 'dashboard',
@@ -30,8 +31,8 @@ const Dashboard = defineComponent({
 
 		const favourites = ref([] as ICollection[]);
 
-		const getCollectionsCallback: Network.Callback = (response) => {
-			const collections = (response as IGetCollectionsResponse).collections;
+		const getCollectionsCallback = (response: GetCollections.Response) => {
+			const collections = response.collections;
 
 			if (collections.recentlyModified) {
 				recentlyModified.value = collections.recentlyModified;
@@ -47,12 +48,16 @@ const Dashboard = defineComponent({
 			}
 		};
 
-		Network.Post(Endpoints.GET_COLLECTIONS, { collections: [
+		const collections = [
 			'recentlyModified',
 			'myCollections',
 			'favourites',
 			'availableCollections',
-		],}, getCollectionsCallback);
+		];
+
+		Network.Post<GetCollections.Body, GetCollections.Response>('getCollections', {
+			collections,			
+		}, getCollectionsCallback);
 
 		return {
 			recentlyModified,
@@ -66,7 +71,7 @@ const Dashboard = defineComponent({
 		getUsersName(): string {
 			return getState(this as unknown as StoreComponent).username;
 		},
-		createCollectionCallback(response: ICreateCollectionResponse) {
+		createCollectionCallback(response: CreateCollection.Response) {
 			const newCollection = response.newCollection;
 			this.myCollections.push(newCollection);
 			this.createNewCollectionModalOpen = false;

@@ -1,9 +1,9 @@
 import * as express from 'express';
 
-import { IResponse } from 'core';
 import { LoggedInRequest } from '../../types/types';
 import { TransactionsParams } from './types';
 import { TransactionsModel } from './transactionsModel';
+import { IResponse } from 'storyboard-networking';
 
 export class TransactionsAR extends TransactionsModel {
 	public sendResponse = (response: express.Response, req: LoggedInRequest|null, payload: IResponse): void => {

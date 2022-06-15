@@ -1,7 +1,6 @@
 import FormModal from '@/components/Modals/FormModal/FormModal.vue';
 
 import { Network } from '@/utils/Network';
-import { Endpoints } from 'core';
 
 import { defineComponent } from 'vue';
 
@@ -38,7 +37,7 @@ const CreateCollectionModal = defineComponent({
 	},
 	methods: {
 		createNewCollection(formData: any): void {
-			Network.Post(Endpoints.CREATE_COLLECTION, {
+			Network.Post('createCollection', {
 				parentId: (this as any).parentId,
 				name: formData.Title,
 				description: formData.Description,

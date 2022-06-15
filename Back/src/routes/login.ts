@@ -2,18 +2,18 @@ import {
 	AccountAR,
 	IIndexable,
 } from '../models';
-import { IAuthFailResponse, ILoginResponse } from 'core'
 import { ExpressFinalCallback } from '../types/types';
 import passport from 'passport';
+import { IAuthFailResponse, Login } from 'storyboard-networking';
 
-const loginFn: ExpressFinalCallback = (req, res, next) => {
-	const login = (loginErr: Error) => {
+const login: ExpressFinalCallback<Login.Body> = (req, res, next) => {
+	const loginFn = (loginErr: Error) => {
 		if (loginErr) {
 			console.log('error');
 			return next?.(loginErr);
 		}
 		const user: IIndexable = req.user;
-		const payload: ILoginResponse = {
+		const payload: Login.Response = {
 			success: true,
 			username: user.username,
 		};
@@ -31,8 +31,10 @@ const loginFn: ExpressFinalCallback = (req, res, next) => {
 			};
 			return req.transaction.sendResponse(res, null, payload);
 		}
-		req.login(user, login); // not called automatically due to custom callback
+		req.login(user, loginFn); // not called automatically due to custom callback
 	})(req, res, next);
 };
 
-export default loginFn;
+export {
+	login,
+};

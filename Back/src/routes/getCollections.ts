@@ -1,4 +1,5 @@
-import { ICollection, IGetCollectionsPayload, IGetCollectionsResponse } from 'core';
+import { ICollection } from 'core';
+import { GetCollections } from 'storyboard-networking';
 import { CollectionAR } from '../models';
 import { ExpressFinalCallback } from '../types/types';
 
@@ -38,7 +39,7 @@ const collectionModelToInterfaceFn = (favourites: CollectionAR[]) => (
 	}
 );
 
-const getCollectionsFn: ExpressFinalCallback = async (req, res) => {
+const getCollections: ExpressFinalCallback<GetCollections.Body> = async (req, res) => {
 
 	const requestedCollections: string[] = req.body.collections ?? [];
 
@@ -63,7 +64,7 @@ const getCollectionsFn: ExpressFinalCallback = async (req, res) => {
 		: []
 	);
 
-	const collectionsPayload: IGetCollectionsPayload = {};
+	const collectionsPayload: GetCollections.Payload = {};
 
 	if (returnRecent) {
 		const recentCollections = await req.user.myRecentCollections();
@@ -87,7 +88,7 @@ const getCollectionsFn: ExpressFinalCallback = async (req, res) => {
 		collectionsPayload.childCollections = children.map(collectionModelToInterfaceFn(favourites));
 	}
 
-	const payload: IGetCollectionsResponse = {
+	const payload: GetCollections.Response = {
 		success: true,
 		message: 'Well done!',
 		collections: collectionsPayload,
@@ -96,4 +97,6 @@ const getCollectionsFn: ExpressFinalCallback = async (req, res) => {
 	req.transaction.sendResponse(res, req, payload);
 };
 
-export default getCollectionsFn;
+export {
+	getCollections,
+};

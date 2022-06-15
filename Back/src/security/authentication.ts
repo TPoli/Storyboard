@@ -5,13 +5,16 @@ import random from 'random';
 import { AccountAR } from '../models';
 import passport from 'passport';
 import verifyUser from './verifyUser';
+import { LoggedInRequest } from '../types/types';
+import { CreateAccount } from 'storyboard-networking';
 
-const createAccount = (req:any, username:any, password: string, done:any) => {
+const createAccount = (req: LoggedInRequest, username: string, password: string, done:any) => {
+    const body: CreateAccount.Body = req.body as CreateAccount.Body;
     const account = new AccountAR({
         id: '',
         username,
-        email: req?.body?.email || null,
-        mobile: req?.body?.mobile || null,
+        email: (body?.email) ?? null,
+        mobile: (body?.mobile) ?? null,
     });
 
     const hashCallback = async (err?: Error, hash?: string) => {
@@ -59,14 +62,14 @@ const createAccount = (req:any, username:any, password: string, done:any) => {
 
 const setupAuth = async (): Promise<void> => {
 	passport.use('login', new Strategy({
-		usernameField: 'un',
-		passwordField: 'pw',
+		usernameField: 'username',
+		passwordField: 'password',
 		session: true,
 	}, verifyUser));
 	
 	passport.use('createAccount', new Strategy({
-		usernameField: 'un',
-		passwordField: 'pw',
+		usernameField: 'username',
+		passwordField: 'password',
         passReqToCallback: true,
 		session: true,
 	}, createAccount));

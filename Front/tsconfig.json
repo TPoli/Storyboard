@@ -36,9 +36,10 @@
     "tests/**/*.ts",
     "tests/**/*.tsx"
   ],
-  "exclude": ["node_modules", "types"],
-  "typeRoots": [ "./types", "./node_modules/@types"],
+  "exclude": ["node_modules", ],
+  // "typeRoots": [ "./types", "./node_modules/@types"],
   "references": [
+    { "path": "../packages/StoryboardNetworking" },
     { "path": "../packages/core" }
   ]
 }

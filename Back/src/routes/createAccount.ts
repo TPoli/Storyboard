@@ -1,15 +1,15 @@
 import { AccountAR } from '../models';
-import { IAccountFailResponse, ILoginResponse } from 'core';
+import { IAccountFailResponse, Login } from 'storyboard-networking';
 import passport from 'passport';
 import { ExpressFinalCallback } from '../types/types';
 
-const createAccountFn: ExpressFinalCallback = (req, res, next) => {
+const createAccount: ExpressFinalCallback<Login.Body> = (req, res, next) => {
 	const loginCallback = (loginErr: Error) => {
 		if (loginErr) {
 			console.log('error');
 			return next?.(loginErr);
 		}
-		const response: ILoginResponse = {
+		const response: Login.Response = {
 			success: true,
 			username: (req.user as AccountAR).username,
 		};
@@ -32,4 +32,6 @@ const createAccountFn: ExpressFinalCallback = (req, res, next) => {
 	})(req, res, next);
 };
 
-export default createAccountFn;
+export {
+	createAccount,
+}

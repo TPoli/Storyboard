@@ -14,8 +14,6 @@ import passport from 'passport';
 import { setupRoutesFn } from './src/main';
 import { getSessionStore } from './src/main/sessionStore';
 
-import { testFunc } from 'storyboardnetworking';
-
 const express = require('express');
 
 const cookieParser = require('cookie-parser');
@@ -96,5 +94,3 @@ const main = async () => {
 };
 
 main();
-
-testFunc();

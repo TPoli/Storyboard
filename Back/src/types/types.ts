@@ -1,3 +1,4 @@
+import { GenericObject } from 'core';
 import * as express from 'express';
 import {
 	AccountAR,
@@ -8,7 +9,14 @@ export type ExpressCallback = (req: express.Request, res: express.Response, next
 
 export interface LoggedInRequest extends express.Request {
 	transaction: TransactionsAR,
-	user: AccountAR
+	user: AccountAR,
+	body: GenericObject,
 }
 
-export type ExpressFinalCallback = (req: LoggedInRequest, res: express.Response, next?: express.NextFunction) => void;
+interface PayloadRequest<T> extends express.Request {
+	transaction: TransactionsAR,
+	user: AccountAR,
+	body: T,
+}
+
+export type ExpressFinalCallback<T> = (req: PayloadRequest<T>, res: express.Response, next?: express.NextFunction) => void;

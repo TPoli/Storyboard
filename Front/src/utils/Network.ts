@@ -1,4 +1,5 @@
-import { EndpointRoutes, Api, Response, IAuthFailResponse, Config } from 'core';
+import { Config } from 'core';
+import { AllRoutePayloads, AllRoutes, IAuthFailResponse, RouteNames } from 'storyboard-networking';
 
 import { store } from '../store';
 
@@ -7,9 +8,8 @@ const axios = require('axios');
 axios.defaults.withCredentials = true;
 
 export namespace Network {
-	export type Callback = (response: Response) => void;
 
-	const createUrl = (endpoint: string, params: object = {}) => {
+	const createUrl = (endpoint: RouteNames, params: AllRoutePayloads = {}) => {
 		let url = `${Config.connectionProtocal}://${Config.serverUrl}:${Config.serverPort}/${endpoint}`;
 		if (params) {
 			let first = true;
@@ -26,10 +26,9 @@ export namespace Network {
 		return url;
 	};
 
-	export const Get = async (endpoint: EndpointRoutes, params: object, callback?: Callback) => {
-
-		if (!Api.AllEndpoints[endpoint].methods.find(restMethod => restMethod === 'GET')) {
-			// route doesn't support get
+	export async function Get<BodyType extends AllRoutePayloads, ResponseType>(endpoint: RouteNames, params: BodyType, callback?: (response: ResponseType) => void): Promise<boolean> {
+		const route = AllRoutes.find((r) => r.path === endpoint);
+		if (!route || !route.methods.includes('GET')) {
 			return false;
 		}
 
@@ -53,15 +52,13 @@ export namespace Network {
 
 			return false;
 		}
-	};
+	}
 
-	export const Post = async (endpoint: EndpointRoutes, params: object, callback?: Callback) => {
-
-		if (!Api.AllEndpoints[endpoint].methods.find(restMethod => restMethod === 'POST')) {
-			// route doesn't support post
+	export async function Post<BodyType extends AllRoutePayloads, ResponseType> (endpoint: RouteNames, params: BodyType, callback: (response: ResponseType) => void): Promise<boolean> {
+		const route = AllRoutes.find((r) => r.path === endpoint);
+		if (!route || !route.methods.includes('POST')) {
 			return false;
 		}
-
 		try {
 			const response = await axios({
 				method: 'post',
@@ -86,5 +83,5 @@ export namespace Network {
 
 			return false;
 		}
-	};
+	}
 }

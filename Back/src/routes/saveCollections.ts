@@ -1,6 +1,6 @@
-import { IFailResponse, ISaveCollectionResponse } from 'core'
 import { ExpressFinalCallback } from '../types/types';
 import { AccountAR, CollectionAR } from '../models';
+import { IFailResponse, SaveCollection } from 'storyboard-networking';
 
 const findCollection = async (uuid: string, user: AccountAR): Promise<CollectionAR | null> => {
 	const myCollections = await user.myCollections();
@@ -15,7 +15,7 @@ const findCollection = async (uuid: string, user: AccountAR): Promise<Collection
 	return availableCollections.find(collection => collection.id === uuid) ?? null;
 }
 
-const saveCollectionsFn: ExpressFinalCallback = async (req, res) => {
+const saveCollections: ExpressFinalCallback<SaveCollection.Body> = async (req, res) => {
 
 	let collection: CollectionAR|null = null;
 	if (req.body.uuid) {
@@ -51,7 +51,7 @@ const saveCollectionsFn: ExpressFinalCallback = async (req, res) => {
 	}
 
 	collection.data = {
-		content: req.body.content ?? '',
+		content: req.body.conten ?? '',
 		description: req.body.description ?? '',
 	};
 	collection.name = req.body.title ?? collection.name;
@@ -66,7 +66,7 @@ const saveCollectionsFn: ExpressFinalCallback = async (req, res) => {
 	]);
 
 	if (success) {
-		const payload: ISaveCollectionResponse = {
+		const payload: SaveCollection.Response = {
 			success: true,
 			message: 'Collection Saved',
 		};
@@ -79,4 +79,6 @@ const saveCollectionsFn: ExpressFinalCallback = async (req, res) => {
 	return req.transaction.sendResponse(res, req, payload);
 };
 
-export default saveCollectionsFn;
+export {
+	saveCollections,
+}

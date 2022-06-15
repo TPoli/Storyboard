@@ -1,15 +1,35 @@
 import { createLogMiddlewareFn } from '.';
-import { IFailResponse, IAuthFailResponse, Api, Parameter, GenericObject } from 'core';
-import { Routes } from '../routes/router';
+import { GenericObject } from 'core';
+import { IFailResponse, IAuthFailResponse } from 'storyboard-networking';
 import { ExpressCallback, LoggedInRequest } from '../types/types';
+import { endpointHandlers } from './routeHandlerMap';
+import { AllRoutes, Route, RouteTypes, Parameter } from 'storyboard-networking';
 
 const setupRoutesFn = (app: any) => {
-    Object.entries(Api.AllEndpoints).forEach(([, endpoint]) => {
+    AllRoutes.map((r: Route) => {
+        const logMiddleware = createLogMiddlewareFn(r.path);
+        const middlewares = [
+            logMiddleware,
+        ];
 
-        // build middleware that validates parameters and calls any additional middleware
-        const middleware: ExpressCallback = (req, res, next) => {
+        if (r.authenticatedUserRequired) {
+            const checkAuthenticatedMiddleware: ExpressCallback = (req: LoggedInRequest, res, next) => {
+                const transaction = req.transaction;
+                if (req.isAuthenticated()) {
+                    return next();
+                }
+                const payload: IAuthFailResponse = {
+                    success: false,
+                    message: 'authentication failed',
+                };
+                return transaction.sendResponse(res, req, payload);
+            }
+            middlewares.push(checkAuthenticatedMiddleware);
+        }
+
+        const validationMiddleware: ExpressCallback = (req, res, next) => {
             const validatedBody: GenericObject = {};
-            endpoint.params.forEach((param: Parameter) => {
+            r.params.forEach((param: Parameter) => {
                 const value = req?.body[param.name] ?? null;
 
                 if (value === null) {
@@ -64,42 +84,18 @@ const setupRoutesFn = (app: any) => {
             // after this point only validated parameters are available
             req.body = validatedBody;
 
-            if (endpoint.middleware) {
-                endpoint.middleware(req, res, next);
-            } else {
-                next();
-            }
+            next();
         };
 
-        const logMiddleware = createLogMiddlewareFn(endpoint.route);
+        middlewares.push(validationMiddleware);
 
-        const checkAuthenticatedMiddleware: ExpressCallback = (req: LoggedInRequest, res, next) => {
-            const transaction = req.transaction;
-            if (req.isAuthenticated()) {
-                return next();
-            }
-            const payload: IAuthFailResponse = {
-                success: false,
-                message: 'authentication failed',
-            };
-            return transaction.sendResponse(res, req, payload);
-        }
-
-        const middlewares = [
-            logMiddleware,
-            middleware,
-            Routes[endpoint.route].callback,
-        ];
-
-        if (Routes[endpoint.route].authenticatedUserRequired) {
-            middlewares.splice(1,0, checkAuthenticatedMiddleware);
-        }
-        
-        endpoint.methods.forEach((method) => {
+        middlewares.push(endpointHandlers[r.path]);
+        // register route
+        r.methods.forEach((method: RouteTypes) => {
             if (method === 'GET') {
-                app.get('/' + endpoint.route, ...middlewares);
+                app.get('/' + r.path, ...middlewares);
             } else if (method === 'POST') {
-                app.post('/' + endpoint.route, ...middlewares);
+                app.post('/' + r.path, ...middlewares);
             }
         });
     });

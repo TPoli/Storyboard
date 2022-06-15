@@ -1,9 +1,10 @@
-import { IFailResponse, EndpointRoutes } from 'core';
+import { IFailResponse } from 'storyboard-networking';
+import { RouteNames } from 'storyboard-networking';
 import { TransactionsAR } from '../models';
 import { houseAccountId } from '../models/accountAR';
 import { ExpressCallback, LoggedInRequest } from '../types/types';
 
-const createLogMiddlewareFn = (endpoint: EndpointRoutes) => {
+const createLogMiddlewareFn = (endpoint: RouteNames) => {
     const middleware: ExpressCallback = async (req, res, next) => {
         const transaction = new TransactionsAR({
             params: req.body,

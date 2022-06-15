@@ -1,18 +1,19 @@
 import { ExpressFinalCallback } from '../types/types';
 import { CollectionAR } from '../models';
-import { PermissionType, ICreateCollectionResponse, IFailResponse } from 'core';
+import { PermissionType } from 'core';
+import { CreateCollection, IFailResponse } from 'storyboard-networking';
 
-const createCollectionsFn: ExpressFinalCallback = async (req, res) => {
+const createCollections: ExpressFinalCallback<CreateCollection.Body> = async (req, res) => {
 
 	const collection = new CollectionAR({
-		parentId: req.body.parentId,
+		parentId: req.body.parentId as string,
 	});
 
 	const requestBody = req.body;
 
 	collection.name = requestBody.name ?? collection.name;
 
-	collection.data.description = requestBody.name ?? collection.name;
+	collection.data.description = collection.name;
 
 	if (requestBody.after) {
 		// TODO implement when enabling ordering of children
@@ -55,7 +56,7 @@ const createCollectionsFn: ExpressFinalCallback = async (req, res) => {
 	]);
 
 	if (success) {
-		const payload: ICreateCollectionResponse = {
+		const payload: CreateCollection.Response = {
 			success: true,
 			newCollection: {
 				title: collection.name,
@@ -73,4 +74,6 @@ const createCollectionsFn: ExpressFinalCallback = async (req, res) => {
 	return req.transaction.sendResponse(res, req, payload);
 };
 
-export default createCollectionsFn;
+export {
+	createCollections,
+}

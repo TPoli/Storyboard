@@ -54,6 +54,6 @@
     "passport-local": "^1.0.0",
     "random": "^3.0.6",
     "reflect-metadata": "^0.1.13",
-    "storyboardnetworking": "file:../packages/StoryboardNetworking"
+    "storyboard-networking": "file:../packages/StoryboardNetworking"
   }
 }

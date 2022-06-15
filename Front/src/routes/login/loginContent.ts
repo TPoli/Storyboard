@@ -2,15 +2,15 @@ import { defineComponent } from 'vue';
 import { useStore } from 'vuex';
 
 import { Network } from '../../utils/Network';
-import { Endpoints, ILoginResponse, Response } from 'core';
-import { getState, setState, State, StoreComponent } from '@/store';
+import { setState, State, StoreComponent } from '@/store';
 import { setRoute } from '@/router';
 import TextInput from '@/components/Forms/TextInput/TextInput.vue';
 import BaseForm from '@/components/Forms/BaseForm/BaseForm.vue';
+import { Login } from 'storyboard-networking';
 
 type FormData = {
-	username: String,
-	password: String,
+	username: string,
+	password: string,
 };
 
 const LoginContent = defineComponent({
@@ -28,8 +28,8 @@ const LoginContent = defineComponent({
 	},
 	methods: {
 		login(formData: FormData) {
-			const loginCallback = (response: Response): void => {
-				setState(this as unknown as StoreComponent).login((response as ILoginResponse).username);
+			const loginCallback = (response: Login.Response): void => {
+				setState(this as unknown as StoreComponent).login(response.username);
 
 				const fullPath = (this as any).$route.fullPath;
 				if (fullPath === '/login' || fullPath === '/')
@@ -38,7 +38,7 @@ const LoginContent = defineComponent({
 				}
 			
 			};
-			Network.Post(Endpoints.LOGIN, { un: formData.username, pw: formData.password,}, loginCallback);
+			Network.Post<Login.Body, Login.Response>('login', { username: formData.username, password: formData.password,}, loginCallback);
 		},
 		validateUsername(value: String) {
 			return this.lengthCheck(value, 'Username', 4, 35);
