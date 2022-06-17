@@ -1,4 +1,5 @@
 import * as mysqlPromise from 'mysql2/promise';
+import { RowDataPacket } from 'mysql2/promise';
 
 import { ensureDbIsSetup } from './databaseSetup';
 
@@ -29,5 +30,5 @@ export const InitDb = async () => {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const query = async (statement: string, params: any[] = []) => {
-	return await UserConnection().query(statement, params);
+	return (await UserConnection().query<RowDataPacket[]>(statement, params))[0];
 };

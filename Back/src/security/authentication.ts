@@ -1,5 +1,5 @@
 import * as  bcrypt from 'bcrypt';
-import { Strategy } from 'passport-local';
+import { IVerifyOptions, Strategy } from 'passport-local';
 import random from 'random';
 
 import { AccountAR } from '../models';
@@ -8,7 +8,9 @@ import verifyUser from './verifyUser';
 import { LoggedInRequest } from '../types/types';
 import { CreateAccount } from 'storyboard-networking';
 
-const createAccount = (req: LoggedInRequest, username: string, password: string, done:any) => {
+type VerifyFunctionDone = (error: Error, user?: AccountAR | false, options?: IVerifyOptions) => void;
+
+const createAccount = (req: LoggedInRequest, username: string, password: string, done: VerifyFunctionDone) => {
     const body: CreateAccount.Body = req.body as CreateAccount.Body;
     const account = new AccountAR({
         id: '',

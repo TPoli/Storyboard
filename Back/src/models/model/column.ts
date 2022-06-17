@@ -1,5 +1,7 @@
 import 'reflect-metadata';
 import { ColumnType } from './columnType';
+import { ModelBase } from './model';
+import { Column } from './types';
 
 const columnDataKey = Symbol('columnData');
 
@@ -16,13 +18,13 @@ const columnTypeToSQL = (jsType: string, field: string) => {
 	}
 };
 
-function column(params: any): PropertyDecorator {
+function column(params?: Partial<Column>): PropertyDecorator {
 	return (target, key) => {
-		const columnData: any[] = Reflect.getOwnMetadata(columnDataKey, target) || [];
+		const columnData: Column[] = Reflect.getOwnMetadata(columnDataKey, target) || [];
 		if (!columnData.find(col => col.name === key)) {
 			columnData.push({
-				name: key,
-				type: params?.type ?? columnTypeToSQL(Reflect.getMetadata('design:type', target, key).name, `${(target as any).table}:${key as string}`),
+				name: String(key),
+				type: params?.type ?? columnTypeToSQL(Reflect.getMetadata('design:type', target, key).name, `${(target as ModelBase).table}:${key as string}`),
 				primary: params?.primary ?? false,
 				taintable: params?.taintable ?? false,
 				autoIncrement: params?.autoIncrement ?? false,

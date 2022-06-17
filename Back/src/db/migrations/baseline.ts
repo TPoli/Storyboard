@@ -32,7 +32,12 @@ const createBaselineMigration = (index: number, name: string, data: Column[]) =>
 
 const modifyBaselineForeignKeyMigration = (fileName: string, data: ColumnRelation[]) => {
 	const fileContents = fs.readFileSync(fileName, 'utf-8');
-	const updatedContents = fileContents.replace(/\['DATA'\]/gim, JSON.stringify(data, null, 4));
+
+	const jsonWithoutQuotesRegex = /^(\s*)"([^:]+)" ?: ?"(.+)",?\s*$/gm
+
+	const dataString = JSON.stringify(data, null, 4).replace(jsonWithoutQuotesRegex, '$1\'$2\': \'$3\',');
+
+	const updatedContents = fileContents.replace(/\['DATA'\]/gm, dataString);
 	fs.writeFileSync(fileName, updatedContents, 'utf-8');
 }
 

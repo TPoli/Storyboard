@@ -9,7 +9,7 @@ export type Column = {
 	nullable: boolean;
 	autoIncrement: boolean;
 	default?: 'NULL';
-	unique?: true;
+	unique?: boolean;
 	references?: {
 		model: TableNames,
 		column: string

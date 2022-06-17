@@ -4,40 +4,40 @@ import { Migration } from '../migration';
 
 const tableData = [
     {
-        "sourceTable": "collections",
-        "sourceColumn": "beforeCollection",
-        "referencedTable": "collections",
-        "referencedColumn": "id"
+        'sourceTable': 'collections',
+        'sourceColumn': 'beforeCollection',
+        'referencedTable': 'collections',
+        'referencedColumn': 'id',
     },
     {
-        "sourceTable": "collections",
-        "sourceColumn": "afterCollection",
-        "referencedTable": "collections",
-        "referencedColumn": "id"
+        'sourceTable': 'collections',
+        'sourceColumn': 'afterCollection',
+        'referencedTable': 'collections',
+        'referencedColumn': 'id',
     },
     {
-        "sourceTable": "collections",
-        "sourceColumn": "parentId",
-        "referencedTable": "collections",
-        "referencedColumn": "id"
+        'sourceTable': 'collections',
+        'sourceColumn': 'parentId',
+        'referencedTable': 'collections',
+        'referencedColumn': 'id',
     },
     {
-        "sourceTable": "permissions",
-        "sourceColumn": "collectionId",
-        "referencedTable": "collections",
-        "referencedColumn": "id"
+        'sourceTable': 'permissions',
+        'sourceColumn': 'collectionId',
+        'referencedTable': 'collections',
+        'referencedColumn': 'id',
     },
     {
-        "sourceTable": "permissions",
-        "sourceColumn": "accountId",
-        "referencedTable": "account",
-        "referencedColumn": "id"
+        'sourceTable': 'permissions',
+        'sourceColumn': 'accountId',
+        'referencedTable': 'account',
+        'referencedColumn': 'id',
     },
     {
-        "sourceTable": "transactions",
-        "sourceColumn": "accountId",
-        "referencedTable": "account",
-        "referencedColumn": "id"
+        'sourceTable': 'transactions',
+        'sourceColumn': 'accountId',
+        'referencedTable': 'account',
+        'referencedColumn': 'id',
     }
 ];
 
