@@ -6,7 +6,7 @@ import { ensureDbIsSetup } from './databaseSetup';
 let userConnection: mysqlPromise.Connection|null = null;
 let adminConnection: mysqlPromise.Connection|null = null;
 
-export const AdminConnection = () => {
+export const AdminConnection = (): mysqlPromise.Connection => {
 	if (!adminConnection) {
 		throw new Error('admin database connection not established');
 	}
@@ -14,7 +14,7 @@ export const AdminConnection = () => {
 	return adminConnection;
 }
 
-export const UserConnection = () => {
+export const UserConnection = (): mysqlPromise.Connection => {
 	if (!userConnection) {
 		throw new Error('user database connection not established');
 	}
@@ -22,13 +22,13 @@ export const UserConnection = () => {
 	return userConnection;
 }
 
-export const InitDb = async () => {
+export const InitDb = async (): Promise<void> => {
 	const connections = await ensureDbIsSetup();
 	userConnection = connections.userConnection;
 	adminConnection = connections.adminConnection;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const query = async (statement: string, params: any[] = []) => {
+export const query = async (statement: string, params: any[] = []): Promise<mysqlPromise.RowDataPacket[]> => {
 	return (await UserConnection().query<RowDataPacket[]>(statement, params))[0];
 };
