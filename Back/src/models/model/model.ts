@@ -44,6 +44,7 @@ abstract class Model extends ModelBase {
 	 * @param req LoggedInRequest|null
 	 * @returns Promise<boolean>
 	 */
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	protected async beforeSave(req: LoggedInRequest|null): Promise<boolean> {
 		if (!this.id) {
 			this.id = randomUUID();
@@ -61,6 +62,7 @@ abstract class Model extends ModelBase {
 		return await this.afterSave(req);
 	}
 
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	public async delete(req: LoggedInRequest|null): Promise<boolean> {
 		// TODO add before delete hook
 		if (!await deleteModelFn(this)) {
@@ -77,6 +79,7 @@ abstract class Model extends ModelBase {
 	 * @param req LoggedInRequest|null
 	 * @returns Promise<boolean>
 	 */
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	protected async afterSave(req: LoggedInRequest|null): Promise<boolean> {
 		return true;
 	}

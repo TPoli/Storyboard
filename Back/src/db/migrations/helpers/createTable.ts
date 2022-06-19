@@ -32,7 +32,7 @@ const getColumnFragment = (column: Column) => {
 }
 
 // create table statically using provided data
-const createTable = async (tableName: string, columns: Column[], connection: mysqlPromise.Connection) => {
+const createTable = async (tableName: string, columns: Column[], connection: mysqlPromise.Connection): Promise<mysqlPromise.RowDataPacket[]> => {
 	console.log(`Creating table ${tableName}`);
 
 	if (!config) {
@@ -60,7 +60,7 @@ const createTable = async (tableName: string, columns: Column[], connection: mys
 	queryFragments.push(')');
 
 	try {
-		return connection.query(queryFragments.join(''));
+		return (await connection.query<mysqlPromise.RowDataPacket[]>(queryFragments.join('')))[0];
 	} catch (error) {
 		throw error;
 	}

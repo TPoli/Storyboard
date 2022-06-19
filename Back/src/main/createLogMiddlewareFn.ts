@@ -4,7 +4,7 @@ import { TransactionsAR } from '../models';
 import { houseAccountId } from '../models/accountAR';
 import { ExpressCallback, LoggedInRequest } from '../types/types';
 
-const createLogMiddlewareFn = (endpoint: RouteNames) => {
+const createLogMiddlewareFn = (endpoint: RouteNames): ExpressCallback => {
     const middleware: ExpressCallback = async (req, res, next) => {
         const transaction = new TransactionsAR({
             params: req.body,
@@ -17,20 +17,13 @@ const createLogMiddlewareFn = (endpoint: RouteNames) => {
         const loggedInReq = req as LoggedInRequest;
         
         loggedInReq.transaction = transaction;
-        const success = await transaction.save<TransactionsAR>(loggedInReq, [
-            'id',
-            'accountId',
-            'route',
-            'params',
-            'response',
-            'ipAddress',
-        ]);
+        const success = await transaction.save<TransactionsAR>(loggedInReq);
 
         if (success) {
             next();
         } else {
             const response: IFailResponse = {
-                message: 'faled to process request',
+                message: 'failed to process request',
                 success: false,
             };
             res.send(response);

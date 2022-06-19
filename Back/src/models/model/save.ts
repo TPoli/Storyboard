@@ -111,7 +111,7 @@ const update = async (model: ModelBase, columns: string[]): Promise<boolean> => 
  * @param columns 
  */
 const saveModelFn = async (model: Model, columns: string[] = []): Promise<boolean> => {
-	const columnsToUse = columns ? columns : model.getAllColumns();
+	const columnsToUse = columns.length > 0 ? columns : model.getAllColumns();
 	if (model.isNew) {
 		return await insert(model, columnsToUse);
 	} else {

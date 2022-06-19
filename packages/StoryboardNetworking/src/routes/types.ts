@@ -27,14 +27,14 @@ type RouteBodyValueTypeArray<T extends {isArray?: boolean, type: unknown}> = (
 	: RouteBodyValueType<T>
 );
 
-type RouteBodyRequired<T extends { name: string, isArray?: boolean, type: unknown, required?: boolean }> = {
+type RouteBodyRequired<T extends Parameter> = {
     [Member in T as Member["name"]]: Member['required'] extends true ? RouteBodyValueTypeArray<Member> : never;
 }
-type RouteBodyOptional<T extends { name: string, isArray?: boolean, type: unknown, required?: boolean }> = {
+type RouteBodyOptional<T extends Parameter> = {
     [Member in T as Member["name"]]?: Member['required'] extends true ? never : RouteBodyValueTypeArray<Member>;
 }
 
-type ParamBody<T extends { name: string, type: unknown, required?: boolean }> = Pick<RouteBodyRequired<T>, KeysMatching<RouteBodyRequired<T>, never>> & Pick<RouteBodyOptional<T>, KeysMatching<RouteBodyOptional<T>, undefined>>;
+type ParamBody<T extends Parameter> = Pick<RouteBodyRequired<T>, KeysMatching<RouteBodyRequired<T>, never>> & Pick<RouteBodyOptional<T>, KeysMatching<RouteBodyOptional<T>, undefined>>;
 
 interface IResponse {
 	success: boolean;
@@ -59,7 +59,6 @@ interface IAuthFailResponse extends IFailResponse {
 interface IAccountFailResponse extends IFailResponse {
 	message: 'account creation failed';
 }
-
 
 interface ICollection {
 	uuid: string,

@@ -1,4 +1,5 @@
-import { GenericObject, IResponse } from 'core';
+import { GenericObject } from 'core';
+import { IResponse } from 'storyboard-networking';
 
 interface Columns {
 	id: string;
