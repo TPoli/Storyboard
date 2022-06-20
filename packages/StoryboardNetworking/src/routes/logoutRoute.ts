@@ -14,10 +14,8 @@ const routeDefinition = {
 type base = typeof params[number];
 type Body = ParamBody<base>;
 
-interface Response extends ISuccessResponse {}
-
 export {
 	Body,
-	Response,
+	ISuccessResponse as Response,
 	routeDefinition,
 }
